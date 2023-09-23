@@ -6,22 +6,31 @@
     SPDX-License-Identifier: CC0-1.0
     -->
     <id>data</id>
-    <name>Data</name>
+    <name>Data Service</name>
     <summary>Data Service</summary>
     <description><![CDATA[This app allows for the live retrieval of Contacts and Calendars, in specific formats. That can be used as a feed for devices and services.]]></description>
     <version>0.0.1</version>
     <licence>agpl</licence>
     <author mail="krupinski01@gmail.com" homepage="https://github.com/ksainc/data">Sebastian Krupinski</author>
     <namespace>Data</namespace>
+    <documentation>
+        <developer>https://github.com/ksainc/data</developer>
+    </documentation>
     <category>integration</category>
-    <bugs>https://github.com/ksainc/data</bugs>
+    <website>https://github.com/ksainc/data</website>
+    <discussion>https://github.com/ksainc/data/issues</discussion>
+    <bugs>https://github.com/ksainc/data/issues</bugs>
+    <repository>https://github.com/ksainc/data</repository>
+
     <dependencies>
-        <nextcloud min-version="26" max-version="26"/>
+        <php min-version="8.0"  min-int-size="64" />
+        <database>pgsql</database>
+        <database>sqlite</database>
+        <database>mysql</database>
+        <nextcloud min-version="26" max-version="28"/>
     </dependencies>
-    <navigations>
-        <navigation>
-            <name>Data</name>
-            <route>data.page.index</route>
-        </navigation>
-    </navigations>
+    <settings>
+        <personal>OCA\Data\Settings\UserSettings</personal>
+        <personal-section>OCA\Data\Settings\UserSection</personal-section>
+    </settings>
 </info>
