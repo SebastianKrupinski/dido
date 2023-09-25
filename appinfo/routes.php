@@ -12,15 +12,26 @@ declare(strict_types=1);
  * it's instantiated in there
  */
 return [
-	'resources' => [
-		//'data' => ['url' => '/data'],
-		//'data_api' => ['url' => '/api/0.1/data']
-	],
 	'routes' => [
-		//['name' => 'data#index', 'url' => '/', 'verb' => 'GET'],
-		//['name' => 'data_api#preflighted_cors', 'url' => '/api/0.1/{path}',
-		//	'verb' => 'OPTIONS', 'requirements' => ['path' => '.+']],
-		//['name' => 'UserConfiguration#Save', 'url' => '/save', 'verb' => 'GET'],
-		//['name' => 'UserConfiguration#Test', 'url' => '/test', 'verb' => 'GET'],
+		[
+			'name' => 'data#csv',
+			'url' => '/csv/{id}/',
+			'verb' => 'GET'
+		],
+		[
+			'name' => 'data#json',
+			'url' => '/json/{id}/',
+			'verb' => 'GET'
+		],
+		[
+			'name' => 'data#xml',
+			'url' => '/xml/{id}/',
+			'verb' => 'GET'
+		],
+		[
+			'name' => 'data#snom',
+			'url' => '/snom/{id}/',
+			'verb' => 'GET'
+		],
 	]
 ];

@@ -13,4 +13,8 @@ class DataService {
 
 	}
 
+	public function permitService(string $id, string $token, string $format): bool {
+		return true;
+	}
+
 }

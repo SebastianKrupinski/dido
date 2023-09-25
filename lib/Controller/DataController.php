@@ -12,59 +12,52 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
 
 class DataController extends Controller {
-	private DataService $service;
-	private ?string $userId;
+	private DataService $DataService;
 
 	use Errors;
 
 	public function __construct(IRequest $request,
-								DataService $service,
-								?string $userId) {
+								DataService $DataService) {
 		parent::__construct(Application::APP_ID, $request);
-		$this->service = $service;
-		$this->userId = $userId;
+		$this->DataService = $DataService;
 	}
 
 	/**
+	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 */
-	public function index(): DataResponse {
-		return new DataResponse($this->service->findAll($this->userId));
+	public function csv(string $id): DataResponse {
+		return new DataResponse('CVS ' . time());
 	}
-
 	/**
+	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 */
-	public function show(int $id): DataResponse {
-		return $this->handleNotFound(function () use ($id) {
-			return $this->service->find($id, $this->userId);
-		});
+	public function json(string $id): DataResponse {
+		return new DataResponse('JSON ' . time());
 	}
-
 	/**
+	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 */
-	public function create(string $title, string $content): DataResponse {
-		return new DataResponse($this->service->create($title, $content,
-			$this->userId));
+	public function xml(string $id): DataResponse {
+		return new DataResponse('XML ' . time());
 	}
-
 	/**
+	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 */
-	public function update(int $id, string $title,
-						   string $content): DataResponse {
-		return $this->handleNotFound(function () use ($id, $title, $content) {
-			return $this->service->update($id, $title, $content, $this->userId);
-		});
-	}
+	public function snom(string $id): DataResponse|null {
 
-	/**
-	 * @NoAdminRequired
-	 */
-	public function destroy(int $id): DataResponse {
-		return $this->handleNotFound(function () use ($id) {
-			return $this->service->delete($id, $this->userId);
-		});
+		// evaluate, if token exists
+		if (empty($this->request->getParam('token'))) {
+			return null;
+		}
+
+		if (!$this->DataService->permitService($id, $this->request->getParam('token'), 'SNOM')) {
+			return null;
+		}
+
+		return new DataResponse('SNOM ' . time());
 	}
 }
