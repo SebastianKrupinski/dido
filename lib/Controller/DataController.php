@@ -5,11 +5,14 @@ declare(strict_types=1);
 
 namespace OCA\Data\Controller;
 
-use OCA\Data\AppInfo\Application;
-use OCA\Data\Service\DataService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
+
+use OCA\Data\AppInfo\Application;
+use OCA\Data\Service\DataService;
+use OCA\Data\Http\GeneratedResponse;
+use OCA\Data\Http\GeneratedStreamResponse;
 
 class DataController extends Controller {
 	private DataService $DataService;
@@ -23,41 +26,46 @@ class DataController extends Controller {
 	}
 
 	/**
-	 * @NoCSRFRequired
-	 * @NoAdminRequired
-	 */
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @PublicPage
+     */
 	public function csv(string $id): DataResponse {
 		return new DataResponse('CVS ' . time());
 	}
 	/**
-	 * @NoCSRFRequired
-	 * @NoAdminRequired
-	 */
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @PublicPage
+     */
 	public function json(string $id): DataResponse {
 		return new DataResponse('JSON ' . time());
 	}
 	/**
-	 * @NoCSRFRequired
-	 * @NoAdminRequired
-	 */
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @PublicPage
+     */
 	public function xml(string $id): DataResponse {
 		return new DataResponse('XML ' . time());
 	}
 	/**
-	 * @NoCSRFRequired
-	 * @NoAdminRequired
-	 */
-	public function snom(string $id): DataResponse|null {
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @PublicPage
+     */
+	public function snom(string $id) {
 
 		// evaluate, if token exists
 		if (empty($this->request->getParam('token'))) {
 			return null;
 		}
 
-		if (!$this->DataService->permitService($id, $this->request->getParam('token'), 'SNOM')) {
+		if (!$this->DataService->authorize($id, $this->request->getParam('token'), 'SNOM')) {
 			return null;
 		}
 
-		return new DataResponse('SNOM ' . time());
+		return new GeneratedResponse($this->DataService->generate($id), 'text/xml; charset=UTF-8');
 	}
+	
 }
