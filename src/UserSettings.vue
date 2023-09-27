@@ -24,11 +24,11 @@
 <template>
 	<div id="ds_settings" class="section">
 		<div class="ds-section-heading">
-			<EwsIcon :size="32" /><h2> {{ t('integration_ds', 'Data Service') }}</h2>
+			<EwsIcon :size="32" /><h2> {{ t('data_service', 'Data Service') }}</h2>
 		</div>
 		<div class="ds-content">
 			<div class="settings-hint">
-				{{ t('integration_ds', 'List of provisioned services') }}
+				{{ t('data_service', 'List of provisioned services') }}
 			</div>
 			<div>
 
@@ -109,7 +109,7 @@ export default {
 	data() {
 		return {
 			readonly: true,
-			//state: loadState('integration_ds', 'user-configuration'),
+			state: loadState('data_service', 'user-configuration'),
 		}
 	},
 
@@ -125,10 +125,9 @@ export default {
 
 	methods: {
 		loadData() {
-			
 		},
 		onConnectAlternateClick() {
-			const uri = generateUrl('/apps/integration_ds/connect-alternate')
+			const uri = generateUrl('/apps/data_service/connect-alternate')
 			const data = {
 				params: {
 					account_id: this.state.account_id,
@@ -148,14 +147,13 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('integration_ds', 'Failed to authenticate with EWS server')
+						t('data_service', 'Failed to authenticate with EWS server')
 						+ ': ' + error.response?.request?.responseText
 					)
 				})
 		},
 
 		onSaveClick() {
-		
 		},
 	},
 }

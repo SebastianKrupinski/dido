@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+//declare(strict_types=1);
 
 /**
 * @copyright Copyright (c) 2023 Sebastian Krupinski <krupinski01@gmail.com>
@@ -20,10 +20,20 @@ declare(strict_types=1);
 *
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
 */
 
-$appId = OCA\Data\AppInfo\Application::APP_ID;
-\OCP\Util::addScript($appId, $appId . '-userSettings');
-?>
+namespace OCA\Data\Objects;
 
-<div id="ds_settings"></div>
+class ContactPhoneObject {
+
+    public ?string $Type;
+    public ?string $SubType;
+	public ?string $Number;
+	
+	public function __construct(?string $type = null, ?string $subtype = null, ?string $number = null) {
+        $this->Type = $type;
+        $this->SubType = $subtype;
+        $this->Number = $number;
+	}
+}

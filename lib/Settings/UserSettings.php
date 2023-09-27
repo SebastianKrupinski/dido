@@ -29,7 +29,7 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\Settings\ISettings;
 
-use OCA\EWS\AppInfo\Application;
+use OCA\Data\AppInfo\Application;
 
 class UserSettings implements ISettings {
 
@@ -53,9 +53,9 @@ class UserSettings implements ISettings {
 	public function getForm(): TemplateResponse {
 		
 		// retrieve user configuration
-		$Configuration = [];
+		$configuration = [];
 		//$configuration = $this->ConfigurationService->retrieveUser($this->userId);
-		//$configuration['system_ms365_authrization_uri'] = \OCA\EWS\Integration\Microsoft365::constructAuthorizationUrl();
+		//$configuration['system_ms365_authrization_uri'] = \OCA\Data\Integration\Microsoft365::constructAuthorizationUrl();
 		
 		$this->initialStateService->provideInitialState('user-configuration', $configuration);
 

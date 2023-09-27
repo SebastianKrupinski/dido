@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+//declare(strict_types=1);
 
 /**
 * @copyright Copyright (c) 2023 Sebastian Krupinski <krupinski01@gmail.com>
@@ -20,10 +20,36 @@ declare(strict_types=1);
 *
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
 */
 
-$appId = OCA\Data\AppInfo\Application::APP_ID;
-\OCP\Util::addScript($appId, $appId . '-userSettings');
-?>
+namespace OCA\Data\Objects;
 
-<div id="ds_settings"></div>
+class ContactAttachmentObject {
+
+    public string $Id;
+    public ?string $Name;
+	public ?string $Type;
+    public ?string $Encoding;
+    public ?string $Flag;
+    public ?string $Size;
+    public ?string $Data;
+    
+    public function __construct(
+        string $id = null,
+        string $name = null,
+        string $type = null,
+        string $encoding = null,
+        string $flag = null,
+        string $size = null,
+        string $data = null
+    ) {
+        $this->Id = $id;
+        $this->Name = $name;
+        $this->Type = $type;
+        $this->Encoding = $encoding;
+        $this->Flag = $flag;
+        $this->Size = $size;
+        $this->Data = $data;
+	}
+}

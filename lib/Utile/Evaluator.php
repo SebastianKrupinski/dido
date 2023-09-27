@@ -20,10 +20,24 @@ declare(strict_types=1);
 *
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
 */
 
-$appId = OCA\Data\AppInfo\Application::APP_ID;
-\OCP\Util::addScript($appId, $appId . '-userSettings');
-?>
+namespace OCA\Data\Utile;
 
-<div id="ds_settings"></div>
+class Evaluator {
+
+    static function evaluate(string $code, array|object $parameters = []): mixed {
+        
+        // start buffer
+        ob_start();
+        // conver the collection to parameters
+        extract($parameters);
+        // combine template and data
+        eval("?>" . $code);
+        // return buffer
+        return ob_get_clean();
+
+    }
+
+}

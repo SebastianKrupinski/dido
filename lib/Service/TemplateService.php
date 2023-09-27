@@ -5,8 +5,11 @@ declare(strict_types=1);
 
 namespace OCA\Data\Service;
 
+use OCA\Data\Utile\Evaluator;
+
 class TemplateService
 {
+    
     // Define repeat tags
     private $_reiterate_start_tag = '{{ section reiterate start }}';
     private $_reiterate_end_tag = '{{ section reiterate end }}';
@@ -29,9 +32,7 @@ class TemplateService
         $this->extractSections();
         // reset template place holder
         $this->_template = '';
-        // extract template reiterate properties
-        //$this->extractProperties();
-        // compile
+        // compile iteration
         $this->compileIteration();
 
     }
@@ -50,9 +51,7 @@ class TemplateService
         $this->extractSections();
         // reset template place holder
         $this->_template = '';
-        // extract template reiterate properties
-        //$this->extractProperties();
-        // compile
+        // compile iteration
         $this->compileIteration();
 
     }
@@ -99,15 +98,6 @@ class TemplateService
         
     }
 
-    private function extractProperties() {
-        
-        // extract properties
-        preg_match_all('/\[\[(.*?)\]\]/', $this->_template_reiterate, $matches);
-        // store properties
-        $this->_template_reiterate_properties = $matches[0];
-
-    }
-
     private function compileIteration() {
 
         // https://codeshack.io/lightweight-template-engine-php/
@@ -117,41 +107,34 @@ class TemplateService
 		$this->_template_reiterate = preg_replace('~\{{\s*(.+?)\s*\}}~is', '<?php echo $1 ?>', $this->_template_reiterate);
 
 		$this->_template_reiterate = preg_replace('~\{{{\s*(.+?)\s*\}}}~is', '<?php echo htmlentities($1, ENT_QUOTES, \'UTF-8\') ?>', $this->_template_reiterate);
+
 	}
 
     public function generateStart(): string {
 
+        // return template start
         return $this->_template_start;
 
     }
 
     public function generateEnd(): string {
 
+        // return template end
         return $this->_template_end;
 
     }
 
     public function generateIteration(array|object $data): string {
 
+        // evaluate if data was passed as an object
+        if (is_object($data)) {
+            $data = ['data' => $data];
+        }
         // render iteration
-        $iteration = $this->renderIteration($this->_template_reiterate, $data);
+        $iteration = Evaluator::evaluate($this->_template_reiterate, $data);
         // return iteration
         return $iteration;
 
     }
-
-    function renderIteration($script, array|object $data)
-    {
-        ob_start();
-        //extract($data);
-        eval("?>" . $script);
-        return ob_get_clean();
-    }
-
-    /*
-    $test = 'one';
-    echo render('foo.php', array('test' => 'two'));
-    echo $test; // is still 'one' ... render() has its own scope
-    */
 
 }

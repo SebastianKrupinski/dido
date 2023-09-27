@@ -4625,7 +4625,7 @@ __webpack_require__.r(__webpack_exports__);
   data() {
     return {
       readonly: true,
-      state: (0,_nextcloud_initial_state__WEBPACK_IMPORTED_MODULE_2__.loadState)('integration_ds', 'user-configuration')
+      state: (0,_nextcloud_initial_state__WEBPACK_IMPORTED_MODULE_2__.loadState)('data_service', 'user-configuration')
     };
   },
   computed: {},
@@ -4634,19 +4634,9 @@ __webpack_require__.r(__webpack_exports__);
     this.loadData();
   },
   methods: {
-    test() {
-      (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_3__.showSuccess)();
-    },
-    loadData() {
-      // get collections list if we are connected
-      if (this.state.account_connected === '1') {
-        this.fetchCorrelations();
-        this.fetchLocalCollections();
-        this.fetchRemoteCollections();
-      }
-    },
+    loadData() {},
     onConnectAlternateClick() {
-      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/integration_ds/connect-alternate');
+      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data_service/connect-alternate');
       const data = {
         params: {
           account_id: this.state.account_id,
@@ -4664,7 +4654,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).catch(error => {
         var _error$response;
-        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_3__.showError)(t('integration_ds', 'Failed to authenticate with EWS server') + ': ' + ((_error$response = error.response) === null || _error$response === void 0 || (_error$response = _error$response.request) === null || _error$response === void 0 ? void 0 : _error$response.responseText));
+        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_3__.showError)(t('data_service', 'Failed to authenticate with EWS server') + ': ' + ((_error$response = error.response) === null || _error$response === void 0 || (_error$response = _error$response.request) === null || _error$response === void 0 ? void 0 : _error$response.responseText));
       });
     },
     onSaveClick() {}
@@ -4730,11 +4720,11 @@ var render = function render() {
     attrs: {
       "size": 32
     }
-  }), _c('h2', [_vm._v(" " + _vm._s(_vm.t('integration_ds', 'Data Service')))])], 1), _vm._v(" "), _c('div', {
+  }), _c('h2', [_vm._v(" " + _vm._s(_vm.t('data_service', 'Data Service')))])], 1), _vm._v(" "), _c('div', {
     staticClass: "ds-content"
-  }, [_c('h3', [_vm._v(_vm._s(_vm.t('integration_ds', 'Contacts')))]), _vm._v(" "), _c('div', {
+  }, [_c('div', {
     staticClass: "settings-hint"
-  }, [_vm._v("\n\t\t\t" + _vm._s(_vm.t('integration_ds', 'Select the remote contacts folder(s) you wish to synchronize by pressing the link button next to the contact folder name and selecting the local contacts address book to synchronize to.')) + "\n\t\t")]), _vm._v(" "), _c('div', [_vm.availableRemoteContactCollections.length > 0 ? _c('ul', _vm._l(_vm.availableRemoteContactCollections, function (ritem) {
+  }, [_vm._v("\n\t\t\t" + _vm._s(_vm.t('data_service', 'List of provisioned services')) + "\n\t\t")]), _vm._v(" "), _c('div'), _vm._v(" "), _c('div', [_c('ul', _vm._l(_vm.availableRemoteContactCollections, function (ritem) {
     return _c('li', {
       key: ritem.id,
       staticClass: "ds-collectionlist-item"
@@ -4773,7 +4763,7 @@ var render = function render() {
         }
       }, [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(litem.name) + "\n\t\t\t\t\t\t")]);
     })], 2)], 1);
-  }), 0) : _vm._e()]), _vm._v(" "), _c('br')])]);
+  }), 0)]), _vm._v(" "), _c('br')])]);
 };
 var staticRenderFns = [];
 render._withStripped = true;
