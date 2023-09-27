@@ -33,5 +33,10 @@ return [
 			'url' => '/snom/{id}/',
 			'verb' => 'GET'
 		],
+		[
+			'name' => 'data#yealink',
+			'url' => '/yealink/{id}/',
+			'verb' => 'GET'
+		],
 	]
 ];

@@ -39,10 +39,11 @@ class DataService {
 		// evaluate, if restrictions are set
 		if (!empty($service['restrictions'])) {
 			$restrictions = json_decode($service['restrictions']);
-			// evaluate, id address restriction is set
-			if (isset($restrictions->addresses)) {
+			// evaluate, if id address restriction is set
+			if (isset($restrictions->ip) && count($restrictions->ip) > 0) {
 				$valid = false;
-				foreach ($restrictions->addresses as $entry) {
+				foreach ($restrictions->ip as $entry) {
+					// evaluate, if ip address matches
 					if (\OCA\Data\Utile\Validator::ipInCidr($meta['address'], $entry)) {
 						$valid = true;
 						break;
@@ -50,6 +51,14 @@ class DataService {
 				}
 				// evaluate, if no matching range was found
 				if ($valid === false) {
+					return false;
+				}
+			}
+
+			// evaluate, if mac address restriction is set
+			if (!empty($restrictions->mac)) {
+				// evaluate, if mac matches
+				if ($restrictions->mac != $meta['mac']) {
 					return false;
 				}
 			}
