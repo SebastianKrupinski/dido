@@ -42,4 +42,5 @@ class ContactAddressObject {
         $this->Code = $code;
         $this->Country = $country;
 	}
+    
 }

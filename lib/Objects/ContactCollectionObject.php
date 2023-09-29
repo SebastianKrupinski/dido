@@ -26,6 +26,7 @@
 namespace OCA\Data\Objects;
 
 class ContactCollectionObject {
+
     public string $Id;
     public ?string $Name = null;
     public ?string $State = null;
@@ -45,4 +46,5 @@ class ContactCollectionObject {
         $this->Count = $count;
         $this->AffiliationId = $aid;
 	}
+    
 }

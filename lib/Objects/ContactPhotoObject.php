@@ -37,4 +37,5 @@ class ContactPhotoObject {
         $this->Type = $type;
         $this->Data = $data;
 	}
+
 }

@@ -34,4 +34,5 @@ class ContactEmailObject {
         $this->Type = $type;
         $this->Address = $address;
 	}
+    
 }

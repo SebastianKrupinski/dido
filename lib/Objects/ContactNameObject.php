@@ -56,4 +56,5 @@ class ContactNameObject {
         $this->PhoneticFirst = $phoneticfirst;
         $this->Aliases = $aliases;
 	}
+
 }

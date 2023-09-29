@@ -39,4 +39,5 @@ class ContactOccupationObject {
         $this->Title = $title;
         $this->Role = $role;
 	}
+
 }

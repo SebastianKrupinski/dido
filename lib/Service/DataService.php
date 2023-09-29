@@ -67,7 +67,63 @@ class DataService {
 		return $service;
 	}
 
-	public function generate(array $service) {
+	public function generateCSV(array $service) {
+
+		// instance template service
+		$TemplateService = new TemplateService();
+		// load template
+		$TemplateService->fromFile(dirname(__DIR__) . '/Resources/' . $service['format'] . '.tpl');
+		// load entities
+		$entities = $this->ContactsService->listEntities($service['collection_id']);
+		// document start
+		yield $TemplateService->generateStart();
+		// document iteration
+		foreach ($entities as $lo) {
+			// convert to contact object
+            $co = $this->ContactsService->toContactObject(Reader::read($lo['carddata']));
+            $co->ID = $lo['uri'];
+            $co->CID = $lo['addressbookid'];
+            $co->ModifiedOn = new \DateTime(date("Y-m-d H:i:s", $lo['lastmodified']));
+            $co->State = trim($lo['etag'],'"');
+			
+			yield $TemplateService->generateIteration($co);
+		}
+		// document end
+		yield $TemplateService->generateEnd();
+
+	}
+
+	public function generateJSON(array $service) {
+
+		// load entities
+		$entities = $this->ContactsService->listEntities($service['collection_id']);
+		// document start
+		yield '[';
+		// document iteration
+		$count = count($entities);
+		foreach ($entities as $lo) {
+			
+			$count -= 1;
+			// convert to contact object
+            $co = $this->ContactsService->toContactObject(Reader::read($lo['carddata']));
+            $co->ID = (string) $lo['uri'];
+            $co->CID = (string) $lo['addressbookid'];
+            $co->ModifiedOn = new \DateTime(date("Y-m-d H:i:s", $lo['lastmodified']));
+            $co->State = trim((string) $lo['etag'],'"');
+			
+			if ($count == 0)
+				yield json_encode($co);
+			else {
+				yield json_encode($co) . ',';
+			}
+			
+		}
+		// document end
+		yield ']';
+
+	}
+	
+	public function generateTemplate(array $service) {
 
 		// instance template service
 		$TemplateService = new TemplateService();

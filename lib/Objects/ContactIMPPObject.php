@@ -34,4 +34,5 @@ class ContactIMPPObject {
         $this->Type = $type;
         $this->Address = $address;
 	}
+    
 }

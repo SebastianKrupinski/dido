@@ -31,15 +31,53 @@ class DataController extends Controller {
      * @PublicPage
      */
 	public function csv(string $id): DataResponse {
-		return new DataResponse('CVS ' . time());
+
+		// construct place holder
+		$meta = [];
+		// evaluate, if token exists
+		if (empty($this->request->getParam('token'))) {
+			return null;
+		}
+		// collect meta data
+		$meta['token'] = $this->request->getParam('token');
+		$meta['address'] = $this->request->__get('server')['REMOTE_ADDR'];
+		$meta['agent'] = $this->request->__get('server')['HTTP_USER_AGENT'];
+		// authorize request
+		$result = $this->DataService->authorize($id, $meta);
+		// evaluate, result
+		if ($result === false) {
+			return null;
+		} else {
+			return new GeneratedResponse($this->DataService->generateCSV($result), 'text/text; charset=UTF-8');
+		}
+
 	}
 	/**
      * @NoAdminRequired
      * @NoCSRFRequired
      * @PublicPage
      */
-	public function json(string $id): DataResponse {
-		return new DataResponse('JSON ' . time());
+	public function json(string $id) {
+		
+		// construct place holder
+		$meta = [];
+		// evaluate, if token exists
+		if (empty($this->request->getParam('token'))) {
+			return null;
+		}
+		// collect meta data
+		$meta['token'] = $this->request->getParam('token');
+		$meta['address'] = $this->request->__get('server')['REMOTE_ADDR'];
+		$meta['agent'] = $this->request->__get('server')['HTTP_USER_AGENT'];
+		// authorize request
+		$result = $this->DataService->authorize($id, $meta);
+		// evaluate, result
+		if ($result === false) {
+			return null;
+		} else {
+			return new GeneratedResponse($this->DataService->generateJSON($result), 'application/json; charset=UTF-8');
+		}
+
 	}
 	/**
      * @NoAdminRequired
@@ -47,7 +85,26 @@ class DataController extends Controller {
      * @PublicPage
      */
 	public function xml(string $id): DataResponse {
-		return new DataResponse('XML ' . time());
+		
+		// construct place holder
+		$meta = [];
+		// evaluate, if token exists
+		if (empty($this->request->getParam('token'))) {
+			return null;
+		}
+		// collect meta data
+		$meta['token'] = $this->request->getParam('token');
+		$meta['address'] = $this->request->__get('server')['REMOTE_ADDR'];
+		$meta['agent'] = $this->request->__get('server')['HTTP_USER_AGENT'];
+		// authorize request
+		$result = $this->DataService->authorize($id, $meta);
+		// evaluate, result
+		if ($result === false) {
+			return null;
+		} else {
+			return new GeneratedResponse($this->DataService->generateXML($result), 'text/xml; charset=UTF-8');
+		}
+
 	}
 	/**
      * @NoAdminRequired
@@ -73,8 +130,9 @@ class DataController extends Controller {
 		if ($result === false) {
 			return null;
 		} else {
-			return new GeneratedResponse($this->DataService->generate($result), 'text/xml; charset=UTF-8');
+			return new GeneratedResponse($this->DataService->generateTemplate($result), 'text/xml; charset=UTF-8');
 		}
+
 	}
 	/**
      * @NoAdminRequired
@@ -100,8 +158,9 @@ class DataController extends Controller {
 		if ($result === false) {
 			return null;
 		} else {
-			return new GeneratedResponse($this->DataService->generate($result), 'text/xml; charset=UTF-8');
+			return new GeneratedResponse($this->DataService->generateTemplate($result), 'text/xml; charset=UTF-8');
 		}
+
 	}
 	
 }

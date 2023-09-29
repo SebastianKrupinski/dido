@@ -34,4 +34,5 @@ class ContactRelationshipObject {
         $this->Type = $type;
         $this->Value = $value;
 	}
+    
 }

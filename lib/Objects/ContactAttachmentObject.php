@@ -52,4 +52,5 @@ class ContactAttachmentObject {
         $this->Size = $size;
         $this->Data = $data;
 	}
+    
 }
