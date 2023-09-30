@@ -120,7 +120,7 @@ class DataService {
 			$csv .= '"';
 			foreach ($co->Phone as $entry) {
 				$csv .= $entry->Type . "|" . 
-				$entry->Subtype . "|" . 
+				$entry->SubType . "|" . 
 				addcslashes($entry->Number, '"') . ";";
 			}
 			$csv .= '",';
