@@ -69,27 +69,87 @@ class DataService {
 
 	public function generateCSV(array $service) {
 
-		// instance template service
-		$TemplateService = new TemplateService();
-		// load template
-		$TemplateService->fromFile(dirname(__DIR__) . '/Resources/' . $service['format'] . '.tpl');
 		// load entities
 		$entities = $this->ContactsService->listEntities($service['collection_id']);
 		// document start
-		yield $TemplateService->generateStart();
+		yield 'ID,UID,CID,State,CreatedOn,ModifiedOn,Label,' . 
+			  'NameLast,NameFirst,NameOther,NamePrefix,NameSuffix,NamePhoneticLast,NamePhoneticFirst,NamePhoneticOther,NameAliases,' .
+			  'BirthDay,Gender,Partner,AnniversaryDay,Address,Phone,Email,IMPP,' . 
+			  'OccupationOrganization,OccupationTitle,OccupationRole,OccupationDepartment,' . PHP_EOL;
 		// document iteration
 		foreach ($entities as $lo) {
+
 			// convert to contact object
             $co = $this->ContactsService->toContactObject(Reader::read($lo['carddata']));
-            $co->ID = $lo['uri'];
-            $co->CID = $lo['addressbookid'];
+            $co->ID = (string) $lo['uri'];
+            $co->CID = (string) $lo['addressbookid'];
             $co->ModifiedOn = new \DateTime(date("Y-m-d H:i:s", $lo['lastmodified']));
-            $co->State = trim($lo['etag'],'"');
+            $co->State = trim((string) $lo['etag'],'"');
 			
-			yield $TemplateService->generateIteration($co);
+			$csv = '';
+        	$csv .= "$co->ID,";
+			$csv .= "$co->UID,";
+			$csv .= "$co->CID,";
+			$csv .= "$co->State,";
+			$csv .= ($co->CreatedOn instanceof \DateTime) ? '"' . $co->CreatedOn->format(DATE_W3C) . ';' . $co->CreatedOn->getTimeZone()->getName() . '",' : '"",';
+			$csv .= ($co->ModifiedOn instanceof \DateTime) ? '"' . $co->ModifiedOn->format(DATE_W3C) . ';' . $co->ModifiedOn->getTimeZone()->getName() . '",' : '"",';
+			$csv .= '"' . $co->Label . '",';
+			$csv .= '"' . $co->Name->Last . '",';
+			$csv .= '"' . $co->Name->First . '",';
+			$csv .= '"' . $co->Name->Other . '",';
+			$csv .= '"' . $co->Name->Prefix . '",';
+			$csv .= '"' . $co->Name->Suffix . '",';
+			$csv .= '"' . $co->Name->PhoneticLast . '",';
+			$csv .= '"' . $co->Name->PhoneticFirst . '",';
+			$csv .= '"' . $co->Name->PhoneticOther . '",';
+			$csv .= '"' . $co->Name->Aliases . '",';
+			$csv .= ($co->BirthDay instanceof \DateTime) ? '"' . $co->BirthDay->format('Y-m-d') . '",' : '"",';
+			$csv .= "$co->Gender,";
+			$csv .= "$co->Partner,";
+			$csv .= ($co->AnniversaryDay instanceof \DateTime) ? '"' . $co->AnniversaryDay->format('Y-m-d') . '",' : '"",';
+			$csv .= '"';
+			foreach ($co->Address as $entry) {
+				$csv .= $entry->Type . "|" . 
+				addcslashes($entry->Street, '"') . "|" . 
+				addcslashes($entry->Locality, '"') . "|" . 
+				addcslashes($entry->Region, '"') . "|" . 
+				addcslashes($entry->Code, '"') . "|" . 
+				addcslashes($entry->Country, '"') . ";";
+			}
+			$csv .= '",';
+			$csv .= '"';
+			foreach ($co->Phone as $entry) {
+				$csv .= $entry->Type . "|" . 
+				$entry->Subtype . "|" . 
+				addcslashes($entry->Number, '"') . ";";
+			}
+			$csv .= '",';
+			$csv .= '"';
+			foreach ($co->Email as $entry) {
+				$csv .= $entry->Type . "|" . 
+				$entry->Address . ";";
+			}
+			$csv .= '",';
+			$csv .= '"';
+			foreach ($co->IMPP as $entry) {
+				$csv .= $entry->Type . "|" . 
+				$entry->Address . ";";
+			}
+			$csv .= '",';
+			$csv .= '"' . $co->Occupation->Organization . '",';
+			$csv .= '"' . $co->Occupation->Title . '",';
+			$csv .= '"' . $co->Occupation->Role . '",';
+			$csv .= '"' . $co->Occupation->Department . '",';
+			$csv .= '"';
+			foreach ($co->Tags as $entry) {
+				$csv .= $entry . ";";
+			}
+			$csv .= '",';
+			$csv .= '"' . $co->Notes . '",';
+
+			yield $csv . PHP_EOL;
+			
 		}
-		// document end
-		yield $TemplateService->generateEnd();
 
 	}
 

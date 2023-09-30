@@ -30,7 +30,7 @@ class DataController extends Controller {
      * @NoCSRFRequired
      * @PublicPage
      */
-	public function csv(string $id): DataResponse {
+	public function csv(string $id) {
 
 		// construct place holder
 		$meta = [];

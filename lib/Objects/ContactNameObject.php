@@ -45,6 +45,7 @@ class ContactNameObject {
         ?string $suffix = null,
         ?string $phoneticlast = null,
         ?string $phoneticfirst = null,
+        ?string $phoneticother = null,
         ?string $aliases = null
     ) {
         $this->Last = $last;
@@ -54,6 +55,7 @@ class ContactNameObject {
         $this->Suffix = $suffix;
         $this->PhoneticLast = $phoneticlast;
         $this->PhoneticFirst = $phoneticfirst;
+        $this->PhoneticOther = $phoneticother;
         $this->Aliases = $aliases;
 	}
 

@@ -37,7 +37,6 @@ class ContactObject {
     public ?DateTime $ModifiedOn = null;
     public ?string $Label = null;
 	public ?ContactNameObject $Name = null;
-    public ?string $Aliases = null;
     public ?ContactPhotoObject $Photo = null;
     public ?DateTime $BirthDay = null;
     public ?string $Gender = null;
