@@ -197,10 +197,10 @@ class DataService {
 		foreach ($entities as $lo) {
 			// convert to contact object
             $co = $this->ContactsService->toContactObject(Reader::read($lo['carddata']));
-            $co->ID = $lo['uri'];
-            $co->CID = $lo['addressbookid'];
+            $co->ID = (string) $lo['uri'];
+            $co->CID = (string) $lo['addressbookid'];
             $co->ModifiedOn = new \DateTime(date("Y-m-d H:i:s", $lo['lastmodified']));
-            $co->State = trim($lo['etag'],'"');
+            $co->State = trim((string) $lo['etag'],'"');
 			
 			yield $TemplateService->generateIteration($co);
 		}
