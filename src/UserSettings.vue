@@ -23,7 +23,7 @@
 
 <template>
 	<div>
-		<NcButton @click="alert('I am an alert box!')">
+		<NcButton @click="openServiceSettings()">
 			Show Settings
 		</NcButton>
 

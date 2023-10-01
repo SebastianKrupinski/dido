@@ -439,7 +439,7 @@ var render = function render() {
   return _c('div', [_c('NcButton', {
     on: {
       "click": function ($event) {
-        return _vm.alert('I am an alert box!');
+        return _vm.openServiceSettings();
       }
     }
   }, [_vm._v("\n\t\tShow Settings\n\t")]), _vm._v(" "), _c('NcAppSettingsDialog', {
