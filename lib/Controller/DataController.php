@@ -111,35 +111,7 @@ class DataController extends Controller {
      * @NoCSRFRequired
      * @PublicPage
      */
-	public function snom(string $id) {
-
-		// construct place holder
-		$meta = [];
-		// evaluate, if token exists
-		if (empty($this->request->getParam('token'))) {
-			return null;
-		}
-		// collect meta data
-		$meta['token'] = $this->request->getParam('token');
-		$meta['address'] = $this->request->__get('server')['REMOTE_ADDR'];
-		$meta['agent'] = $this->request->__get('server')['HTTP_USER_AGENT'];
-		$meta['mac'] = \OCA\Data\Utile\Extractor::mac($meta['agent'], true);
-		// authorize request
-		$result = $this->DataService->authorize($id, $meta);
-		// evaluate, result
-		if ($result === false) {
-			return null;
-		} else {
-			return new GeneratedResponse($this->DataService->generateTemplate($result), 'text/xml; charset=UTF-8');
-		}
-
-	}
-	/**
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     * @PublicPage
-     */
-	public function yealink(string $id) {
+	public function phone(string $id) {
 
 		// construct place holder
 		$meta = [];

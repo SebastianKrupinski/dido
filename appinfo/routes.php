@@ -29,13 +29,8 @@ return [
 			'verb' => 'GET'
 		],
 		[
-			'name' => 'data#snom',
-			'url' => '/snom/{id}/',
-			'verb' => 'GET'
-		],
-		[
-			'name' => 'data#yealink',
-			'url' => '/yealink/{id}/',
+			'name' => 'data#phone',
+			'url' => '/phone/{id}/',
 			'verb' => 'GET'
 		],
 	]
