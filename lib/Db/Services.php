@@ -39,6 +39,39 @@ class Services {
 	}
 
 	/**
+	 * retrieve all services from the data store
+	 * 
+	 * @since Release 1.0.0
+	 * 
+	 * @return array 		
+	 */
+	public function listByUserId(string $uid) : array {
+
+		// construct data store command
+		$dc = $this->DataStore->getQueryBuilder();
+		if (empty($uid)) {
+			$dc->select('*')
+			->from($this->DataStoreTable);
+		}
+		else {
+			$dc->select('*')
+			->from($this->DataStoreTable)
+			->where($dc->expr()->eq('uid', $dc->createNamedParameter($uid)));
+		}
+		// execute command
+		$rs = $dc->executeQuery()->fetchAll();
+		$dc->executeQuery()->closeCursor();
+		// return result or null
+		if (is_array($rs) && count($rs) > 0) {
+			return $rs;
+		}
+		else {
+			return [];
+		}
+		
+	}
+
+	/**
 	 * fetch a service entry from the data store
 	 * 
 	 * @since Release 1.0.0

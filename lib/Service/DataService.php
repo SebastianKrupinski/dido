@@ -24,6 +24,91 @@ class DataService {
 		$this->ContactsService = $ContactsService;
 	}
 
+	/**
+	 * retrieve collections for specific user and collection type
+	 * 
+	 * @since Release 1.0.0
+	 * 
+	 * @param string $uid		nextcloud user id
+	 * @param string $type		collection type
+	 * 
+	 * @return array 			of collection(s) and attributes
+	 */
+	public function listCollections(string $uid, string $type): array {
+
+		// construct response object
+		$response = [];
+		// retrieve all collections
+		if ($type == 'CC') {
+			$response['Collections'] = $this->ContactsService->listCollections($uid);
+		}
+		if ($type == 'EC') {
+			$response['Collections'] = []; //$this->EventsService->listCollections($uid);
+		}
+		if ($type == 'TC') {
+			$response['Collections'] = []; //$this->TasksService->listCollections($uid);
+		}
+		// return response
+		return $response;
+
+	}
+
+	/**
+	 * retrieve all formats for specific collection type
+	 * 
+	 * @since Release 1.0.0
+	 * 
+	 * @param string $type		collection type
+	 * 
+	 * @return array			of format(s)
+	 */
+	public function listFormats(string $type): array {
+
+		// construct response object
+		$response['Formats'];
+		$response['Formats'][] = ['id' => 'CVS', 'label' => 'CVS'];
+		$response['Formats'][] = ['id' => 'JSON', 'label' => 'JSON'];
+		$response['Formats'][] = ['id' => 'XML', 'label' => 'XML'];
+		// retrieve all formats
+		if ($type == 'CC') {
+			$files = scandir(__DIR__ . '/../Resources/');
+			foreach ($files as $file) {
+				if (strstr($file, '.tpl')) {
+					$response['Formats'][] = ['id' => $file, 'label' => str_replace(".tpl", "", $file)];
+				}
+			}
+		}
+		if ($type == 'EC') {
+			$response['Formats'] = []; //$this->EventsService->listCollections($uid);
+		}
+		if ($type == 'TC') {
+			$response['Formats'] = []; //$this->TasksService->listCollections($uid);
+		}
+		// return response
+		return $response;
+
+	}
+
+	/**
+	 * retrieve all services for specific user
+	 * 
+	 * @since Release 1.0.0
+	 * 
+	 * @param string $uid		nextcloud user id
+	 * 
+	 * @return array			of service(s)
+	 */
+	public function listServices(string $uid): array {
+
+		// construct response object
+		$response = [];
+		// retrieve all services
+		$response = $this->Services->listByUserId($uid);
+		// return response
+		return $response;
+
+	}
+
 	public function authorize(string $id, array $meta): array|bool {
 
 		$service = $this->Services->fetchByServiceId($id);

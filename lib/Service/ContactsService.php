@@ -72,7 +72,7 @@ class ContactsService {
 		// construct collections list
 		$data = array();
 		foreach ($collections as $entry) {
-			$data[] = array('id' => $entry['id'], 'name' => $entry['{DAV:}displayname'], 'uri' => $entry['uri']);
+			$data[] = array('id' => $entry['id'], 'label' => $entry['{DAV:}displayname'], 'uri' => $entry['uri']);
 		}
         // return collections list
 		return $data;

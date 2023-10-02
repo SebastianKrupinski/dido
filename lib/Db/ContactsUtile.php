@@ -47,7 +47,7 @@ class ContactsUtile {
 	 * 
 	 * @return array 		of data fields
 	 */
-	public function listEntities(string $cid): ?array {
+	public function listEntities(string $cid): array {
 
 		// construct database command
 		$dc = $this->DataStore->getQueryBuilder();
@@ -62,7 +62,7 @@ class ContactsUtile {
 			return $rs;
 		}
 		else {
-			return null;
+			return [];
 		}
 		
 	}

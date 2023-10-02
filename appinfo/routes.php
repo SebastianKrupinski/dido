@@ -14,23 +14,38 @@ declare(strict_types=1);
 return [
 	'routes' => [
 		[
-			'name' => 'data#csv',
+			'name' => 'Data#csv',
 			'url' => '/csv/{id}/',
 			'verb' => 'GET'
 		],
 		[
-			'name' => 'data#json',
+			'name' => 'Data#json',
 			'url' => '/json/{id}/',
 			'verb' => 'GET'
 		],
 		[
-			'name' => 'data#xml',
+			'name' => 'Data#xml',
 			'url' => '/xml/{id}/',
 			'verb' => 'GET'
 		],
 		[
-			'name' => 'data#phone',
+			'name' => 'Data#phone',
 			'url' => '/phone/{id}/',
+			'verb' => 'GET'
+		],
+		[
+			'name' => 'data#listCollections',
+			'url' => '/list-collections',
+			'verb' => 'GET'
+		],
+		[
+			'name' => 'data#listFormats',
+			'url' => '/list-formats',
+			'verb' => 'GET'
+		],
+		[
+			'name' => 'data#listServices',
+			'url' => '/list-services',
 			'verb' => 'GET'
 		],
 	]
