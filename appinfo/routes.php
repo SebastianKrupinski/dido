@@ -34,17 +34,17 @@ return [
 			'verb' => 'GET'
 		],
 		[
-			'name' => 'data#listCollections',
+			'name' => 'UserConfiguration#listCollections',
 			'url' => '/list-collections',
 			'verb' => 'GET'
 		],
 		[
-			'name' => 'data#listFormats',
+			'name' => 'UserConfiguration#listFormats',
 			'url' => '/list-formats',
 			'verb' => 'GET'
 		],
 		[
-			'name' => 'data#listServices',
+			'name' => 'UserConfiguration#listServices',
 			'url' => '/list-services',
 			'verb' => 'GET'
 		],
