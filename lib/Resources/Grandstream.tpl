@@ -2,31 +2,31 @@
 <AddressBook>
 {{ section reiterate start }}
 {% if(isset($data)): %}
-{% foreach ($data->Phone as $entry): %}
-{% if($entry->Type == 'WORK' && $entry->SubType == 'VOICE' && !empty($entry->Number)): %}
-{% $number = $entry->Number %}
-{% break %}
-{% elseif($entry->Type == 'CELL' && !empty($entry->Number)): %}
-{% $number = $entry->Number %}
-{% break %}
-{% elseif($entry->Type == 'HOME' && $entry->SubType == 'VOICE' && !empty($entry->Number)): %}
-{% $number = $entry->Number %}
-{% break %}
-{% elseif($entry->Type == 'CAR' && !empty($entry->Number)): %}
-{% $number = $entry->Number %}
-{% break %}
-{% endif; %}
-{% endforeach; %}
-{% if(isset($number)): %}
+
 <Contact>
     <LastName>{{ $data->Name->Last }}</LastName>
     <FirstName>{{ $data->Name->First }}</FirstName>
-    <Phone>
-        <phonenumber>{{ $number }}</phonenumber>
-        <accountindex>1</accountindex>
+    <Primary>0</Primary>
+    {% foreach ($data->Phone as $entry): %}
+    {% if($entry->Type == 'WORK' && $entry->SubType == 'VOICE' && !empty($entry->Number)): %}
+    <Phone type="Work">
+        <phonenumber>{{ $entry->Number }}</phonenumber>
     </Phone>
+    {% elseif($entry->Type == 'HOME' && $entry->SubType == 'VOICE' && !empty($entry->Number)): %}
+    <Phone type="Work">
+        <phonenumber>{{ $entry->Number }}</phonenumber>
+    </Phone>
+    {% elseif($entry->Type == 'CELL' && !empty($entry->Number)): %}
+    <Phone type="Home">
+        <phonenumber>{{ $entry->Number }}</phonenumber>
+    </Phone>
+    {% elseif($entry->Type == 'CAR' && !empty($entry->Number)): %}
+    <Phone type="Cell">
+        <phonenumber>{{ $entry->Number }}</phonenumber>
+    </Phone>
+    {% endif; %}
+    {% endforeach; %}
 </Contact>
-{% endif; %}
 {% endif; %}
 {{ section reiterate end }}
 </AddressBook>

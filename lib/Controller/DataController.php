@@ -104,6 +104,27 @@ class DataController extends Controller {
 		} else {
 			return new GeneratedResponse($this->DataService->generateXML($result), 'text/xml; charset=UTF-8');
 		}
+	
+	}
+	/**
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @PublicPage
+     */
+	public function device(string $id, string $token, array $meta, string $mime) {
+
+		// evaluate, if token exists
+		if (!isset($meta['token']) || empty($meta['token'])) {
+			return null;
+		}
+		// authorize request
+		$result = $this->DataService->authorize($id, $meta);
+		// evaluate, result
+		if ($result === false) {
+			return null;
+		} else {
+			return new GeneratedResponse($this->DataService->generateTemplate($result), $mime);
+		}
 
 	}
 	/**
@@ -111,27 +132,37 @@ class DataController extends Controller {
      * @NoCSRFRequired
      * @PublicPage
      */
-	public function phone(string $id) {
+	public function phone(string $id, string $token = '') {
 
-		// construct place holder
-		$meta = [];
 		// evaluate, if token exists
-		if (empty($this->request->getParam('token'))) {
+		if (empty($token)) {
 			return null;
 		}
 		// collect meta data
-		$meta['token'] = $this->request->getParam('token');
+		$meta = [];
+		$meta['token'] = $token;
 		$meta['address'] = $this->request->__get('server')['REMOTE_ADDR'];
 		$meta['agent'] = $this->request->__get('server')['HTTP_USER_AGENT'];
 		$meta['mac'] = \OCA\Data\Utile\Extractor::mac($meta['agent'], true);
-		// authorize request
-		$result = $this->DataService->authorize($id, $meta);
-		// evaluate, result
-		if ($result === false) {
-			return null;
-		} else {
-			return new GeneratedResponse($this->DataService->generateTemplate($result), 'text/xml; charset=UTF-8');
-		}
+
+		return $this->device($id, $token, $meta, 'text/xml; charset=UTF-8');
+
+	}
+	/**
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @PublicPage
+     */
+	public function grandstream(string $id, string $token) {
+
+		// collect meta data
+		$meta = [];
+		$meta['token'] = $token;
+		$meta['address'] = $this->request->__get('server')['REMOTE_ADDR'];
+		$meta['agent'] = $this->request->__get('server')['HTTP_USER_AGENT'];
+		$meta['mac'] = \OCA\Data\Utile\Extractor::mac($meta['agent'], true);
+
+		return $this->device($id, $token, $meta, 'text/xml; charset=UTF-8');
 
 	}
 

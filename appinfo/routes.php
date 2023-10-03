@@ -29,6 +29,11 @@ return [
 			'verb' => 'GET'
 		],
 		[
+			'name' => 'Data#grandstream',
+			'url' => '/grandstream/{id}/{token}/phonebook.xml',
+			'verb' => 'GET'
+		],
+		[
 			'name' => 'Data#phone',
 			'url' => '/phone/{id}/',
 			'verb' => 'GET'
