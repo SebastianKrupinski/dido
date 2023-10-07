@@ -109,6 +109,76 @@ class DataService {
 
 	}
 
+	/**
+	 * create a service entry for specific user in the data store
+	 * 
+	 * @since Release 1.0.0
+	 * 
+	 * @param string $uid		nextcloud user id
+	 * @param array $data		entry data
+	 * 
+	 * @return bool			
+	 */
+	public function createService(string $uid, array $data): bool {
+
+		// remove id column if present
+		unset($data['id']);
+		// force read only permissions until write is implemented
+		$data['permissions'] = 'R';
+		// set create on
+		$data['created_on'] = time();
+		// set create by
+		$data['created_by'] = $uid;
+		// create service data in the data store
+		$rs = $this->Services->create($data);
+		// return response
+		return $rs;
+
+	}
+
+	/**
+	 * modify a specific service entry for specific user in the data store
+	 * 
+	 * @since Release 1.0.0
+	 * 
+	 * @param string $uid		nextcloud user id
+	 * @param string $id		entry id
+	 * @param array $data		entry data
+	 * 
+	 * @return bool			
+	 */
+	public function modifyService(string $uid, string $id, array $data): bool {
+
+		// remove id column if present
+		unset($data['id']);
+		// force read only permissions until write is implemented
+		$data['permissions'] = 'R';
+		// modify service entry in the data store
+		$rs = $this->Services->modify($id, $data);
+		// return response
+		return $rs;
+
+	}
+
+	/**
+	 * delete a specific service entry for specific user from the data store
+	 * 
+	 * @since Release 1.0.0
+	 * 
+	 * @param string $uid		nextcloud user id
+	 * @param string $id		entry id
+	 * 
+	 * @return bool			
+	 */
+	public function deleteService(string $uid, string $id): bool {
+
+		// delete a service entry from the data store
+		$rs = $this->Services->delete($id);
+		// return response
+		return $rs;
+
+	}
+
 	public function authorize(string $id, array $meta): array|bool {
 
 		$service = $this->Services->fetchByServiceId($id);
@@ -154,8 +224,10 @@ class DataService {
 
 	public function generateCSV(array $service) {
 
+		// modify service entry accessed in the data store
+		$this->Services->modifyAccessed((string) $service['id'], time(), '');
 		// load entities
-		$entities = $this->ContactsService->listEntities($service['collection_id']);
+		$entities = $this->ContactsService->listEntities($service['data_collection']);
 		// document start
 		yield 'ID,UID,CID,State,CreatedOn,ModifiedOn,Label,' . 
 			  'NameLast,NameFirst,NameOther,NamePrefix,NameSuffix,NamePhoneticLast,NamePhoneticFirst,NamePhoneticOther,NameAliases,' .
@@ -240,8 +312,10 @@ class DataService {
 
 	public function generateJSON(array $service) {
 
+		// modify service entry accessed in the data store
+		$this->Services->modifyAccessed((string) $service['id'], time(), '');
 		// load entities
-		$entities = $this->ContactsService->listEntities($service['collection_id']);
+		$entities = $this->ContactsService->listEntities($service['data_collection']);
 		// document start
 		yield '[';
 		// document iteration
@@ -270,12 +344,14 @@ class DataService {
 	
 	public function generateTemplate(array $service) {
 
+		// modify service entry accessed in the data store
+		$this->Services->modifyAccessed((string) $service['id'], time(), '');
 		// instance template service
 		$TemplateService = new TemplateService();
 		// load template
 		$TemplateService->fromFile(dirname(__DIR__) . '/Resources/' . $service['format'] . '.tpl');
 		// load entities
-		$entities = $this->ContactsService->listEntities($service['collection_id']);
+		$entities = $this->ContactsService->listEntities($service['data_collection']);
 		// document start
 		yield $TemplateService->generateStart();
 		// document iteration
@@ -293,4 +369,5 @@ class DataService {
 		yield $TemplateService->generateEnd();
 
 	}
+
 }

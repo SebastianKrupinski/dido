@@ -48,19 +48,19 @@ class Services {
 	public function listByUserId(string $uid) : array {
 
 		// construct data store command
-		$dc = $this->DataStore->getQueryBuilder();
+		$cmd = $this->DataStore->getQueryBuilder();
 		if (empty($uid)) {
-			$dc->select('*')
+			$cmd->select('*')
 			->from($this->DataStoreTable);
 		}
 		else {
-			$dc->select('*')
+			$cmd->select('*')
 			->from($this->DataStoreTable)
-			->where($dc->expr()->eq('uid', $dc->createNamedParameter($uid)));
+			->where($cmd->expr()->eq('uid', $cmd->createNamedParameter($uid)));
 		}
 		// execute command
-		$rs = $dc->executeQuery()->fetchAll();
-		$dc->executeQuery()->closeCursor();
+		$rs = $cmd->executeQuery()->fetchAll();
+		$cmd->executeQuery()->closeCursor();
 		// return result or null
 		if (is_array($rs) && count($rs) > 0) {
 			return $rs;
@@ -83,12 +83,12 @@ class Services {
 	public function fetch(int $id) : array {
 
 		// construct data store command
-		$dc = $this->DataStore->getQueryBuilder();
-		$dc->select('*')
+		$cmd = $this->DataStore->getQueryBuilder();
+		$cmd->select('*')
 			->from($this->DataStoreTable)
-			->where($dc->expr()->eq('id', $dc->createNamedParameter($id)));
+			->where($cmd->expr()->eq('id', $cmd->createNamedParameter($id)));
 		// execute command and return result
-		return $this->findEntity($dc);
+		return $this->findEntity($cmd);
 		
 	}
 
@@ -104,12 +104,12 @@ class Services {
 	public function fetchByServiceId(string $id) : array {
 
 		// construct data store command
-		$dc = $this->DataStore->getQueryBuilder();
-		$dc->select('*')
+		$cmd = $this->DataStore->getQueryBuilder();
+		$cmd->select('*')
 			->from($this->DataStoreTable)
-			->where($dc->expr()->eq('service_id', $dc->createNamedParameter($id)));
+			->where($cmd->expr()->eq('service_id', $cmd->createNamedParameter($id)));
 		// execute command
-		$result = $dc->execute();
+		$result = $cmd->execute();
 		// return result
 		return $result->fetch();
 		
@@ -120,23 +120,94 @@ class Services {
 	 * 
 	 * @since Release 1.0.0
 	 * 
-	 * @param array $entry		collection of field names and values
+	 * @param string $uid		nextcloud user id
+	 * @param array $data		entry data
 	 * 
-	 * @return array 		
+	 * @return bool
 	 */
-	public function create(array $entry) : int {
+	public function create(array $data) : bool {
 
 		// construct data store command
-		$dc = $this->DataStore->getQueryBuilder();
-		$dc->insert($this->DataStoreTable);
-		foreach ($entry as $column => $value) {
-			$dc->setValue($column, $dc->createNamedParameter($value));
+		$cmd = $this->DataStore->getQueryBuilder();
+		$cmd->insert($this->DataStoreTable);
+		foreach ($data as $column => $value) {
+			$cmd->setValue($column, $cmd->createNamedParameter($value));
 		}
 		// execute command
-		$dc->execute();
-	
-		// Get the ID of the newly inserted record (if needed)
-		return $this->DataStore->lastInsertId();
+		$cmd->execute();
+		// return result
+		return true;
+		
+	}
+	/**
+	 * modify a service entry in the data store
+	 * 
+	 * @since Release 1.0.0
+	 * 
+	 * @param string $id		entry id
+	 * @param array $data		entry data
+	 * 
+	 * @return bool
+	 */
+	public function modify(string $id, array $data) : bool {
+
+		// construct data store command
+		$cmd = $this->DataStore->getQueryBuilder();
+		$cmd->update($this->DataStoreTable)
+			->where($cmd->expr()->eq('id', $cmd->createNamedParameter($id)));
+		foreach ($data as $column => $value) {
+			$cmd->set($column, $cmd->createNamedParameter($value));
+		}
+		// execute command
+		$cmd->execute();
+		// return result
+		return true;
+		
+	}
+	/**
+	 * modify a service entry accessed data in the data store
+	 * 
+	 * @since Release 1.0.0
+	 * 
+	 * @param string $id		entry id
+	 * @param array $on			accessed timestamp
+	 * @param array $from		accessed from
+	 *  
+	 * @return bool
+	 */
+	public function modifyAccessed(string $id, int $on, string $from) : bool {
+
+		// construct data store command
+		$cmd = $this->DataStore->getQueryBuilder();
+		$cmd->update($this->DataStoreTable)
+			->where($cmd->expr()->eq('id', $cmd->createNamedParameter($id)))
+			->set('accessed_on', $cmd->createNamedParameter($on))
+			->set('accessed_from', $cmd->createNamedParameter($from));
+		// execute command
+		$cmd->execute();
+		// return result
+		return true;
+		
+	}
+	/**
+	 * delete a service entry from the data store
+	 * 
+	 * @since Release 1.0.0
+	 * 
+	 * @param string $id		entry id
+	 * 
+	 * @return bool
+	 */
+	public function delete(string $id) : bool {
+
+		// construct data store command
+		$cmd = $this->DataStore->getQueryBuilder();
+		$cmd->delete($this->DataStoreTable)
+			->where($cmd->expr()->eq('id', $cmd->createNamedParameter($id)));
+		// execute command
+		$cmd->execute();
+		// return result
+		return true;
 		
 	}
 

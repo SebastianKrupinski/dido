@@ -53,5 +53,20 @@ return [
 			'url' => '/list-services',
 			'verb' => 'GET'
 		],
+		[
+			'name' => 'UserConfiguration#createService',
+			'url' => '/create-service',
+			'verb' => 'PUT'
+		],
+		[
+			'name' => 'UserConfiguration#modifyService',
+			'url' => '/modify-service',
+			'verb' => 'PUT'
+		],
+		[
+			'name' => 'UserConfiguration#deleteService',
+			'url' => '/delete-service',
+			'verb' => 'PUT'
+		],
 	]
 ];
