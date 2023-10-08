@@ -4613,18 +4613,9 @@ __webpack_require__.r(__webpack_exports__);
       // state: loadState('data_service', 'user-configuration'),
       dialogServiceSettings: false,
       dialogAction: 1,
-      availableApps: [{
-        label: 'Contacts',
-        id: 'CC'
-      }, {
-        label: 'Calendar',
-        id: 'EC'
-      }, {
-        label: 'Tasks',
-        id: 'TC'
-      }],
-      availableFormats: [],
+      availableTypes: [],
       availableCollections: [],
+      availableFormats: [],
       configuredServices: [],
       selectedId: '',
       selectedServiceId: '',
@@ -4644,6 +4635,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     loadData() {
+      this.listTypes();
       this.listServices();
     },
     onAddClick() {
@@ -4665,7 +4657,7 @@ __webpack_require__.r(__webpack_exports__);
       this.listCollections();
       this.listFormats();
       // assign values
-      this.selectedDataCollection = item.data_collection;
+      this.selectedDataCollection = parseInt(item.data_collection);
       this.selectedFormat = item.format;
       this.selectedServiceRestrictIP = item.restrict_ip;
       this.selectedServiceRestrictMAC = item.restrict_mac;
@@ -4725,6 +4717,17 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedServiceRestrictIP = '';
       this.selectedServiceRestrictMAC = '';
     },
+    listTypes() {
+      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data/list-types');
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"].get(uri).then(response => {
+        if (response.data) {
+          this.availableTypes = response.data;
+        }
+      }).catch(error => {
+        var _error$response;
+        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to retrieve types') + ': ' + ((_error$response = error.response) === null || _error$response === void 0 || (_error$response = _error$response.request) === null || _error$response === void 0 ? void 0 : _error$response.responseText));
+      }).then(() => {});
+    },
     listCollections() {
       const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data/list-collections');
       const data = {
@@ -4737,8 +4740,8 @@ __webpack_require__.r(__webpack_exports__);
           this.availableCollections = response.data.Collections;
         }
       }).catch(error => {
-        var _error$response;
-        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to retrieve collections') + ': ' + ((_error$response = error.response) === null || _error$response === void 0 || (_error$response = _error$response.request) === null || _error$response === void 0 ? void 0 : _error$response.responseText));
+        var _error$response2;
+        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to retrieve collections') + ': ' + ((_error$response2 = error.response) === null || _error$response2 === void 0 || (_error$response2 = _error$response2.request) === null || _error$response2 === void 0 ? void 0 : _error$response2.responseText));
       }).then(() => {});
     },
     listFormats() {
@@ -4753,8 +4756,8 @@ __webpack_require__.r(__webpack_exports__);
           this.availableFormats = response.data.Formats;
         }
       }).catch(error => {
-        var _error$response2;
-        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to retrieve formats') + ': ' + ((_error$response2 = error.response) === null || _error$response2 === void 0 || (_error$response2 = _error$response2.request) === null || _error$response2 === void 0 ? void 0 : _error$response2.responseText));
+        var _error$response3;
+        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to retrieve formats') + ': ' + ((_error$response3 = error.response) === null || _error$response3 === void 0 || (_error$response3 = _error$response3.request) === null || _error$response3 === void 0 ? void 0 : _error$response3.responseText));
       }).then(() => {});
     },
     listServices() {
@@ -4764,8 +4767,8 @@ __webpack_require__.r(__webpack_exports__);
           this.configuredServices = response.data;
         }
       }).catch(error => {
-        var _error$response3;
-        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to retrieve services') + ': ' + ((_error$response3 = error.response) === null || _error$response3 === void 0 || (_error$response3 = _error$response3.request) === null || _error$response3 === void 0 ? void 0 : _error$response3.responseText));
+        var _error$response4;
+        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to retrieve services') + ': ' + ((_error$response4 = error.response) === null || _error$response4 === void 0 || (_error$response4 = _error$response4.request) === null || _error$response4 === void 0 ? void 0 : _error$response4.responseText));
       }).then(() => {});
     },
     createService(data) {
@@ -4778,8 +4781,8 @@ __webpack_require__.r(__webpack_exports__);
         // refresh services list
         this.listServices();
       }).catch(error => {
-        var _error$response4;
-        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to create service') + ': ' + ((_error$response4 = error.response) === null || _error$response4 === void 0 || (_error$response4 = _error$response4.request) === null || _error$response4 === void 0 ? void 0 : _error$response4.responseText));
+        var _error$response5;
+        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to create service') + ': ' + ((_error$response5 = error.response) === null || _error$response5 === void 0 || (_error$response5 = _error$response5.request) === null || _error$response5 === void 0 ? void 0 : _error$response5.responseText));
       }).then(() => {});
     },
     modifyService(data) {
@@ -4792,8 +4795,8 @@ __webpack_require__.r(__webpack_exports__);
         // refresh services list
         this.listServices();
       }).catch(error => {
-        var _error$response5;
-        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to modify service') + ': ' + ((_error$response5 = error.response) === null || _error$response5 === void 0 || (_error$response5 = _error$response5.request) === null || _error$response5 === void 0 ? void 0 : _error$response5.responseText));
+        var _error$response6;
+        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to modify service') + ': ' + ((_error$response6 = error.response) === null || _error$response6 === void 0 || (_error$response6 = _error$response6.request) === null || _error$response6 === void 0 ? void 0 : _error$response6.responseText));
       }).then(() => {});
     },
     deleteService(data) {
@@ -4806,8 +4809,8 @@ __webpack_require__.r(__webpack_exports__);
         // refresh services list
         this.listServices();
       }).catch(error => {
-        var _error$response6;
-        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to delete service') + ': ' + ((_error$response6 = error.response) === null || _error$response6 === void 0 || (_error$response6 = _error$response6.request) === null || _error$response6 === void 0 ? void 0 : _error$response6.responseText));
+        var _error$response7;
+        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to delete service') + ': ' + ((_error$response7 = error.response) === null || _error$response7 === void 0 || (_error$response7 = _error$response7.request) === null || _error$response7 === void 0 ? void 0 : _error$response7.responseText));
       }).then(() => {});
     },
     formatDate(dt) {
@@ -4857,7 +4860,7 @@ var render = function render() {
   }, [_c('table', [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l(_vm.configuredServices, function (item, index) {
     return _c('tr', {
       key: index
-    }, [_c('td', [_vm._v(_vm._s(item.service_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.service_token))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.service_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.data_type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.data_collection))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.format))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatDate(item.accessed_on)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.accessed_from))]), _vm._v(" "), _c('td', [_c('NcActions', {
+    }, [_c('td', [_vm._v(_vm._s(item.service_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.service_token))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.service_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.data_type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.data_collection_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.format))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatDate(item.accessed_on)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.accessed_from))]), _vm._v(" "), _c('td', [_c('NcActions', {
       scopedSlots: _vm._u([{
         key: "icon",
         fn: function () {
@@ -5024,7 +5027,7 @@ var render = function render() {
       "id": "data-service-data-type",
       "placeholder": _vm.t('data_service', 'Data Type'),
       "reduce": item => item.id,
-      "options": _vm.availableApps
+      "options": _vm.availableTypes
     },
     on: {
       "option:selected": function ($event) {

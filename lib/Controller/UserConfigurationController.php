@@ -1,7 +1,27 @@
 <?php
 declare(strict_types=1);
-// SPDX-FileCopyrightText: Sebastian Krupinski <krupinski01@gmail.com>
-// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/**
+* @copyright Copyright (c) 2023 Sebastian Krupinski <krupinski01@gmail.com>
+*
+* @author Sebastian Krupinski <krupinski01@gmail.com>
+*
+* @license AGPL-3.0-or-later
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+*/
 
 namespace OCA\Data\Controller;
 
@@ -23,6 +43,29 @@ class UserConfigurationController extends Controller {
 		parent::__construct(Application::APP_ID, $request);
 		$this->DataService = $DataService;
 		$this->userId = $userId;
+	}
+	/**
+	 * handels types list requests
+	 * 
+	 * @NoAdminRequired
+	 *
+	 * @return DataResponse
+	 */
+	public function listTypes(): DataResponse {
+
+		// evaluate if user id is present
+		if ($this->userId === null) {
+			return new DataResponse([], Http::STATUS_BAD_REQUEST);
+		}
+		// retrieve formats
+		$rs = $this->DataService->listTypes($this->userId);
+		// return response
+		if (isset($rs)) {
+			return new DataResponse($rs);
+		} else {
+			return new DataResponse($rs['error'], 401);
+		}
+
 	}
 	/**
 	 * handels collections list requests

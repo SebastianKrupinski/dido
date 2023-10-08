@@ -1,7 +1,27 @@
 <?php
 declare(strict_types=1);
-// SPDX-FileCopyrightText: Sebastian Krupinski <krupinski01@gmail.com>
-// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/**
+* @copyright Copyright (c) 2023 Sebastian Krupinski <krupinski01@gmail.com>
+*
+* @author Sebastian Krupinski <krupinski01@gmail.com>
+*
+* @license AGPL-3.0-or-later
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+*/
 
 namespace OCA\Data\Service;
 
@@ -10,27 +30,64 @@ use Exception;
 use Sabre\VObject\Reader;
 
 use OCA\Data\Db\Services;
+use OCA\Data\Service\ConfigurationService;
 use OCA\Data\Service\ContactsService;
 
 class DataService {
 
 	/**
+	 * @var ConfigurationService
+	 */
+    private $ConfigurationService;
+	/**
 	 * @var ContactsService
 	 */
     private $ContactsService;
 
-	public function __construct(Services $Services, ContactsService $ContactsService) {
+
+	public function __construct(ConfigurationService $ConfigurationService, Services $Services, ContactsService $ContactsService) {
+		$this->ConfigurationService = $ConfigurationService;
 		$this->Services = $Services;
 		$this->ContactsService = $ContactsService;
 	}
 
 	/**
-	 * retrieve collections for specific user and collection type
+	 * retrieve types for specific user
 	 * 
 	 * @since Release 1.0.0
 	 * 
 	 * @param string $uid		nextcloud user id
-	 * @param string $type		collection type
+	 * 
+	 * @return array 			of types
+	 */
+	public function listTypes(string $uid): array {
+
+		// construct response object
+		$types = [];
+		// evaluate, if contacts app is available
+		if ($this->ConfigurationService->isContactsAvailable($uid)) {
+			$types[] = ['id' => 'CC', 'label' => 'Contacts'];
+		}
+		// evaluate, if calendar app is available
+		if ($this->ConfigurationService->isCalendarAvailable($uid)) {
+			$types[] = ['id' => 'EC', 'label' => 'Calendars'];
+		}
+		// evaluate, if tasks app is available
+		if ($this->ConfigurationService->isTasksAvailable($uid)) {
+			$types[] = ['id' => 'TC', 'label' => 'Tasks'];
+		}
+		// return data
+		return $types;
+
+	}
+
+	/**
+	 * retrieve collections for specific user and data type
+	 * 
+	 * @since Release 1.0.0
+	 * 
+	 * @param string $uid		nextcloud user id
+	 * @param string $type		data type
 	 * 
 	 * @return array 			of collection(s) and attributes
 	 */
@@ -349,7 +406,7 @@ class DataService {
 		// instance template service
 		$TemplateService = new TemplateService();
 		// load template
-		$TemplateService->fromFile(dirname(__DIR__) . '/Resources/' . $service['format'] . '.tpl');
+		$TemplateService->fromFile(dirname(__DIR__) . '/Resources/' . $service['format']);
 		// load entities
 		$entities = $this->ContactsService->listEntities($service['data_collection']);
 		// document start

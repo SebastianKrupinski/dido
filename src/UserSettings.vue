@@ -52,7 +52,7 @@
 							<td>{{ item.service_token }}</td>
 							<td>{{ item.service_name }}</td>
 							<td>{{ item.data_type }}</td>
-							<td>{{ item.data_collection }}</td>
+							<td>{{ item.data_collection_name }}</td>
 							<td>{{ item.format }}</td>
 							<td>{{ formatDate(item.accessed_on) }}</td>
 							<td>{{ item.accessed_from }}</td>
@@ -140,7 +140,7 @@
 							v-model="selectedDataType"
 							:placeholder="t('data_service', 'Data Type')"
 							:reduce="item => item.id"
-							:options="availableApps"
+							:options="availableTypes"
 							@option:selected="onDataTypeChanged()" />
 					</div>
 					<div>
@@ -251,9 +251,9 @@ export default {
 			// state: loadState('data_service', 'user-configuration'),
 			dialogServiceSettings: false,
 			dialogAction: 1,
-			availableApps: [{ label: 'Contacts', id: 'CC' }, { label: 'Calendar', id: 'EC' }, { label: 'Tasks', id: 'TC' }],
-			availableFormats: [],
+			availableTypes: [],
 			availableCollections: [],
+			availableFormats: [],
 			configuredServices: [],
 			selectedId: '',
 			selectedServiceId: '',
@@ -279,6 +279,7 @@ export default {
 
 	methods: {
 		loadData() {
+			this.listTypes()
 			this.listServices()
 		},
 		onAddClick() {
@@ -300,7 +301,7 @@ export default {
 			this.listCollections()
 			this.listFormats()
 			// assign values
-			this.selectedDataCollection = item.data_collection
+			this.selectedDataCollection = parseInt(item.data_collection)
 			this.selectedFormat = item.format
 			this.selectedServiceRestrictIP = item.restrict_ip
 			this.selectedServiceRestrictMAC = item.restrict_mac
@@ -359,6 +360,22 @@ export default {
 			this.selectedFormat = ''
 			this.selectedServiceRestrictIP = ''
 			this.selectedServiceRestrictMAC = ''
+		},
+		listTypes() {
+			const uri = generateUrl('/apps/data/list-types')
+			axios.get(uri)
+				.then((response) => {
+					if (response.data) {
+						this.availableTypes = response.data
+					}
+				})
+				.catch((error) => {
+					showError(
+						t('data_service', 'Failed to retrieve types')
+						+ ': ' + error.response?.request?.responseText
+					)
+				})
+				.then(() => {})
 		},
 		listCollections() {
 			const uri = generateUrl('/apps/data/list-collections')

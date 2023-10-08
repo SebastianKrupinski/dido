@@ -49,14 +49,12 @@ class Services {
 
 		// construct data store command
 		$cmd = $this->DataStore->getQueryBuilder();
-		if (empty($uid)) {
-			$cmd->select('*')
-			->from($this->DataStoreTable);
-		}
-		else {
-			$cmd->select('*')
-			->from($this->DataStoreTable)
-			->where($cmd->expr()->eq('uid', $cmd->createNamedParameter($uid)));
+		$cmd->select('DS.*', 'CC.displayname AS data_collection_name')
+			->from($this->DataStoreTable, 'DS')
+			->leftJoin('DS', 'addressbooks', 'CC', 'DS.data_type = "CC" AND DS.data_collection = CC.id');
+		// evaluate, if id is present
+		if (!empty($uid)) {
+			$cmd->where($cmd->expr()->eq('uid', $cmd->createNamedParameter($uid)));
 		}
 		// execute command
 		$rs = $cmd->executeQuery()->fetchAll();

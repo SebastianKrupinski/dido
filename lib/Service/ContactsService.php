@@ -79,7 +79,7 @@ class ContactsService {
 
     }
 
-	 /**
+	/**
      * retrieve properties for specific collection from local storage
      * 
 	 * @param string $cid - Collection Id
