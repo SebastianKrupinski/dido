@@ -1,6 +1,3 @@
-<?php
-declare(strict_types=1);
-
 /**
 * @copyright Copyright (c) 2023 Sebastian Krupinski <krupinski01@gmail.com>
 *
@@ -20,36 +17,17 @@ declare(strict_types=1);
 *
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*
 */
 
-namespace OCA\Data\Settings;
+import Vue from 'vue'
+import './language.js'
+import AdminSettings from './AdminSettings.vue'
 
-use OCP\AppFramework\Http\TemplateResponse;
-use OCP\Settings\ISettings;
+// eslint-disable-next-line
+'use strict'
 
-use OCA\Data\AppInfo\Application;
-
-class UserSettings implements ISettings {
-
-	/**
-	 * @var string|null
-	 */
-	private $userId;
-
-	public function __construct(string $userId) {
-		$this->userId = $userId;
-	}
-	
-	public function getForm(): TemplateResponse {
-		return new TemplateResponse(Application::APP_ID, 'UserSettings');
-	}
-
-	public function getSection(): string {
-		return 'data-service-user';
-	}
-
-	public function getPriority(): int {
-		return 10;
-	}
-}
+// eslint-disable-next-line
+new Vue({
+	el: '#ds_settings',
+	render: h => h(AdminSettings),
+})

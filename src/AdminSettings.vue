@@ -23,7 +23,7 @@
 
 <template>
 	<div id="ds_settings" class="section">
-		<div class="ews-page-title">
+		<div class="data-settings-page-title">
 			<IconApp :size="32" /><h2> {{ t('data_service', 'Data Service') }}</h2>
 		</div>
 		<br>
@@ -35,6 +35,7 @@
 				<table>
 					<thead>
 						<tr>
+							<th>User</th>
 							<th>Id</th>
 							<th>Token</th>
 							<th>Name</th>
@@ -48,6 +49,7 @@
 					</thead>
 					<tbody>
 						<tr v-for="(item, index) in configuredServices" :key="index">
+							<td>{{ item.uid }}</td>
 							<td>{{ item.service_id }}</td>
 							<td>{{ item.service_token }}</td>
 							<td>{{ item.service_name }}</td>
@@ -96,6 +98,17 @@
 			<NcModal v-if="dialogServiceSettings" name="Data Service Settings" @close="onCancelClick()">
 				<div class="data-settings-modal-content">
 					<h2>Data Service Settings</h2>
+					<div>
+						<label for="data-service-user">
+							{{ t('data_service', 'User') }}
+						</label>
+						<NcSelect id="data-service-user"
+							v-model="selectedUser"
+							:placeholder="t('data_service', 'User')"
+							:reduce="item => item.id"
+							:options="availableUsers"
+							@option:selected="onUserChanged()" />
+					</div>
 					<div class="data-settings-modal-group">
 						<label for="data-service-id">
 							{{ t('data_service', 'Id') }}
@@ -226,7 +239,7 @@ import IconCancel from 'vue-material-design-icons/Close.vue'
 import IconActions from 'vue-material-design-icons/DatabaseCogOutline.vue'
 
 export default {
-	name: 'UserSettings',
+	name: 'AdminSettings',
 
 	components: {
 		NcActions,
@@ -248,11 +261,13 @@ export default {
 	data() {
 		return {
 			dialogServiceSettings: false,
+			availableUsers: [],
 			availableTypes: [],
 			availableCollections: [],
 			availableFormats: [],
 			configuredServices: [],
 			selectedId: '',
+			selectedUser: '',
 			selectedServiceId: '',
 			selectedServiceToken: '',
 			selectedServiceName: '',
@@ -276,7 +291,7 @@ export default {
 
 	methods: {
 		loadData() {
-			this.listTypes()
+			this.listUsers()
 			this.listServices()
 		},
 		onAddClick() {
@@ -299,6 +314,7 @@ export default {
 			this.selectedServiceRestrictIP = item.restrict_ip
 			this.selectedServiceRestrictMAC = item.restrict_mac
 			// retrieve lists
+			this.listTypes()
 			this.listCollections()
 			this.listFormats()
 			// show settings dialog
@@ -340,6 +356,12 @@ export default {
 			this.clearSelected()
 			this.dialogServiceSettings = false
 		},
+		onUserChanged() {
+			this.listTypes()
+			this.selectedDataType = ''
+			this.selectedDataCollection = ''
+			this.selectedFormat = ''
+		},
 		onDataTypeChanged() {
 			this.listCollections()
 			this.listFormats()
@@ -356,6 +378,22 @@ export default {
 			this.selectedFormat = ''
 			this.selectedServiceRestrictIP = ''
 			this.selectedServiceRestrictMAC = ''
+		},
+		listUsers() {
+			const uri = generateUrl('/apps/data/list-users')
+			axios.get(uri)
+				.then((response) => {
+					if (response.data) {
+						this.availableUsers = response.data
+					}
+				})
+				.catch((error) => {
+					showError(
+						t('data_service', 'Failed to retrieve types')
+						+ ': ' + error.response?.request?.responseText
+					)
+				})
+				.then(() => {})
 		},
 		listTypes() {
 			const uri = generateUrl('/apps/data/list-types')
@@ -495,11 +533,11 @@ export default {
 
 <style scoped>
 #ds_settings {
-	.ews-page-title {
+	.data-settings-page-title {
 		display: flex;
 		vertical-align: middle;
 	}
-	.ews-page-title h2 {
+	.data-settings-page-title h2 {
 		padding-left: 1%;
 	}
 	.data-settings-content-empty {

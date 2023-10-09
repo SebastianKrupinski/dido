@@ -30,6 +30,8 @@
         <nextcloud min-version="26" max-version="28"/>
     </dependencies>
     <settings>
+        <admin>OCA\Data\Settings\AdminSettings</admin>
+        <admin-section>OCA\Data\Settings\AdminSection</admin-section>
         <personal>OCA\Data\Settings\UserSettings</personal>
         <personal-section>OCA\Data\Settings\UserSection</personal-section>
     </settings>

@@ -29,7 +29,7 @@ use OCP\IURLGenerator;
 use OCP\IL10N;
 use OCP\Settings\IIconSection;
 
-class UserSection implements IIconSection {
+class AdminSection implements IIconSection {
 
 	/** @var IL10N */
 	private $l;
@@ -48,7 +48,7 @@ class UserSection implements IIconSection {
 	 * @returns string
 	 */
 	public function getID(): string {
-		return 'data-service-user'; //or a generic id if feasible
+		return 'data-service-admin'; //or a generic id if feasible
 	}
 
 	/**

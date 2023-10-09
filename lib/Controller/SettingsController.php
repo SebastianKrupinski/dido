@@ -32,7 +32,7 @@ use OCP\IRequest;
 use OCA\Data\AppInfo\Application;
 use OCA\Data\Service\DataService;
 
-class UserConfigurationController extends Controller {
+class SettingsController extends Controller {
 	private DataService $DataService;
 
 	use Errors;
@@ -43,6 +43,27 @@ class UserConfigurationController extends Controller {
 		parent::__construct(Application::APP_ID, $request);
 		$this->DataService = $DataService;
 		$this->userId = $userId;
+	}
+	/**
+	 * handels user list requests
+	 *
+	 * @return DataResponse
+	 */
+	public function listUsers(): DataResponse {
+
+		// evaluate if user id is present
+		if ($this->userId === null) {
+			return new DataResponse([], Http::STATUS_BAD_REQUEST);
+		}
+		// retrieve formats
+		$rs = $this->DataService->listUsers();
+		// return response
+		if (isset($rs)) {
+			return new DataResponse($rs);
+		} else {
+			return new DataResponse($rs['error'], 401);
+		}
+
 	}
 	/**
 	 * handels types list requests

@@ -23,7 +23,7 @@ declare(strict_types=1);
 */
 
 $appId = OCA\Data\AppInfo\Application::APP_ID;
-\OCP\Util::addScript($appId, $appId . '-userSettings');
+\OCP\Util::addScript($appId, $appId . '-AdminSettings');
 ?>
 
 <div id="ds_settings"></div>

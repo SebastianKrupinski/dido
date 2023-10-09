@@ -30,7 +30,7 @@ use OCP\Settings\ISettings;
 
 use OCA\Data\AppInfo\Application;
 
-class UserSettings implements ISettings {
+class AdminSettings implements ISettings {
 
 	/**
 	 * @var string|null
@@ -42,11 +42,11 @@ class UserSettings implements ISettings {
 	}
 	
 	public function getForm(): TemplateResponse {
-		return new TemplateResponse(Application::APP_ID, 'UserSettings');
+		return new TemplateResponse(Application::APP_ID, 'AdminSettings');
 	}
 
 	public function getSection(): string {
-		return 'data-service-user';
+		return 'data-service-admin';
 	}
 
 	public function getPriority(): int {

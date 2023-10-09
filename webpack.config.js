@@ -14,7 +14,8 @@ webpackConfig.stats = {
 
 const appId = 'data'
 webpackConfig.entry = {
-	userSettings: { import: path.join(__dirname, 'src', 'userSettings.js'), filename: appId + '-userSettings.js' },
+	AdminSettings: { import: path.join(__dirname, 'src', 'AdminSettings.js'), filename: appId + '-AdminSettings.js' },
+	UserSettings: { import: path.join(__dirname, 'src', 'UserSettings.js'), filename: appId + '-UserSettings.js' },
 }
 
 webpackConfig.plugins.push(

@@ -50,37 +50,42 @@ return [
 			'verb' => 'GET'
 		],
 		[
-			'name' => 'UserConfiguration#listTypes',
+			'name' => 'Settings#listUsers',
+			'url' => '/list-users',
+			'verb' => 'GET'
+		],
+		[
+			'name' => 'Settings#listTypes',
 			'url' => '/list-types',
 			'verb' => 'GET'
 		],
 		[
-			'name' => 'UserConfiguration#listCollections',
+			'name' => 'Settings#listCollections',
 			'url' => '/list-collections',
 			'verb' => 'GET'
 		],
 		[
-			'name' => 'UserConfiguration#listFormats',
+			'name' => 'Settings#listFormats',
 			'url' => '/list-formats',
 			'verb' => 'GET'
 		],
 		[
-			'name' => 'UserConfiguration#listServices',
+			'name' => 'Settings#listServices',
 			'url' => '/list-services',
 			'verb' => 'GET'
 		],
 		[
-			'name' => 'UserConfiguration#createService',
+			'name' => 'Settings#createService',
 			'url' => '/create-service',
 			'verb' => 'PUT'
 		],
 		[
-			'name' => 'UserConfiguration#modifyService',
+			'name' => 'Settings#modifyService',
 			'url' => '/modify-service',
 			'verb' => 'PUT'
 		],
 		[
-			'name' => 'UserConfiguration#deleteService',
+			'name' => 'Settings#deleteService',
 			'url' => '/delete-service',
 			'verb' => 'PUT'
 		],

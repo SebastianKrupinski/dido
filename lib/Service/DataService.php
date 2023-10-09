@@ -52,6 +52,24 @@ class DataService {
 	}
 
 	/**
+	 * retrieve users
+	 * 
+	 * @since Release 1.0.0
+	 * 
+	 * @return array 			of users
+	 */
+	public function listUsers(): array {
+
+		// load helper 
+		$UserUtile = \OC::$server->get(\OCA\Data\Db\UsersUtile::class);
+		// retrieve users
+		$users = $UserUtile->listUsers();
+		// return data
+		return $users;
+
+	}
+
+	/**
 	 * retrieve types for specific user
 	 * 
 	 * @since Release 1.0.0

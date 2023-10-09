@@ -20,36 +20,10 @@ declare(strict_types=1);
 *
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*
 */
 
-namespace OCA\Data\Settings;
+$appId = OCA\Data\AppInfo\Application::APP_ID;
+\OCP\Util::addScript($appId, $appId . '-UserSettings');
+?>
 
-use OCP\AppFramework\Http\TemplateResponse;
-use OCP\Settings\ISettings;
-
-use OCA\Data\AppInfo\Application;
-
-class UserSettings implements ISettings {
-
-	/**
-	 * @var string|null
-	 */
-	private $userId;
-
-	public function __construct(string $userId) {
-		$this->userId = $userId;
-	}
-	
-	public function getForm(): TemplateResponse {
-		return new TemplateResponse(Application::APP_ID, 'UserSettings');
-	}
-
-	public function getSection(): string {
-		return 'data-service-user';
-	}
-
-	public function getPriority(): int {
-		return 10;
-	}
-}
+<div id="ds_settings"></div>
