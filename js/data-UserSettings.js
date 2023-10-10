@@ -4842,7 +4842,7 @@ var render = function render() {
       "id": "ds_settings"
     }
   }, [_c('div', {
-    staticClass: "ews-page-title"
+    staticClass: "data-settings-page-title"
   }, [_c('IconApp', {
     attrs: {
       "size": 32
@@ -10623,11 +10623,11 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `
 #ds_settings[data-v-68ee62f2] {
-.ews-page-title[data-v-68ee62f2] {
+.data-settings-page-title[data-v-68ee62f2] {
 		display: flex;
 		vertical-align: middle;
 }
-.ews-page-title h2[data-v-68ee62f2] {
+.data-settings-page-title h2[data-v-68ee62f2] {
 		padding-left: 1%;
 }
 .data-settings-content-empty[data-v-68ee62f2] {

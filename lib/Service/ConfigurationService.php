@@ -33,7 +33,7 @@ use OCP\Security\ICrypto;
 use OCP\IUserManager;
 use OCP\App\IAppManager;
 
-use OCA\EWS\AppInfo\Application;
+use OCA\Data\AppInfo\Application;
 
 class ConfigurationService {
 

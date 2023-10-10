@@ -23,7 +23,7 @@
 
 <template>
 	<div id="ds_settings" class="section">
-		<div class="ews-page-title">
+		<div class="data-settings-page-title">
 			<IconApp :size="32" /><h2> {{ t('data_service', 'Data Service') }}</h2>
 		</div>
 		<br>
@@ -495,11 +495,11 @@ export default {
 
 <style scoped>
 #ds_settings {
-	.ews-page-title {
+	.data-settings-page-title {
 		display: flex;
 		vertical-align: middle;
 	}
-	.ews-page-title h2 {
+	.data-settings-page-title h2 {
 		padding-left: 1%;
 	}
 	.data-settings-content-empty {

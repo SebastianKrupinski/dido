@@ -286,8 +286,6 @@ class SettingsController extends Controller {
 	
 	/**
 	 * handles fetch settings requests
-	 *
-	 * @param array $values key/value pairs to save
 	 * 
 	 * @return DataResponse
 	 */
@@ -311,7 +309,7 @@ class SettingsController extends Controller {
 	/**
 	 * handles save settings requests
 	 *
-	 * @param array $values key/value pairs to save
+	 * @param array $data		key/value pairs to save
 	 * 
 	 * @return DataResponse
 	 */
@@ -327,4 +325,5 @@ class SettingsController extends Controller {
 		return new DataResponse(true);
 
 	}
+
 }
