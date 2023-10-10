@@ -30,20 +30,26 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
 
 use OCA\Data\AppInfo\Application;
+use OCA\Data\Service\ConfigurationService;
 use OCA\Data\Service\DataService;
 
 class SettingsController extends Controller {
-	private DataService $DataService;
 
 	use Errors;
 
+	private DataService $DataService;
+	private ConfigurationService $ConfigurationService;
+
 	public function __construct(IRequest $request,
+								ConfigurationService $ConfigurationService,
 								DataService $DataService,
 								string $userId) {
 		parent::__construct(Application::APP_ID, $request);
+		$this->ConfigurationService = $ConfigurationService;
 		$this->DataService = $DataService;
 		$this->userId = $userId;
 	}
+
 	/**
 	 * handels user list requests
 	 *
@@ -65,6 +71,7 @@ class SettingsController extends Controller {
 		}
 
 	}
+
 	/**
 	 * handels types list requests
 	 * 
@@ -72,14 +79,21 @@ class SettingsController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function listTypes(): DataResponse {
+	public function listTypes(string $user = null): DataResponse {
 
 		// evaluate if user id is present
 		if ($this->userId === null) {
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
 		}
-		// retrieve formats
-		$rs = $this->DataService->listTypes($this->userId);
+		// retrieve types
+		// evaluate, if user id is present
+		// TODO: check for admin privileges
+		if (!empty($user)) {
+			$rs = $this->DataService->listTypes($user);
+		}
+		else {
+			$rs = $this->DataService->listTypes($this->userId);
+		}
 		// return response
 		if (isset($rs)) {
 			return new DataResponse($rs);
@@ -88,6 +102,7 @@ class SettingsController extends Controller {
 		}
 
 	}
+
 	/**
 	 * handels collections list requests
 	 * 
@@ -95,14 +110,22 @@ class SettingsController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function listCollections(string $type): DataResponse {
+	public function listCollections(string $type, string $user = null): DataResponse {
 
 		// evaluate if user id is present
 		if ($this->userId === null) {
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
 		}
-		// retrieve collections
-		$rs = $this->DataService->listCollections($this->userId, $type);
+		// retrieve colletions
+		// evaluate, if user id is present
+		// TODO: check for admin privileges
+		if (!empty($user)) {
+			$rs = $this->DataService->listCollections($this->userId, $type);
+		}
+		else {
+			$rs = $this->DataService->listCollections($this->userId, $type);
+		}
+		
 		// return response
 		if (isset($rs)) {
 			return new DataResponse($rs);
@@ -111,6 +134,7 @@ class SettingsController extends Controller {
 		}
 
 	}
+
 	/**
 	 * handels formats list requests
 	 * 
@@ -134,6 +158,7 @@ class SettingsController extends Controller {
 		}
 
 	}
+
 	/**
 	 * handels services list requests
 	 * 
@@ -141,14 +166,21 @@ class SettingsController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function listServices(): DataResponse {
+	public function listServices(bool $flagAdmin = false): DataResponse {
 
 		// evaluate if user id is present
 		if ($this->userId === null) {
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
 		}
-		// retrieve formats
-		$rs = $this->DataService->listServices($this->userId);
+		// retrieve services
+		// evaluate, if admin flag is present
+		// TODO: check for admin privileges
+		if ($flagAdmin) {
+			$rs = $this->DataService->listServices('');
+		}
+		else {
+			$rs = $this->DataService->listServices($this->userId);
+		}
 		// return response
 		if (isset($rs)) {
 			return new DataResponse($rs);
@@ -157,6 +189,7 @@ class SettingsController extends Controller {
 		}
 
 	}
+
 	/**
 	 * handels services create requests
 	 * 
@@ -173,8 +206,15 @@ class SettingsController extends Controller {
 		// evaluate, if required data is present
 		if (!empty($data['service_id']) && !empty($data['service_token']) &&
 			!empty($data['data_type']) && !empty($data['data_collection']) && !empty($data['format'])) {
-			// assign user id
-			$data['uid'] = $this->userId;
+			// evaluate, if user id is present
+			// TODO: check for admin privileges
+			if (!empty($data['uid'])) {
+				
+			}
+			else {
+				// assign user id
+				$data['uid'] = $this->userId;
+			}
 			// create service
 			$rs = $this->DataService->createService($this->userId, $data);
 		}
@@ -186,6 +226,7 @@ class SettingsController extends Controller {
 		}
 
 	}
+
 	/**
 	 * handels services modify requests
 	 * 
@@ -200,7 +241,7 @@ class SettingsController extends Controller {
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
 		}
 		// evaluate, if required data is present
-		if (!empty($data['id']) && !empty($data['service_id']) && !empty($data['service_token']) &&
+		if (!empty($data['id']) && !empty($data['uid']) && !empty($data['service_id']) && !empty($data['service_token']) &&
 			!empty($data['data_type']) && !empty($data['data_collection']) && !empty($data['format'])) {
 			// force read only permissions until write is implemented
 			$data['permissions'] = 'R';
@@ -215,6 +256,7 @@ class SettingsController extends Controller {
 		}
 
 	}
+	
 	/**
 	 * handels services delete requests
 	 * 
@@ -242,4 +284,47 @@ class SettingsController extends Controller {
 
 	}
 	
+	/**
+	 * handles fetch settings requests
+	 *
+	 * @param array $values key/value pairs to save
+	 * 
+	 * @return DataResponse
+	 */
+	public function fetchSystemSettings(): DataResponse {
+		
+		// evaluate if user id is present
+		if ($this->userId === null) {
+			return new DataResponse([], Http::STATUS_BAD_REQUEST);
+		}
+		// retrieve user configuration
+		$rs = $this->ConfigurationService->retrieveSystem();
+		// return response
+		if (is_array($rs)) {
+			return new DataResponse($rs);
+		} else {
+			return new DataResponse($rs['error'], 401);
+		}
+
+	}
+
+	/**
+	 * handles save settings requests
+	 *
+	 * @param array $values key/value pairs to save
+	 * 
+	 * @return DataResponse
+	 */
+	public function depositSystemSettings(array $data): DataResponse {
+		
+		// evaluate if user id is present
+		if ($this->userId === null) {
+			return new DataResponse([], Http::STATUS_BAD_REQUEST);
+		}
+		// deposit user configuration
+		$this->ConfigurationService->depositSystem($data);
+		// return response
+		return new DataResponse(true);
+
+	}
 }

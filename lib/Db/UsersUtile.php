@@ -49,7 +49,7 @@ class UsersUtile {
 
 		// construct database command
 		$dc = $this->DataStore->getQueryBuilder();
-		$dc->select('uid AS id', 'displayname AS label')
+		$dc->select('uid AS id', 'displayname AS name')
 			->from($this->DataStoreTable);
 		// execute command
 		$rs = $dc->executeQuery()->fetchAll();

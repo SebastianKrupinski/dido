@@ -21,7 +21,6 @@
     <discussion>https://github.com/ksainc/data/issues</discussion>
     <bugs>https://github.com/ksainc/data/issues</bugs>
     <repository>https://github.com/ksainc/data</repository>
-
     <dependencies>
         <php min-version="8.0"  min-int-size="64" />
         <database>pgsql</database>

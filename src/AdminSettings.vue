@@ -28,64 +28,80 @@
 		</div>
 		<br>
 		<div class="data-settings-content">
-			<div class="data-settings-hint">
-				{{ t('data_service', 'List of provisioned services') }}
+			<div class="data-settings-section-system">
+				<div class="data-settings-hint">
+					{{ t('data_service', 'System Settings') }}
+				</div>
+				<div>
+					<NcCheckboxRadioSwitch type="switch" :checked.sync="permissionsUserCreate" @update:checked="depositSettings">
+						{{ t('data_service', 'Allow users to create services') }}
+					</NcCheckboxRadioSwitch>
+				</div>
+				<div>
+					<NcCheckboxRadioSwitch type="switch" :checked.sync="permissionsUserModify" @update:checked="depositSettings">
+						{{ t('data_service', 'Allow users to modify services') }}
+					</NcCheckboxRadioSwitch>
+				</div>
 			</div>
-			<div v-if="configuredServices.length > 0" class="data-settings-content-list">
-				<table>
-					<thead>
-						<tr>
-							<th>User</th>
-							<th>Id</th>
-							<th>Token</th>
-							<th>Name</th>
-							<th>Type</th>
-							<th>Collection</th>
-							<th>Format</th>
-							<th>Accessed On</th>
-							<th>Accessed From</th>
-							<th>&nbsp;</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="(item, index) in configuredServices" :key="index">
-							<td>{{ item.uid }}</td>
-							<td>{{ item.service_id }}</td>
-							<td>{{ item.service_token }}</td>
-							<td>{{ item.service_name }}</td>
-							<td>{{ item.data_type }}</td>
-							<td>{{ item.data_collection_name }}</td>
-							<td>{{ item.format }}</td>
-							<td>{{ formatDate(item.accessed_on) }}</td>
-							<td>{{ item.accessed_from }}</td>
-							<td>
-								<NcActions>
-									<template #icon>
-										<IconActions />
-									</template>
-									<NcActionButton @click="onEditClick(item.id)">
+			<div class="data-settings-section-services">
+				<div class="data-settings-hint">
+					{{ t('data_service', 'List of provisioned services') }}
+				</div>
+				<div v-if="configuredServices.length > 0" class="data-settings-content-list">
+					<table>
+						<thead>
+							<tr>
+								<th>User</th>
+								<th>Id</th>
+								<th>Token</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Collection</th>
+								<th>Format</th>
+								<th>Accessed On</th>
+								<th>Accessed From</th>
+								<th>&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="(item, index) in configuredServices" :key="index">
+								<td>{{ item.uid }}</td>
+								<td>{{ item.service_id }}</td>
+								<td>{{ item.service_token }}</td>
+								<td>{{ item.service_name }}</td>
+								<td>{{ item.data_type }}</td>
+								<td>{{ item.data_collection_name }}</td>
+								<td>{{ item.format }}</td>
+								<td>{{ formatDate(item.accessed_on) }}</td>
+								<td>{{ item.accessed_from }}</td>
+								<td>
+									<NcActions>
 										<template #icon>
-											<IconEdit />
+											<IconActions />
 										</template>
-										Edit
-									</NcActionButton>
-									<NcActionButton @click="onDeleteClick(item.id)">
-										<template #icon>
-											<IconDelete />
-										</template>
-										Delete
-									</NcActionButton>
-								</NcActions>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+										<NcActionButton @click="onEditClick(item.id)">
+											<template #icon>
+												<IconEdit />
+											</template>
+											Edit
+										</NcActionButton>
+										<NcActionButton @click="onDeleteClick(item.id)">
+											<template #icon>
+												<IconDelete />
+											</template>
+											Delete
+										</NcActionButton>
+									</NcActions>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div v-else class="data-settings-content-empty">
+					<h3>{{ t('data_service', 'No data services have been created for this account') }}</h3>
+				</div>
 			</div>
-			<div v-else class="data-settings-content-empty">
-				<h3>{{ t('data_service', 'No data services have been created for this account') }}</h3>
-			</div>
-			<br>
-			<div class="data-settings-content-actions">
+			<div class="data-settings-section-actions">
 				<NcButton class="app-settings-button" @click="onAddClick()">
 					<template #icon>
 						<IconAdd :size="24" />
@@ -106,7 +122,7 @@
 							v-model="selectedUser"
 							:placeholder="t('data_service', 'User')"
 							:reduce="item => item.id"
-							:options="availableUsers"
+							:options="userList"
 							@option:selected="onUserChanged()" />
 					</div>
 					<div class="data-settings-modal-group">
@@ -228,6 +244,7 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
 import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
 import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
 import IconApp from 'vue-material-design-icons/DatabaseOutline.vue'
@@ -245,6 +262,7 @@ export default {
 		NcActions,
 		NcActionButton,
 		NcButton,
+		NcCheckboxRadioSwitch,
 		NcModal,
 		NcSelect,
 		IconApp,
@@ -265,6 +283,7 @@ export default {
 			availableTypes: [],
 			availableCollections: [],
 			availableFormats: [],
+			configuredSettings: [],
 			configuredServices: [],
 			selectedId: '',
 			selectedUser: '',
@@ -280,6 +299,31 @@ export default {
 	},
 
 	computed: {
+		userList() {
+			return this.availableUsers.map(function(item) {
+				if (item.name == null || (typeof item.name === 'string' && item.name.trim().length === 0)) {
+					return { id: item.id, label: item.id }
+				} else {
+					return { id: item.id, label: item.name }
+				}
+			})
+		},
+		permissionsUserCreate: {
+			get() {
+				return (this.configuredSettings.permissions_user_create === '1')
+			},
+			set(value) {
+				this.configuredSettings.permissions_user_create = (value === true) ? '1' : '0'
+			},
+		},
+		permissionsUserModify: {
+			get() {
+				return (this.configuredSettings.permissions_user_modify === '1')
+			},
+			set(value) {
+				this.configuredSettings.permissions_user_modify = (value === true) ? '1' : '0'
+			},
+		},
 	},
 
 	watch: {
@@ -291,6 +335,7 @@ export default {
 
 	methods: {
 		loadData() {
+			this.fetchSettings()
 			this.listUsers()
 			this.listServices()
 		},
@@ -332,6 +377,7 @@ export default {
 			// collect data
 			const data = {
 				id: this.selectedId,
+				uid: this.selectedUser,
 				service_id: this.selectedServiceId,
 				service_token: this.selectedServiceToken,
 				service_name: this.selectedServiceName,
@@ -370,6 +416,7 @@ export default {
 		},
 		clearSelected() {
 			this.selectedId = ''
+			this.selectedUser = ''
 			this.selectedServiceId = ''
 			this.selectedServiceToken = ''
 			this.selectedServiceName = ''
@@ -378,6 +425,41 @@ export default {
 			this.selectedFormat = ''
 			this.selectedServiceRestrictIP = ''
 			this.selectedServiceRestrictMAC = ''
+		},
+		fetchSettings() {
+			const uri = generateUrl('/apps/data/fetch-system-settings')
+			axios.get(uri)
+				.then((response) => {
+					if (response.data) {
+						this.configuredSettings = response.data
+					}
+				})
+				.catch((error) => {
+					showError(
+						t('data_service', 'Failed to retrieve settings')
+						+ ': ' + error.response.request.responseText
+					)
+				})
+				.then(() => {
+				})
+		},
+		depositSettings() {
+			const data = {
+				data: this.configuredSettings,
+			}
+			const uri = generateUrl('/apps/data/deposit-system-settings')
+			axios.put(uri, data)
+				.then((response) => {
+					showSuccess(t('data_service', 'Saved settings'))
+				})
+				.catch((error) => {
+					showError(
+						t('data_service', 'Failed to save settings')
+						+ ': ' + error.response.request.responseText
+					)
+				})
+				.then(() => {
+				})
 		},
 		listUsers() {
 			const uri = generateUrl('/apps/data/list-users')
@@ -397,7 +479,12 @@ export default {
 		},
 		listTypes() {
 			const uri = generateUrl('/apps/data/list-types')
-			axios.get(uri)
+			const data = {
+				params: {
+					user: this.selectedUser,
+				},
+			}
+			axios.get(uri, data)
 				.then((response) => {
 					if (response.data) {
 						this.availableTypes = response.data
@@ -416,6 +503,7 @@ export default {
 			const data = {
 				params: {
 					type: this.selectedDataType,
+					user: this.selectedUser,
 				},
 			}
 			axios.get(uri, data)
@@ -455,7 +543,12 @@ export default {
 		},
 		listServices() {
 			const uri = generateUrl('/apps/data/list-services')
-			axios.get(uri)
+			const data = {
+				params: {
+					flagAdmin: true,
+				},
+			}
+			axios.get(uri, data)
 				.then((response) => {
 					if (response.data) {
 						this.configuredServices = response.data
@@ -539,6 +632,12 @@ export default {
 	}
 	.data-settings-page-title h2 {
 		padding-left: 1%;
+	}
+	.data-settings-section-services {
+		padding-top: 2%;
+	}
+	.data-settings-section-actions{
+		padding-top: 2%;
 	}
 	.data-settings-content-empty {
 		text-align: center;

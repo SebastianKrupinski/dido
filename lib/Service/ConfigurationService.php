@@ -41,7 +41,10 @@ class ConfigurationService {
 	 * Default System Configuration 
 	 * @var array
 	 * */
-	private const _SYSTEM = [];
+	private const _SYSTEM = [
+		'permissions_user_create' => '1',
+		'permissions_user_modify' => '1',
+	];
 
 	/**
 	 * Default System Secure Parameters 

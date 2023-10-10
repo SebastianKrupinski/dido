@@ -69,7 +69,7 @@ return [
 			'url' => '/list-formats',
 			'verb' => 'GET'
 		],
-		[
+				[
 			'name' => 'Settings#listServices',
 			'url' => '/list-services',
 			'verb' => 'GET'
@@ -85,8 +85,13 @@ return [
 			'verb' => 'PUT'
 		],
 		[
-			'name' => 'Settings#deleteService',
-			'url' => '/delete-service',
+			'name' => 'Settings#fetchSystemSettings',
+			'url' => '/fetch-system-settings',
+			'verb' => 'GET'
+		],
+		[
+			'name' => 'Settings#depositSystemSettings',
+			'url' => '/deposit-system-settings',
 			'verb' => 'PUT'
 		],
 	]
