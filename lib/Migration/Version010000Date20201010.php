@@ -42,6 +42,7 @@ class Version010000Date20201010 extends SimpleMigrationStep {
 			]);
 			$table->addColumn('service_name', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('data_type', 'string', [
 				'length' => 4,
@@ -59,20 +60,33 @@ class Version010000Date20201010 extends SimpleMigrationStep {
 				'length' => 2,
 				'notnull' => true,
 			]);
-			$table->addColumn('restrict_ip', 'text', []);
-			$table->addColumn('restrict_mac', 'text', []);
-			$table->addColumn('restrict_agent', 'text', []);
-			$table->addColumn('accessed_on', 'integer', []);
+			$table->addColumn('restrict_ip', 'text', [
+				'notnull' => false,
+			]);
+			$table->addColumn('restrict_mac', 'text', [
+				'notnull' => false,
+			]);
+			$table->addColumn('restrict_agent', 'text', [
+				'notnull' => false,
+			]);
+			$table->addColumn('accessed_on', 'integer', [
+				'notnull' => false,
+			]);
 			$table->addColumn('accessed_from', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
-			$table->addColumn('created_on', 'integer', []);
+			$table->addColumn('created_on', 'integer', [
+				'notnull' => false,
+			]);
 			$table->addColumn('created_by', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 
 			$table->setPrimaryKey(['id']);
-			$table->addIndex(['user_id'], 'data_user_id_index');
+			$table->addIndex(['uid'], 'data_service_uid');
+			$table->addIndex(['service_id'], 'data_service_sid');
 		}
 		return $schema;
 	}
