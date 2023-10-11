@@ -36,8 +36,6 @@ use OCA\Data\Service\DataService;
 
 class SettingsController extends Controller {
 
-	use Errors;
-
 	private CoreService $CoreService;
 	private DataService $DataService;
 	private ConfigurationService $ConfigurationService;

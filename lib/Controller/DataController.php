@@ -17,8 +17,6 @@ use OCA\Data\Http\GeneratedStreamResponse;
 
 class DataController extends Controller {
 
-	use Errors;
-
 	private CoreService $CoreService;
 	private DataService $DataService;
 
