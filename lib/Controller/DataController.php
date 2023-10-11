@@ -10,18 +10,23 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
 
 use OCA\Data\AppInfo\Application;
+use OCA\Data\Service\CoreService;
 use OCA\Data\Service\DataService;
 use OCA\Data\Http\GeneratedResponse;
 use OCA\Data\Http\GeneratedStreamResponse;
 
 class DataController extends Controller {
-	private DataService $DataService;
 
 	use Errors;
 
+	private CoreService $CoreService;
+	private DataService $DataService;
+
 	public function __construct(IRequest $request,
+								CoreService $CoreService,
 								DataService $DataService) {
 		parent::__construct(Application::APP_ID, $request);
+		$this->CoreService = $CoreService;
 		$this->DataService = $DataService;
 	}
 
@@ -43,7 +48,7 @@ class DataController extends Controller {
 		$meta['address'] = $this->request->__get('server')['REMOTE_ADDR'];
 		$meta['agent'] = $this->request->__get('server')['HTTP_USER_AGENT'];
 		// authorize request
-		$result = $this->DataService->authorize($id, $meta);
+		$result = $this->CoreService->authorize($id, $meta);
 		// evaluate, result
 		if ($result === false) {
 			return null;
@@ -70,7 +75,7 @@ class DataController extends Controller {
 		$meta['address'] = $this->request->__get('server')['REMOTE_ADDR'];
 		$meta['agent'] = $this->request->__get('server')['HTTP_USER_AGENT'];
 		// authorize request
-		$result = $this->DataService->authorize($id, $meta);
+		$result = $this->CoreService->authorize($id, $meta);
 		// evaluate, result
 		if ($result === false) {
 			return null;
@@ -97,7 +102,7 @@ class DataController extends Controller {
 		$meta['address'] = $this->request->__get('server')['REMOTE_ADDR'];
 		$meta['agent'] = $this->request->__get('server')['HTTP_USER_AGENT'];
 		// authorize request
-		$result = $this->DataService->authorize($id, $meta);
+		$result = $this->CoreService->authorize($id, $meta);
 		// evaluate, result
 		if ($result === false) {
 			return null;
@@ -118,7 +123,7 @@ class DataController extends Controller {
 			return null;
 		}
 		// authorize request
-		$result = $this->DataService->authorize($id, $meta);
+		$result = $this->CoreService->authorize($id, $meta);
 		// evaluate, result
 		if ($result === false) {
 			return null;

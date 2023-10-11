@@ -75,23 +75,21 @@ class DataService {
 	
 	public function generateCSV(array $service) {
 
-		// modify service entry accessed in the data store
-		$this->Services->modifyAccessed((string) $service['id'], time(), '');
 		// generate data based on data type
 		switch ($service['data_type']) {
 			case 'CC':
-				$this->generateContactsCSV($service);
+				return $this->generateContactsCSV($service);
 				break;
 			case 'EC':
 				// TOOD: Enable after adding events support
-				//$this->generateEventsCSV($service);
+				//return $this->generateEventsCSV($service);
 				break;
 			case 'TC':
 				// TOOD: Enable after adding tasks support
-				//$this->generateTasksCSV($service);
+				//return $this->generateTasksCSV($service);
 				break;
 			default:
-				return;
+				return null;
 		}
 
 	}
@@ -186,29 +184,29 @@ class DataService {
 
 	public function generateJSON(array $service) {
 
-		// modify service entry accessed in the data store
-		$this->Services->modifyAccessed((string) $service['id'], time(), '');
 		// generate data based on data type
 		switch ($service['data_type']) {
 			case 'CC':
-				$this->generateContactsJSON($service);
+				return $this->generateContactsJSON($service);
 				break;
 			case 'EC':
 				// TOOD: Enable after adding events support
-				//$this->generateEventsJSON($service);
+				//return $this->generateEventsJSON($service);
 				break;
 			case 'TC':
 				// TOOD: Enable after adding tasks support
-				//$this->generateTasksJSON($service);
+				//return $this->generateTasksJSON($service);
 				break;
 			default:
-				return;
+				return null;
 		}
 		
 	}
 
 	public function generateContactsJSON(array $service) {
 
+		// modify service entry accessed in the data store
+		$this->Services->modifyAccessed((string) $service['id'], time(), '');
 		// load entities
 		$entities = $this->ContactsService->listEntities($service['data_collection']);
 		// document start
@@ -239,29 +237,29 @@ class DataService {
 
 	public function generateTemplate(array $service) {
 
-		// modify service entry accessed in the data store
-		$this->Services->modifyAccessed((string) $service['id'], time(), '');
 		// generate data based on data type
 		switch ($service['data_type']) {
 			case 'CC':
-				$this->generateContactsTemplate($service);
+				return $this->generateContactsTemplate($service);
 				break;
 			case 'EC':
 				// TOOD: Enable after adding events support
-				//$this->generateEventsTemplate($service);
+				//return $this->generateEventsTemplate($service);
 				break;
 			case 'TC':
 				// TOOD: Enable after adding tasks support
-				//$this->generateTasksTemplate($service);
+				//return $this->generateTasksTemplate($service);
 				break;
 			default:
-				return;
+				return null;
 		}
 
 	}
 
 	public function generateContactsTemplate(array $service) {
 
+		// modify service entry accessed in the data store
+		$this->Services->modifyAccessed((string) $service['id'], time(), '');
 		// instance template service
 		$TemplateService = new TemplateService();
 		// load template
