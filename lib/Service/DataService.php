@@ -88,11 +88,13 @@ class DataService {
 		}
 		// evaluate, if calendar app is available
 		if ($this->ConfigurationService->isCalendarAvailable($uid)) {
-			$types[] = ['id' => 'EC', 'label' => 'Calendars'];
+			// TODO: Enable after adding calendar support
+			// $types[] = ['id' => 'EC', 'label' => 'Calendars'];
 		}
 		// evaluate, if tasks app is available
 		if ($this->ConfigurationService->isTasksAvailable($uid)) {
-			$types[] = ['id' => 'TC', 'label' => 'Tasks'];
+			// TODO: Enable after adding tasks support
+			// $types[] = ['id' => 'TC', 'label' => 'Tasks'];
 		}
 		// return data
 		return $types;
@@ -146,7 +148,7 @@ class DataService {
 		$response['Formats'][] = ['id' => 'XML', 'label' => 'XML'];
 		// retrieve all formats
 		if ($type == 'CC') {
-			$files = scandir(__DIR__ . '/../Resources/');
+			$files = scandir(__DIR__ . '/../Resources/Contacts/');
 			foreach ($files as $file) {
 				if (strstr($file, '.tpl')) {
 					$response['Formats'][] = ['id' => $file, 'label' => str_replace(".tpl", "", $file)];
@@ -154,10 +156,20 @@ class DataService {
 			}
 		}
 		if ($type == 'EC') {
-			$response['Formats'] = []; //$this->EventsService->listCollections($uid);
+			$files = scandir(__DIR__ . '/../Resources/Events/');
+			foreach ($files as $file) {
+				if (strstr($file, '.tpl')) {
+					$response['Formats'][] = ['id' => $file, 'label' => str_replace(".tpl", "", $file)];
+				}
+			}
 		}
 		if ($type == 'TC') {
-			$response['Formats'] = []; //$this->TasksService->listCollections($uid);
+			$files = scandir(__DIR__ . '/../Resources/Tasks/');
+			foreach ($files as $file) {
+				if (strstr($file, '.tpl')) {
+					$response['Formats'][] = ['id' => $file, 'label' => str_replace(".tpl", "", $file)];
+				}
+			}
 		}
 		// return response
 		return $response;

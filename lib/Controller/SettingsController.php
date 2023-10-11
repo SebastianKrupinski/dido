@@ -120,7 +120,7 @@ class SettingsController extends Controller {
 		// evaluate, if user id is present
 		// TODO: check for admin privileges
 		if (!empty($user)) {
-			$rs = $this->DataService->listCollections($this->userId, $type);
+			$rs = $this->DataService->listCollections($user, $type);
 		}
 		else {
 			$rs = $this->DataService->listCollections($this->userId, $type);

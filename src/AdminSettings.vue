@@ -449,8 +449,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to retrieve settings')
-						+ ': ' + error.response.request.responseText
+						t('data_service', 'Failed to retrieve settings') + ': ' + error.response.request.responseText
 					)
 				})
 				.then(() => {
@@ -467,8 +466,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to save settings')
-						+ ': ' + error.response.request.responseText
+						t('data_service', 'Failed to save settings') + ': ' + error.response.request.responseText
 					)
 				})
 				.then(() => {
@@ -484,8 +482,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to retrieve types')
-						+ ': ' + error.response?.request?.responseText
+						t('data_service', 'Failed to retrieve types') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -505,8 +502,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to retrieve types')
-						+ ': ' + error.response?.request?.responseText
+						t('data_service', 'Failed to retrieve types') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -527,8 +523,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to retrieve collections')
-						+ ': ' + error.response?.request?.responseText
+						t('data_service', 'Failed to retrieve collections') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -548,8 +543,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to retrieve formats')
-						+ ': ' + error.response?.request?.responseText
+						t('data_service', 'Failed to retrieve formats') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -569,8 +563,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to retrieve services')
-						+ ': ' + error.response?.request?.responseText
+						t('data_service', 'Failed to retrieve services') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -586,8 +579,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to create service')
-						+ ': ' + error.response?.request?.responseText
+						t('data_service', 'Failed to create service') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -603,8 +595,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to modify service')
-						+ ': ' + error.response?.request?.responseText
+						t('data_service', 'Failed to modify service') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -620,8 +611,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to delete service')
-						+ ': ' + error.response?.request?.responseText
+						t('data_service', 'Failed to delete service') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})

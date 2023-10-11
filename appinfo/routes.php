@@ -85,6 +85,11 @@ return [
 			'verb' => 'PUT'
 		],
 		[
+			'name' => 'Settings#deleteService',
+			'url' => '/delete-service',
+			'verb' => 'PUT'
+		],
+		[
 			'name' => 'Settings#fetchSystemSettings',
 			'url' => '/fetch-system-settings',
 			'verb' => 'GET'

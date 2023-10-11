@@ -1,7 +1,7 @@
 {
   "name": "data",
   "description": "Data Service",
-  "version": "0.0.1",
+  "version": "1.0.0-beta",
   "author": "Sebastian Krupinski <krupinski01@gmail.com>",
   "contributors": [],
   "bugs": {
@@ -37,7 +37,7 @@
   ],
   "engines": {
     "node": "^20.0.0",
-    "npm": "^9.0.0"
+    "npm": "^10.0.0"
   },
   "devDependencies": {
 		"@nextcloud/babel-config": "^1.0.0",

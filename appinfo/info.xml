@@ -9,7 +9,7 @@
     <name>Data Service</name>
     <summary>Data Service</summary>
     <description><![CDATA[This app allows for the live retrieval of Contacts and Calendars, in specific formats. That can be used as a feed for devices and services.]]></description>
-    <version>0.0.1</version>
+    <version>1.0.0-beta</version>
     <licence>agpl</licence>
     <author mail="krupinski01@gmail.com" homepage="https://github.com/ksainc/data">Sebastian Krupinski</author>
     <namespace>Data</namespace>
