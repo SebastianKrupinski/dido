@@ -77,6 +77,29 @@ class DataService {
 
 		// modify service entry accessed in the data store
 		$this->Services->modifyAccessed((string) $service['id'], time(), '');
+		// generate data based on data type
+		switch ($service['data_type']) {
+			case 'CC':
+				$this->generateContactsCSV($service);
+				break;
+			case 'EC':
+				// TOOD: Enable after adding events support
+				//$this->generateEventsCSV($service);
+				break;
+			case 'TC':
+				// TOOD: Enable after adding tasks support
+				//$this->generateTasksCSV($service);
+				break;
+			default:
+				return;
+		}
+
+	}
+
+	public function generateContactsCSV(array $service) {
+
+		// modify service entry accessed in the data store
+		$this->Services->modifyAccessed((string) $service['id'], time(), '');
 		// load entities
 		$entities = $this->ContactsService->listEntities($service['data_collection']);
 		// document start
@@ -165,6 +188,27 @@ class DataService {
 
 		// modify service entry accessed in the data store
 		$this->Services->modifyAccessed((string) $service['id'], time(), '');
+		// generate data based on data type
+		switch ($service['data_type']) {
+			case 'CC':
+				$this->generateContactsJSON($service);
+				break;
+			case 'EC':
+				// TOOD: Enable after adding events support
+				//$this->generateEventsJSON($service);
+				break;
+			case 'TC':
+				// TOOD: Enable after adding tasks support
+				//$this->generateTasksJSON($service);
+				break;
+			default:
+				return;
+		}
+		
+	}
+
+	public function generateContactsJSON(array $service) {
+
 		// load entities
 		$entities = $this->ContactsService->listEntities($service['data_collection']);
 		// document start
@@ -192,28 +236,36 @@ class DataService {
 		yield ']';
 
 	}
-	
+
 	public function generateTemplate(array $service) {
 
 		// modify service entry accessed in the data store
 		$this->Services->modifyAccessed((string) $service['id'], time(), '');
+		// generate data based on data type
+		switch ($service['data_type']) {
+			case 'CC':
+				$this->generateContactsTemplate($service);
+				break;
+			case 'EC':
+				// TOOD: Enable after adding events support
+				//$this->generateEventsTemplate($service);
+				break;
+			case 'TC':
+				// TOOD: Enable after adding tasks support
+				//$this->generateTasksTemplate($service);
+				break;
+			default:
+				return;
+		}
+
+	}
+
+	public function generateContactsTemplate(array $service) {
+
 		// instance template service
 		$TemplateService = new TemplateService();
 		// load template
-		switch ($service['data_type']) {
-			case 'CC':
-				$TemplateService->fromFile(dirname(__DIR__) . '/Resources/Contacts/' . $service['format']);
-				break;
-			case 'EC':
-				$TemplateService->fromFile(dirname(__DIR__) . '/Resources/Events/' . $service['format']);
-				break;
-			case 'TC':
-				$TemplateService->fromFile(dirname(__DIR__) . '/Resources/Tasks/' . $service['format']);
-				break;
-			default:
-				# code...
-				break;
-		}
+		$TemplateService->fromFile(dirname(__DIR__) . '/Resources/Contacts/' . $service['format']);
 		// load entities
 		$entities = $this->ContactsService->listEntities($service['data_collection']);
 		// document start

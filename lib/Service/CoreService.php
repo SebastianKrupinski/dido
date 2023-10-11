@@ -110,7 +110,7 @@ class CoreService {
 		$response['Formats'][] = ['id' => 'XML', 'label' => 'XML'];
 		// retrieve all formats
 		if ($type == 'CC') {
-			$files = scandir(__DIR__ . '/../Resources/Contacts/');
+			$files = scandir(dirname(__DIR__) . '/Resources/Contacts/');
 			foreach ($files as $file) {
 				if (strstr($file, '.tpl')) {
 					$response['Formats'][] = ['id' => $file, 'label' => str_replace(".tpl", "", $file)];
@@ -118,7 +118,7 @@ class CoreService {
 			}
 		}
 		if ($type == 'EC') {
-			$files = scandir(__DIR__ . '/../Resources/Events/');
+			$files = scandir(dirname(__DIR__) . '/Resources/Events/');
 			foreach ($files as $file) {
 				if (strstr($file, '.tpl')) {
 					$response['Formats'][] = ['id' => $file, 'label' => str_replace(".tpl", "", $file)];
@@ -126,7 +126,7 @@ class CoreService {
 			}
 		}
 		if ($type == 'TC') {
-			$files = scandir(__DIR__ . '/../Resources/Tasks/');
+			$files = scandir(dirname(__DIR__) . '/Resources/Tasks/');
 			foreach ($files as $file) {
 				if (strstr($file, '.tpl')) {
 					$response['Formats'][] = ['id' => $file, 'label' => str_replace(".tpl", "", $file)];
