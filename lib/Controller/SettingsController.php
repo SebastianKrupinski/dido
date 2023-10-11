@@ -31,21 +31,25 @@ use OCP\IRequest;
 
 use OCA\Data\AppInfo\Application;
 use OCA\Data\Service\ConfigurationService;
+use OCA\Data\Service\CoreService;
 use OCA\Data\Service\DataService;
 
 class SettingsController extends Controller {
 
 	use Errors;
 
+	private DataService $CoreService;
 	private DataService $DataService;
 	private ConfigurationService $ConfigurationService;
 
 	public function __construct(IRequest $request,
 								ConfigurationService $ConfigurationService,
+								CoreService $CoreService,
 								DataService $DataService,
 								string $userId) {
 		parent::__construct(Application::APP_ID, $request);
 		$this->ConfigurationService = $ConfigurationService;
+		$this->CoreService = $CoreService;
 		$this->DataService = $DataService;
 		$this->userId = $userId;
 	}
@@ -62,7 +66,7 @@ class SettingsController extends Controller {
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
 		}
 		// retrieve formats
-		$rs = $this->DataService->listUsers();
+		$rs = $this->CoreService->listUsers();
 		// return response
 		if (isset($rs)) {
 			return new DataResponse($rs);
@@ -89,10 +93,10 @@ class SettingsController extends Controller {
 		// evaluate, if user id is present
 		// TODO: check for admin privileges
 		if (!empty($user)) {
-			$rs = $this->DataService->listTypes($user);
+			$rs = $this->CoreService->listTypes($user);
 		}
 		else {
-			$rs = $this->DataService->listTypes($this->userId);
+			$rs = $this->CoreService->listTypes($this->userId);
 		}
 		// return response
 		if (isset($rs)) {
@@ -149,7 +153,7 @@ class SettingsController extends Controller {
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
 		}
 		// retrieve formats
-		$rs = $this->DataService->listFormats($type);
+		$rs = $this->CoreService->listFormats($type);
 		// return response
 		if (isset($rs)) {
 			return new DataResponse($rs);
@@ -176,10 +180,10 @@ class SettingsController extends Controller {
 		// evaluate, if admin flag is present
 		// TODO: check for admin privileges
 		if ($flagAdmin) {
-			$rs = $this->DataService->listServices('');
+			$rs = $this->CoreService->listServices('');
 		}
 		else {
-			$rs = $this->DataService->listServices($this->userId);
+			$rs = $this->CoreService->listServices($this->userId);
 		}
 		// return response
 		if (isset($rs)) {
@@ -216,7 +220,7 @@ class SettingsController extends Controller {
 				$data['uid'] = $this->userId;
 			}
 			// create service
-			$rs = $this->DataService->createService($this->userId, $data);
+			$rs = $this->CoreService->createService($this->userId, $data);
 		}
 		// return response
 		if (isset($rs)) {
@@ -246,7 +250,7 @@ class SettingsController extends Controller {
 			// force read only permissions until write is implemented
 			$data['permissions'] = 'R';
 			// modify service
-			$rs = $this->DataService->modifyService($this->userId,(string) $data['id'], $data);
+			$rs = $this->CoreService->modifyService($this->userId,(string) $data['id'], $data);
 		}
 		// return response
 		if (isset($rs)) {
@@ -273,7 +277,7 @@ class SettingsController extends Controller {
 		// evaluate, if required data is present
 		if (!empty($data['id'])) {
 			// delete service
-			$rs = $this->DataService->deleteService($this->userId,(string) $data['id']);
+			$rs = $this->CoreService->deleteService($this->userId,(string) $data['id']);
 		}
 		// return response
 		if (isset($rs)) {
