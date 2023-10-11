@@ -4675,6 +4675,14 @@ __webpack_require__.r(__webpack_exports__);
       set(value) {
         this.configuredSettings.permissions_user_modify = value === true ? '1' : '0';
       }
+    },
+    permissionsUserDelete: {
+      get() {
+        return this.configuredSettings.permissions_user_delete === '1';
+      },
+      set(value) {
+        this.configuredSettings.permissions_user_delete = value === true ? '1' : '0';
+      }
     }
   },
   watch: {},
@@ -4977,7 +4985,17 @@ var render = function render() {
         _vm.permissionsUserModify = $event;
       }, _vm.depositSettings]
     }
-  }, [_vm._v("\n\t\t\t\t\t" + _vm._s(_vm.t('data_service', 'Allow users to modify services')) + "\n\t\t\t\t")])], 1)]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n\t\t\t\t\t" + _vm._s(_vm.t('data_service', 'Allow users to modify services')) + "\n\t\t\t\t")])], 1), _vm._v(" "), _c('div', [_c('NcCheckboxRadioSwitch', {
+    attrs: {
+      "type": "switch",
+      "checked": _vm.permissionsUserDelete
+    },
+    on: {
+      "update:checked": [function ($event) {
+        _vm.permissionsUserDelete = $event;
+      }, _vm.depositSettings]
+    }
+  }, [_vm._v("\n\t\t\t\t\t" + _vm._s(_vm.t('data_service', 'Allow users to delete services')) + "\n\t\t\t\t")])], 1)]), _vm._v(" "), _c('div', {
     staticClass: "data-settings-section-services"
   }, [_c('div', {
     staticClass: "data-settings-hint"

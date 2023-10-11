@@ -61,13 +61,15 @@
 									<template #icon>
 										<IconActions />
 									</template>
-									<NcActionButton @click="onEditClick(item.id)">
+									<NcActionButton v-if="configuredSettings.permissions_user_modify === '1'"
+										@click="onModifyClick(item.id)">
 										<template #icon>
-											<IconEdit />
+											<IconModify />
 										</template>
-										Edit
+										Modify
 									</NcActionButton>
-									<NcActionButton @click="onDeleteClick(item.id)">
+									<NcActionButton v-if="configuredSettings.permissions_user_delete === '1'"
+										@click="onDeleteClick(item.id)">
 										<template #icon>
 											<IconDelete />
 										</template>
@@ -83,7 +85,7 @@
 				<h3>{{ t('data_service', 'No data services have been created for this account') }}</h3>
 			</div>
 			<br>
-			<div class="data-settings-content-actions">
+			<div v-if="configuredSettings.permissions_user_create === '1'" class="data-settings-content-actions">
 				<NcButton class="app-settings-button" @click="onAddClick()">
 					<template #icon>
 						<IconAdd :size="24" />
@@ -219,7 +221,7 @@ import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
 import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
 import IconApp from 'vue-material-design-icons/DatabaseOutline.vue'
 import IconAdd from 'vue-material-design-icons/DatabaseExportOutline.vue'
-import IconEdit from 'vue-material-design-icons/DatabaseEditOutline.vue'
+import IconModify from 'vue-material-design-icons/DatabaseEditOutline.vue'
 import IconDelete from 'vue-material-design-icons/DatabaseRemoveOutline.vue'
 import IconSave from 'vue-material-design-icons/Check.vue'
 import IconCancel from 'vue-material-design-icons/Close.vue'
@@ -236,7 +238,7 @@ export default {
 		NcSelect,
 		IconApp,
 		IconAdd,
-		IconEdit,
+		IconModify,
 		IconDelete,
 		IconSave,
 		IconCancel,
@@ -251,6 +253,7 @@ export default {
 			availableTypes: [],
 			availableCollections: [],
 			availableFormats: [],
+			configuredSettings: [],
 			configuredServices: [],
 			selectedId: '',
 			selectedServiceId: '',
@@ -276,6 +279,7 @@ export default {
 
 	methods: {
 		loadData() {
+			this.fetchSettings()
 			this.listTypes()
 			this.listServices()
 		},
@@ -283,7 +287,7 @@ export default {
 			this.clearSelected()
 			this.dialogServiceSettings = true
 		},
-		onEditClick(id) {
+		onModifyClick(id) {
 			// clear values
 			this.clearSelected()
 			// find item
@@ -482,6 +486,23 @@ export default {
 				})
 				.then(() => {})
 		},
+		fetchSettings() {
+			const uri = generateUrl('/apps/data/fetch-system-settings')
+			axios.get(uri)
+				.then((response) => {
+					if (response.data) {
+						this.configuredSettings = response.data
+					}
+				})
+				.catch((error) => {
+					showError(
+						t('data_service', 'Failed to retrieve system settings')
+						+ ': ' + error.response.request.responseText
+					)
+				})
+				.then(() => {
+				})
+		},
 		formatDate(dt) {
 			if (dt) {
 				return (new Date(dt * 1000)).toLocaleString()
@@ -527,6 +548,8 @@ export default {
 		width: auto;
 		padding-left: 10px;
 		padding-right: 10px;
+		padding-top: 5px;
+		padding-bottom: 5px;
 	}
 	.data-settings-button {
 		display:inline-flex;

@@ -44,6 +44,7 @@ class ConfigurationService {
 	private const _SYSTEM = [
 		'permissions_user_create' => '1',
 		'permissions_user_modify' => '1',
+		'permissions_user_delete' => '1',
 	];
 
 	/**

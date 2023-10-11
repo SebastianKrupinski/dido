@@ -42,6 +42,11 @@
 						{{ t('data_service', 'Allow users to modify services') }}
 					</NcCheckboxRadioSwitch>
 				</div>
+				<div>
+					<NcCheckboxRadioSwitch type="switch" :checked.sync="permissionsUserDelete" @update:checked="depositSettings">
+						{{ t('data_service', 'Allow users to delete services') }}
+					</NcCheckboxRadioSwitch>
+				</div>
 			</div>
 			<div class="data-settings-section-services">
 				<div class="data-settings-hint">
@@ -322,6 +327,14 @@ export default {
 			},
 			set(value) {
 				this.configuredSettings.permissions_user_modify = (value === true) ? '1' : '0'
+			},
+		},
+		permissionsUserDelete: {
+			get() {
+				return (this.configuredSettings.permissions_user_delete === '1')
+			},
+			set(value) {
+				this.configuredSettings.permissions_user_delete = (value === true) ? '1' : '0'
 			},
 		},
 	},

@@ -287,6 +287,8 @@ class SettingsController extends Controller {
 	/**
 	 * handles fetch settings requests
 	 * 
+	 * @NoAdminRequired
+	 * 
 	 * @return DataResponse
 	 */
 	public function fetchSystemSettings(): DataResponse {

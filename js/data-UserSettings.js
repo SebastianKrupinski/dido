@@ -4600,7 +4600,7 @@ __webpack_require__.r(__webpack_exports__);
     NcSelect: (_nextcloud_vue_dist_Components_NcSelect_js__WEBPACK_IMPORTED_MODULE_7___default()),
     IconApp: vue_material_design_icons_DatabaseOutline_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
     IconAdd: vue_material_design_icons_DatabaseExportOutline_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
-    IconEdit: vue_material_design_icons_DatabaseEditOutline_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
+    IconModify: vue_material_design_icons_DatabaseEditOutline_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
     IconDelete: vue_material_design_icons_DatabaseRemoveOutline_vue__WEBPACK_IMPORTED_MODULE_11__["default"],
     IconSave: vue_material_design_icons_Check_vue__WEBPACK_IMPORTED_MODULE_12__["default"],
     IconCancel: vue_material_design_icons_Close_vue__WEBPACK_IMPORTED_MODULE_13__["default"],
@@ -4613,6 +4613,7 @@ __webpack_require__.r(__webpack_exports__);
       availableTypes: [],
       availableCollections: [],
       availableFormats: [],
+      configuredSettings: [],
       configuredServices: [],
       selectedId: '',
       selectedServiceId: '',
@@ -4632,6 +4633,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     loadData() {
+      this.fetchSettings();
       this.listTypes();
       this.listServices();
     },
@@ -4639,7 +4641,7 @@ __webpack_require__.r(__webpack_exports__);
       this.clearSelected();
       this.dialogServiceSettings = true;
     },
-    onEditClick(id) {
+    onModifyClick(id) {
       // clear values
       this.clearSelected();
       // find item
@@ -4809,6 +4811,16 @@ __webpack_require__.r(__webpack_exports__);
         (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to delete service') + ': ' + ((_error$response7 = error.response) === null || _error$response7 === void 0 || (_error$response7 = _error$response7.request) === null || _error$response7 === void 0 ? void 0 : _error$response7.responseText));
       }).then(() => {});
     },
+    fetchSettings() {
+      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data/fetch-system-settings');
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"].get(uri).then(response => {
+        if (response.data) {
+          this.configuredSettings = response.data;
+        }
+      }).catch(error => {
+        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to retrieve system settings') + ': ' + error.response.request.responseText);
+      }).then(() => {});
+    },
     formatDate(dt) {
       if (dt) {
         return new Date(dt * 1000).toLocaleString();
@@ -4864,20 +4876,20 @@ var render = function render() {
         },
         proxy: true
       }], null, true)
-    }, [_vm._v(" "), _c('NcActionButton', {
+    }, [_vm._v(" "), _vm.configuredSettings.permissions_user_modify === '1' ? _c('NcActionButton', {
       on: {
         "click": function ($event) {
-          return _vm.onEditClick(item.id);
+          return _vm.onModifyClick(item.id);
         }
       },
       scopedSlots: _vm._u([{
         key: "icon",
         fn: function () {
-          return [_c('IconEdit')];
+          return [_c('IconModify')];
         },
         proxy: true
       }], null, true)
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\tEdit\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c('NcActionButton', {
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\tModify\n\t\t\t\t\t\t\t\t")]) : _vm._e(), _vm._v(" "), _vm.configuredSettings.permissions_user_delete === '1' ? _c('NcActionButton', {
       on: {
         "click": function ($event) {
           return _vm.onDeleteClick(item.id);
@@ -4890,10 +4902,10 @@ var render = function render() {
         },
         proxy: true
       }], null, true)
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\tDelete\n\t\t\t\t\t\t\t\t")])], 1)], 1)]);
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\tDelete\n\t\t\t\t\t\t\t\t")]) : _vm._e()], 1)], 1)]);
   }), 0)])]) : _c('div', {
     staticClass: "data-settings-content-empty"
-  }, [_c('h3', [_vm._v(_vm._s(_vm.t('data_service', 'No data services have been created for this account')))])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('div', {
+  }, [_c('h3', [_vm._v(_vm._s(_vm.t('data_service', 'No data services have been created for this account')))])]), _vm._v(" "), _c('br'), _vm._v(" "), _vm.configuredSettings.permissions_user_create === '1' ? _c('div', {
     staticClass: "data-settings-content-actions"
   }, [_c('NcButton', {
     staticClass: "app-settings-button",
@@ -4912,8 +4924,8 @@ var render = function render() {
         })];
       },
       proxy: true
-    }])
-  }, [_vm._v("\n\t\t\t\tAdd\n\t\t\t")])], 1)]), _vm._v(" "), _c('div', [_vm.dialogServiceSettings ? _c('NcModal', {
+    }], null, false, 547820902)
+  }, [_vm._v("\n\t\t\t\tAdd\n\t\t\t")])], 1) : _vm._e()]), _vm._v(" "), _c('div', [_vm.dialogServiceSettings ? _c('NcModal', {
     attrs: {
       "name": "Data Service Settings"
     },
@@ -10655,6 +10667,8 @@ ___CSS_LOADER_EXPORT___.push([module.id, `
 		width: auto;
 		padding-left: 10px;
 		padding-right: 10px;
+		padding-top: 5px;
+		padding-bottom: 5px;
 }
 .data-settings-button[data-v-68ee62f2] {
 		display:inline-flex;
