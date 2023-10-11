@@ -38,7 +38,7 @@ class SettingsController extends Controller {
 
 	use Errors;
 
-	private DataService $CoreService;
+	private CoreService $CoreService;
 	private DataService $DataService;
 	private ConfigurationService $ConfigurationService;
 
