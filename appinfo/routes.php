@@ -69,7 +69,7 @@ return [
 			'url' => '/list-formats',
 			'verb' => 'GET'
 		],
-				[
+		[
 			'name' => 'Settings#listServices',
 			'url' => '/list-services',
 			'verb' => 'GET'
@@ -87,6 +87,11 @@ return [
 		[
 			'name' => 'Settings#deleteService',
 			'url' => '/delete-service',
+			'verb' => 'PUT'
+		],
+		[
+			'name' => 'Settings#probeServiceId',
+			'url' => '/probe-services-id',
 			'verb' => 'PUT'
 		],
 		[

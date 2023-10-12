@@ -4617,6 +4617,7 @@ __webpack_require__.r(__webpack_exports__);
       configuredServices: [],
       selectedId: '',
       selectedServiceId: '',
+      selectedServiceIdValid: '',
       selectedServiceToken: '',
       selectedServiceName: '',
       selectedDataType: '',
@@ -4707,6 +4708,7 @@ __webpack_require__.r(__webpack_exports__);
     clearSelected() {
       this.selectedId = '';
       this.selectedServiceId = '';
+      this.selectedServiceIdValid = '';
       this.selectedServiceToken = '';
       this.selectedServiceName = '';
       this.selectedDataType = '';
@@ -4812,6 +4814,19 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).catch(error => {
         (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to retrieve system settings') + ': ' + error.response.request.responseText);
+      }).then(() => {});
+    },
+    probeServiceId(id) {
+      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data/probe-services-id');
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"].put(uri, {
+        id: this.selectedServiceId
+      }).then(response => {
+        this.selectedServiceIdValid = response.data;
+        if (this.selectedServiceIdValid === false) {
+          this.data - service - id.focus();
+        }
+      }).catch(error => {
+        (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showError)(t('data_service', 'Failed to validate service id') + ': ' + error.response?.request?.responseText);
       }).then(() => {});
     },
     formatDate(dt) {
@@ -4954,6 +4969,7 @@ var render = function render() {
       "value": _vm.selectedServiceId
     },
     on: {
+      "blur": _vm.probeServiceId,
       "input": function ($event) {
         if ($event.target.composing) return;
         _vm.selectedServiceId = $event.target.value;

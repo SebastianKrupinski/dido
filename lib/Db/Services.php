@@ -97,9 +97,9 @@ class Services {
 	 * 
 	 * @param array $id			entry service id
 	 * 
-	 * @return array 		
+	 * @return array|bool		array of success, false on failure		
 	 */
-	public function fetchByServiceId(string $id) : array {
+	public function fetchByServiceId(string $id) : array|bool {
 
 		// construct data store command
 		$cmd = $this->DataStore->getQueryBuilder();

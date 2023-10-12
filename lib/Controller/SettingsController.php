@@ -285,6 +285,30 @@ class SettingsController extends Controller {
 		}
 
 	}
+
+	/**
+	 * handels types list requests
+	 * 
+	 * @NoAdminRequired
+	 *
+	 * @return DataResponse
+	 */
+	public function probeServiceId(string $id): DataResponse {
+
+		// evaluate if user id is present
+		if ($this->userId === null) {
+			return new DataResponse([], Http::STATUS_BAD_REQUEST);
+		}
+		// evaluate, if service id exists
+		$rs = $this->CoreService->probeServiceId($id);
+		// return response
+		if (isset($rs)) {
+			return new DataResponse($rs);
+		} else {
+			return new DataResponse($rs['error'], 401);
+		}
+
+	}
 	
 	/**
 	 * handles fetch settings requests

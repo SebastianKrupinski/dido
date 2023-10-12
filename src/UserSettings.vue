@@ -108,7 +108,8 @@
 							:placeholder="t('data_service', 'Service Id')"
 							autocomplete="off"
 							autocorrect="off"
-							autocapitalize="none">
+							autocapitalize="none"
+							@blur="probeServiceId">
 					</div>
 					<div class="data-settings-modal-group">
 						<label for="data-service-token">
@@ -257,6 +258,7 @@ export default {
 			configuredServices: [],
 			selectedId: '',
 			selectedServiceId: '',
+			selectedServiceIdValid: '',
 			selectedServiceToken: '',
 			selectedServiceName: '',
 			selectedDataType: '',
@@ -353,6 +355,7 @@ export default {
 		clearSelected() {
 			this.selectedId = ''
 			this.selectedServiceId = ''
+			this.selectedServiceIdValid = ''
 			this.selectedServiceToken = ''
 			this.selectedServiceName = ''
 			this.selectedDataType = ''
@@ -502,6 +505,20 @@ export default {
 				})
 				.then(() => {
 				})
+		},
+		probeServiceId(id) {
+			const uri = generateUrl('/apps/data/probe-services-id')
+			axios.put(uri, { id: this.selectedServiceId })
+				.then((response) => {
+					this.selectedServiceIdValid = response.data
+				})
+				.catch((error) => {
+					showError(
+						t('data_service', 'Failed to validate service id')
+						+ ': ' + error.response?.request?.responseText
+					)
+				})
+				.then(() => {})
 		},
 		formatDate(dt) {
 			if (dt) {

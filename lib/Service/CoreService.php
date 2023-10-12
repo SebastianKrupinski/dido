@@ -228,6 +228,27 @@ class CoreService {
 
 	}
 
+	/**
+	 * probe is service id exists
+	 * 
+	 * @since Release 1.0.0
+	 * 
+	 * @param string $id		service id
+	 * 
+	 * @return bool
+	 */
+	public function probeServiceId(string $id): bool {
+
+		$rs = $this->Services->fetchByServiceId($id);
+
+		if ($rs === false) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
 	public function authorize(string $id, array $meta): array|bool {
 
 		$service = $this->Services->fetchByServiceId($id);
