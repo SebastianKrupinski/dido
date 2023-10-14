@@ -87,7 +87,7 @@ class DataController extends Controller {
      * @NoCSRFRequired
      * @PublicPage
      */
-	public function xml(string $id): DataResponse {
+	public function xml(string $id) {
 		
 		// construct place holder
 		$meta = [];

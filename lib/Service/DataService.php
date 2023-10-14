@@ -235,6 +235,81 @@ class DataService {
 
 	}
 
+	public function generateXML(array $service) {
+
+		// generate data based on data type
+		switch ($service['data_type']) {
+			case 'CC':
+				return $this->generateContactsXML($service);
+				break;
+			case 'EC':
+				// TOOD: Enable after adding events support
+				//return $this->generateEventsJSON($service);
+				break;
+			case 'TC':
+				// TOOD: Enable after adding tasks support
+				//return $this->generateTasksJSON($service);
+				break;
+			default:
+				return null;
+		}
+		
+	}
+
+	function generateXMLfromData($data, string $tag): string {
+
+		// tag start
+		$xml = "<$tag>";
+		
+		if (is_object($data)) {
+			foreach ($data as $name => $value) {
+				$xml .= $this->generateXMLfromData($value, $name);
+			}
+		}
+		elseif (is_array($data)) {
+			foreach ($data as $entry) {
+				$xml .= $this->generateXMLfromData($entry, 'Entry');
+			}
+		}
+		else {
+			$xml .= (!empty($data)) ? htmlspecialchars($data, ENT_XML1, 'UTF-8') : '';
+		}
+		
+		// tag end
+		$xml .= "</$tag>";
+
+		return $xml;
+	}
+
+	public function generateContactsXML(array $service) {
+
+		// modify service entry accessed in the data store
+		$this->Services->modifyAccessed((string) $service['id'], time(), '');
+		// load entities
+		$entities = $this->ContactsService->listEntities($service['data_collection']);
+		// document start
+		yield '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>' . PHP_EOL;
+		yield '<Contacts>' . PHP_EOL;
+		// document iteration
+		$count = count($entities);
+		foreach ($entities as $lo) {
+			
+			$count -= 1;
+			// convert to contact object
+            $co = $this->ContactsService->toContactObject(Reader::read($lo['carddata']));
+            $co->ID = (string) $lo['uri'];
+            $co->CID = (string) $lo['addressbookid'];
+            $co->ModifiedOn = new \DateTime(date("Y-m-d H:i:s", $lo['lastmodified']));
+            $co->State = trim((string) $lo['etag'],'"');
+			
+			yield $this->generateXMLfromData($co, 'Contact') . PHP_EOL;
+			
+		}
+		// document end
+		yield '</Contacts>' . PHP_EOL;
+
+	}
+
 	public function generateTemplate(array $service) {
 
 		// generate data based on data type
