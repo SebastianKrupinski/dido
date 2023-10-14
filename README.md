@@ -1,57 +1,127 @@
-<!--
-SPDX-FileCopyrightText: Sebastian Krupinski <krupinski01@gmail.com>
-SPDX-License-Identifier: CC0-1.0
--->
+# Data Service for Nextcloud
 
-# Data
-Place this app in **nextcloud/apps/**
+Data Service for Nextcloud, is an app that can be used to retrieve Contacts, Calendar and Tasks data in formats other then WedDAV or RestAPI.
 
-## Building the app
+The app supports retrievel of data in JSON, XML, CVS and other formats.
 
-The app can be built by using the provided Makefile by running:
+The original purpose/idea behind the app was to supply contacts data to devices like SIP phones, but the app can also be used to feed data to other devices and services that do not speak WebDAV.
 
-    make
+The app supports simplified token authentication, IP, MAC and Agent restrictions
 
-This requires the following things to be present:
-* make
-* which
-* tar: for building the archive
-* curl: used if phpunit and composer are not installed to fetch them from the web
-* npm: for building and testing everything JS, only required if a package.json is placed inside the **js/** folder
+![Alt text](documentation/images/ds-admin-ui.png)
 
-The make command will install or update Composer dependencies if a composer.json is present and also **npm run build** if a package.json is present in the **js/** folder. The npm **build** script should use local paths for build systems and package managers, so people that simply want to build the app won't need to install npm libraries globally, e.g.:
+## How to use
 
-**package.json**:
-```json
-"scripts": {
-    "test": "node node_modules/gulp-cli/bin/gulp.js karma",
-    "prebuild": "npm install && node_modules/bower/bin/bower install && node_modules/bower/bin/bower update",
-    "build": "node node_modules/gulp-cli/bin/gulp.js"
-}
-```
+First step is to install the app from the app store.
+
+Once the app is installed, navigate to "Data Services" under either the Admin or Personal section.
+
+Click add, and fill in the required settings.
+
+![Alt text](documentation/images/ds-service-settings.png)
+
+Settings:
+* Service Id - Required - Must be unique for every service
+* Service Token - Required - No restrictions
+* service Name - Optional
+* Data Type - Required - Select either Contacts, Calendar or Tasks
+* Data Collection - Required - Select a users Address book or Events or Tasks Calendar
+* Format - Required - Output format (e.g for a Grandstream SIP Phone select Grandstream)
+* Restrict By IP - Optional - Limit the service to requests from a specific remote IP address or CIDR network
+* Restrict By MAC - Optional - Limit the service to requests with a specific MAC address. (Used for SIP phones)
+* Restrict By UA - Optional - Limit the service to requests with a specific UserAgent string
+
+After a service has been added use one of the following formats in your device / service.
+
+The following examples use the following information, these would need to be replaced by your values.
+
+* Nextcloud Location - https://nextcloud-domain-or-ip
+* Service ID - a898
+* Service Token - e0e1dd54b9d2489097afb201d6457bee
+
+#### JSON - For General Use
+
+This outputs data in fully structured JSON format. Including contact pictures and calendar attachments. 
+
+https://nextcloud-domain-or-ip/apps/data/json/a898/?token=e0e1dd54b9d2489097afb201d6457bee
+
+#### XML - For General Use
+
+This outputs data in fully structured XML format. Including contact pictures and calendar attachments. 
+
+https://nextcloud-domain-or-ip/apps/data/xml/a898/?token=e0e1dd54b9d2489097afb201d6457bee
+
+#### CVS - For General Use
+
+This outputs data in structured CSV format. The CSV output does not include contact pictures or calendar attachments and uses custom formatting for array fields like phone numbers and addresses.
+
+https://nextcloud-domain-or-ip/apps/data/csv/a898/?token=e0e1dd54b9d2489097afb201d6457bee
+
+#### Grandstream - For use with Grandstream SIP Phones
+
+Grandstream SIP phones require specific a URL and formating which is generated live by the app.
+
+Use the following URL in the "Phonebook Management" section of your Grandstream SIP phone.
+
+https://nextcloud-domain-or-ip/apps/data/grandstream/a898/e0e1dd54b9d2489097afb201d6457bee
+
+#### Snom - For use with Snom SIP Phones
+
+Snom SIP phones require specific formating which is generated live by the app.
+
+Use the following URL in the provisioning file of your SIP phone.
+
+https://nextcloud-domain-or-ip/apps/data/phone/a898/?token=e0e1dd54b9d2489097afb201d6457bee
+
+#### Yealink - For use with Yealink SIP Phones
+
+Yealink SIP phones require specifi formating which is generated live by the app.
+
+Use the following URL in the "Remote Phone Book" section of your Yealink SIP phone.
+
+https://nextcloud-domain-or-ip/apps/data/phone/a898/?token=e0e1dd54b9d2489097afb201d6457bee
 
 
-## Publish to App Store
+## Requirements
 
-First get an account for the [App Store](http://apps.nextcloud.com/) then run:
+This app has some minimal requirements for passive synchronization and a few more for active synchronization.
 
-    make && make appstore
+- [Nextcloud](https://nextcloud.com/) instance (≥ 26.0.0)
+- PHP  (≥ 7.4.0)
 
-The archive is located in build/artifacts/appstore and can then be uploaded to the App Store.
+## Installation
 
-## Running tests
-You can use the provided Makefile to run all tests by using:
+Search for "Data Service" in your apps manager, click download then enable.
 
-    make test
+Configure the application in the administrator or personal settings section, under Data Service.
 
-This will run the PHP unit and integration tests and if a package.json is present in the **js/** folder will execute **npm run test**
+## Features
 
-Of course you can also install [PHPUnit](http://phpunit.de/getting-started.html) and use the configurations directly:
+The following is a list of supported features,
 
-    phpunit -c phpunit.xml
+* Administrative configuration of services for users
 
-or:
+* Administrative lock out of functionallity for users
 
-    phpunit -c phpunit.integration.xml
+* User configuration of services for own use
 
-for integration tests
+* Supported security features
+    * Id/Token Authentication
+    * IPv4 and IPv6 address restriction
+    * MAC address restriction
+    * User Agent restriction
+
+* Supported Data Formats
+    * JSON
+    * XML
+    * CSV
+    * Custom (Template Based Formats)
+
+* Supported SIP Devices (Currently Available Templates)
+    * Grandstream
+    * Snom
+    * Yealink
+
+
+## Future Features
+- Add Notes Syncronization Support
