@@ -8,6 +8,7 @@ namespace OCA\Data\Controller;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
+use OCP\ISession;
 
 use OCA\Data\AppInfo\Application;
 use OCA\Data\Service\CoreService;
@@ -16,14 +17,17 @@ use OCA\Data\Http\GeneratedResponse;
 use OCA\Data\Http\GeneratedStreamResponse;
 
 class DataController extends Controller {
-
+	private $userSession;
 	private CoreService $CoreService;
 	private DataService $DataService;
 
 	public function __construct(IRequest $request,
+								ISession $Session,
 								CoreService $CoreService,
 								DataService $DataService) {
 		parent::__construct(Application::APP_ID, $request);
+		$this->request = $request;
+		$this->session = $Session;
 		$this->CoreService = $CoreService;
 		$this->DataService = $DataService;
 	}
@@ -152,11 +156,23 @@ class DataController extends Controller {
 
 	}
 	/**
+	 * @PublicPage
+	 * @UseSession
+	 * @OnlyUnauthenticatedUsers
      * @NoAdminRequired
      * @NoCSRFRequired
-     * @PublicPage
      */
-	public function grandstream(string $id, string $token) {
+	public function grandstream(string $id) {
+
+		
+		if (empty($this->request->__get('server')['HTTP_AUTHORIZATION']) ||
+			str_starts_with($this->request->__get('server')['HTTP_AUTHORIZATION'], 'Basic ') === false) {
+			return null;
+		}
+
+		// decode token
+		$token = substr($this->request->__get('server')['HTTP_AUTHORIZATION'], 6);
+		$token = explode(':', base64_decode($token), 2)[1];
 
 		// collect meta data
 		$meta = [];
