@@ -124,4 +124,4 @@ The following is a list of supported features,
 
 
 ## Future Features
-- Add Notes Syncronization Support
+- Nothing at the momment (Suggestions are welcome)
