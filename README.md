@@ -84,7 +84,7 @@ https://nextcloud-domain-or-ip/apps/data/phone/a898/?token=e0e1dd54b9d2489097afb
 
 ## Requirements
 
-This app has some minimal requirements for passive synchronization and a few more for active synchronization.
+This app has some minimal requirements.
 
 - [Nextcloud](https://nextcloud.com/) instance (≥ 26.0.0)
 - PHP  (≥ 7.4.0)
@@ -125,4 +125,4 @@ The following is a list of supported features,
 
 
 ## Future Features
-- Nothing at the momment (Suggestions are welcome)
+- Nothing at the moment (Suggestions are welcome)
