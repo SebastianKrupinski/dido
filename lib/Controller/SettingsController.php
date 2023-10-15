@@ -28,6 +28,7 @@ namespace OCA\Data\Controller;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
+use OCP\IGroupManager;
 
 use OCA\Data\AppInfo\Application;
 use OCA\Data\Service\ConfigurationService;
@@ -36,16 +37,19 @@ use OCA\Data\Service\DataService;
 
 class SettingsController extends Controller {
 
+	private IUserSession $UserSession;
 	private CoreService $CoreService;
 	private DataService $DataService;
 	private ConfigurationService $ConfigurationService;
 
 	public function __construct(IRequest $request,
+								IGroupManager $GroupManager,
 								ConfigurationService $ConfigurationService,
 								CoreService $CoreService,
 								DataService $DataService,
 								string $userId) {
 		parent::__construct(Application::APP_ID, $request);
+		$this->GroupManager = $GroupManager;
 		$this->ConfigurationService = $ConfigurationService;
 		$this->CoreService = $CoreService;
 		$this->DataService = $DataService;
@@ -64,7 +68,11 @@ class SettingsController extends Controller {
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
 		}
 		// retrieve formats
-		$rs = $this->CoreService->listUsers();
+		// evaluate, if session user is admin
+		if ($this->GroupManager->isAdmin($this->userId)) {
+			$rs = $this->CoreService->listUsers();
+		}
+		
 		// return response
 		if (isset($rs)) {
 			return new DataResponse($rs);
@@ -88,12 +96,13 @@ class SettingsController extends Controller {
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
 		}
 		// retrieve types
-		// evaluate, if user id is present
-		// TODO: check for admin privileges
-		if (!empty($user)) {
+		// evaluate, if specific user is present and session user is admin
+		if (!empty($user) && $this->GroupManager->isAdmin($this->userId)) {
+			// list types for specific user
 			$rs = $this->CoreService->listTypes($user);
 		}
 		else {
+			// list types for session user
 			$rs = $this->CoreService->listTypes($this->userId);
 		}
 		// return response
@@ -118,13 +127,14 @@ class SettingsController extends Controller {
 		if ($this->userId === null) {
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
 		}
-		// retrieve colletions
-		// evaluate, if user id is present
-		// TODO: check for admin privileges
-		if (!empty($user)) {
+		// retrieve collections
+		// evaluate, if specific user is present and session user is admin
+		if (!empty($user) && $this->GroupManager->isAdmin($this->userId)) {
+			// list collections for specific user
 			$rs = $this->DataService->listCollections($user, $type);
 		}
 		else {
+			// list colletions for session user
 			$rs = $this->DataService->listCollections($this->userId, $type);
 		}
 		
@@ -175,12 +185,13 @@ class SettingsController extends Controller {
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
 		}
 		// retrieve services
-		// evaluate, if admin flag is present
-		// TODO: check for admin privileges
-		if ($flagAdmin) {
+		// evaluate, if all flag is set and session user is admin
+		if ($flagAdmin && $this->GroupManager->isAdmin($this->userId)) {
+			// list services for all users
 			$rs = $this->CoreService->listServices('');
 		}
 		else {
+			// list services for session user
 			$rs = $this->CoreService->listServices($this->userId);
 		}
 		// return response
@@ -208,13 +219,12 @@ class SettingsController extends Controller {
 		// evaluate, if required data is present
 		if (!empty($data['service_id']) && !empty($data['service_token']) &&
 			!empty($data['data_type']) && !empty($data['data_collection']) && !empty($data['format'])) {
-			// evaluate, if user id is present
-			// TODO: check for admin privileges
-			if (!empty($data['uid'])) {
-				
+			// evaluate, if specific user is set and session user is an admin
+			if (!empty($data['uid']) && $this->GroupManager->isAdmin($this->userId)) {
+				// do nothing
 			}
 			else {
-				// assign user id
+				// force user to session user
 				$data['uid'] = $this->userId;
 			}
 			// create service
@@ -245,10 +255,18 @@ class SettingsController extends Controller {
 		// evaluate, if required data is present
 		if (!empty($data['id']) && !empty($data['uid']) && !empty($data['service_id']) && !empty($data['service_token']) &&
 			!empty($data['data_type']) && !empty($data['data_collection']) && !empty($data['format'])) {
-			// force read only permissions until write is implemented
-			$data['permissions'] = 'R';
-			// modify service
-			$rs = $this->CoreService->modifyService($this->userId,(string) $data['id'], $data);
+			
+			// evaluate,
+			// if user equals session user
+			// or if user does not equals session user and session user is admin
+			if (($data['uid'] === $this->userId) ||
+				($data['uid'] !== $this->userId && $this->GroupManager->isAdmin($this->userId))) {
+				// force read only permissions until write is implemented
+				$data['permissions'] = 'R';
+				// modify service
+				$rs = $this->CoreService->modifyService($this->userId,(string) $data['id'], $data);
+			}
+			
 		}
 		// return response
 		if (isset($rs)) {
