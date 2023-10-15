@@ -121,6 +121,7 @@ The following is a list of supported features,
     * Grandstream
     * Snom
     * Yealink
+    * Zoiper
 
 
 ## Future Features
