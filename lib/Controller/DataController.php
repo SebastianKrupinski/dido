@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace OCA\Data\Controller;
 
-use OCP\AppFramework\Controller;
+use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
 use OCP\ISession;
@@ -16,7 +16,7 @@ use OCA\Data\Service\DataService;
 use OCA\Data\Http\GeneratedResponse;
 use OCA\Data\Http\GeneratedStreamResponse;
 
-class DataController extends Controller {
+class DataController extends ApiController {
 	private $userSession;
 	private CoreService $CoreService;
 	private DataService $DataService;
@@ -25,7 +25,12 @@ class DataController extends Controller {
 								ISession $Session,
 								CoreService $CoreService,
 								DataService $DataService) {
-		parent::__construct(Application::APP_ID, $request);
+		parent::__construct(Application::APP_ID, 
+			$request,
+			'POST, GET',
+			'Authorization, Content-Type, Accept',
+			1728000
+		);
 		$this->request = $request;
 		$this->session = $Session;
 		$this->CoreService = $CoreService;
@@ -157,13 +162,10 @@ class DataController extends Controller {
 	}
 	/**
 	 * @PublicPage
-	 * @UseSession
-	 * @OnlyUnauthenticatedUsers
-     * @NoAdminRequired
      * @NoCSRFRequired
      */
+	#[CORS]
 	public function grandstream(string $id) {
-
 		
 		if (empty($this->request->__get('server')['HTTP_AUTHORIZATION']) ||
 			str_starts_with($this->request->__get('server')['HTTP_AUTHORIZATION'], 'Basic ') === false) {
