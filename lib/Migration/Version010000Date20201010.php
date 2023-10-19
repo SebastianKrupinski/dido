@@ -44,11 +44,11 @@ class Version010000Date20201010 extends SimpleMigrationStep {
 				'length' => 255,
 				'notnull' => false,
 			]);
-			$table->addColumn('dido_type', 'string', [
+			$table->addColumn('data_type', 'string', [
 				'length' => 4,
 				'notnull' => true,
 			]);
-			$table->addColumn('dido_collection', 'string', [
+			$table->addColumn('data_collection', 'string', [
 				'length' => 255,
 				'notnull' => true,
 			]);

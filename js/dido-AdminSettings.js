@@ -4764,7 +4764,7 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedServiceRestrictMAC = '';
     },
     fetchSettings() {
-      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data/fetch-system-settings');
+      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/dido/fetch-system-settings');
       _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"].get(uri).then(response => {
         if (response.data) {
           this.configuredSettings = response.data;
@@ -4777,7 +4777,7 @@ __webpack_require__.r(__webpack_exports__);
       const data = {
         data: this.configuredSettings
       };
-      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data/deposit-system-settings');
+      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/dido/deposit-system-settings');
       _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"].put(uri, data).then(response => {
         (0,_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_2__.showSuccess)(t('dido', 'Saved settings'));
       }).catch(error => {
@@ -4785,7 +4785,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(() => {});
     },
     listUsers() {
-      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data/list-users');
+      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/dido/list-users');
       _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"].get(uri).then(response => {
         if (response.data) {
           this.availableUsers = response.data;
@@ -4795,7 +4795,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(() => {});
     },
     listTypes() {
-      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data/list-types');
+      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/dido/list-types');
       const data = {
         params: {
           user: this.selectedUser
@@ -4810,7 +4810,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(() => {});
     },
     listCollections() {
-      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data/list-collections');
+      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/dido/list-collections');
       const data = {
         params: {
           type: this.selectedDataType,
@@ -4826,7 +4826,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(() => {});
     },
     listFormats() {
-      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data/list-formats');
+      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/dido/list-formats');
       const data = {
         params: {
           type: this.selectedDataType
@@ -4841,7 +4841,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(() => {});
     },
     listServices() {
-      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data/list-services');
+      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/dido/list-services');
       const data = {
         params: {
           flagAdmin: true
@@ -4856,7 +4856,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(() => {});
     },
     createService(data) {
-      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data/create-service');
+      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/dido/create-service');
       _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"].put(uri, {
         data
       }).then(response => {
@@ -4869,7 +4869,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(() => {});
     },
     modifyService(data) {
-      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data/modify-service');
+      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/dido/modify-service');
       _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"].put(uri, {
         data
       }).then(response => {
@@ -4882,7 +4882,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(() => {});
     },
     deleteService(data) {
-      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/data/delete-service');
+      const uri = (0,_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__.generateUrl)('/apps/dido/delete-service');
       _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"].put(uri, {
         data
       }).then(response => {

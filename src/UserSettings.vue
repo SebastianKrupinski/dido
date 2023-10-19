@@ -365,7 +365,7 @@ export default {
 			this.selectedServiceRestrictMAC = ''
 		},
 		listTypes() {
-			const uri = generateUrl('/apps/data/list-types')
+			const uri = generateUrl('/apps/dido/list-types')
 			axios.get(uri)
 				.then((response) => {
 					if (response.data) {
@@ -381,7 +381,7 @@ export default {
 				.then(() => {})
 		},
 		listCollections() {
-			const uri = generateUrl('/apps/data/list-collections')
+			const uri = generateUrl('/apps/dido/list-collections')
 			const data = {
 				params: {
 					type: this.selectedDataType,
@@ -402,7 +402,7 @@ export default {
 				.then(() => {})
 		},
 		listFormats() {
-			const uri = generateUrl('/apps/data/list-formats')
+			const uri = generateUrl('/apps/dido/list-formats')
 			const data = {
 				params: {
 					type: this.selectedDataType,
@@ -423,7 +423,7 @@ export default {
 				.then(() => {})
 		},
 		listServices() {
-			const uri = generateUrl('/apps/data/list-services')
+			const uri = generateUrl('/apps/dido/list-services')
 			axios.get(uri)
 				.then((response) => {
 					if (response.data) {
@@ -439,7 +439,7 @@ export default {
 				.then(() => {})
 		},
 		createService(data) {
-			const uri = generateUrl('/apps/data/create-service')
+			const uri = generateUrl('/apps/dido/create-service')
 			axios.put(uri, { data })
 				.then((response) => {
 					// show message
@@ -456,7 +456,7 @@ export default {
 				.then(() => {})
 		},
 		modifyService(data) {
-			const uri = generateUrl('/apps/data/modify-service')
+			const uri = generateUrl('/apps/dido/modify-service')
 			axios.put(uri, { data })
 				.then((response) => {
 					// show message
@@ -473,7 +473,7 @@ export default {
 				.then(() => {})
 		},
 		deleteService(data) {
-			const uri = generateUrl('/apps/data/delete-service')
+			const uri = generateUrl('/apps/dido/delete-service')
 			axios.put(uri, { data })
 				.then((response) => {
 					// show message
@@ -490,7 +490,7 @@ export default {
 				.then(() => {})
 		},
 		fetchSettings() {
-			const uri = generateUrl('/apps/data/fetch-system-settings')
+			const uri = generateUrl('/apps/dido/fetch-system-settings')
 			axios.get(uri)
 				.then((response) => {
 					if (response.data) {
@@ -507,7 +507,7 @@ export default {
 				})
 		},
 		probeServiceId(id) {
-			const uri = generateUrl('/apps/data/probe-services-id')
+			const uri = generateUrl('/apps/dido/probe-services-id')
 			axios.put(uri, { id: this.selectedServiceId })
 				.then((response) => {
 					this.selectedServiceIdValid = response.data
