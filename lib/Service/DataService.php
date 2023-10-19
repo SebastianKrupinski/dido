@@ -96,8 +96,6 @@ class DataService {
 
 	public function generateContactsCSV(array $service) {
 
-		// modify service entry accessed in the data store
-		$this->Services->modifyAccessed((string) $service['id'], time(), '');
 		// load entities
 		$entities = $this->ContactsService->listEntities($service['data_collection']);
 		// document start
@@ -205,8 +203,6 @@ class DataService {
 
 	public function generateContactsJSON(array $service) {
 
-		// modify service entry accessed in the data store
-		$this->Services->modifyAccessed((string) $service['id'], time(), '');
 		// load entities
 		$entities = $this->ContactsService->listEntities($service['data_collection']);
 		// document start
@@ -256,7 +252,7 @@ class DataService {
 		
 	}
 
-	function generateXMLfromData($data, string $tag): string {
+	public function generateXMLfromData($data, string $tag): string {
 
 		// tag start
 		$xml = "<$tag>";
@@ -283,8 +279,6 @@ class DataService {
 
 	public function generateContactsXML(array $service) {
 
-		// modify service entry accessed in the data store
-		$this->Services->modifyAccessed((string) $service['id'], time(), '');
 		// load entities
 		$entities = $this->ContactsService->listEntities($service['data_collection']);
 		// document start
@@ -333,8 +327,6 @@ class DataService {
 
 	public function generateContactsTemplate(array $service) {
 
-		// modify service entry accessed in the data store
-		$this->Services->modifyAccessed((string) $service['id'], time(), '');
 		// instance template service
 		$TemplateService = new TemplateService();
 		// load template

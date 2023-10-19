@@ -32,18 +32,16 @@ use OCA\Data\Service\ConfigurationService;
 
 class CoreService {
 
-	/**
-	 * @var ConfigurationService
-	 */
-    private $ConfigurationService;
+    private ConfigurationService $_ConfigurationService;
+	private Services $_ServicesStore;
 
 	public function __construct(ConfigurationService $ConfigurationService, Services $Services) {
-		$this->ConfigurationService = $ConfigurationService;
-		$this->Services = $Services;
+		$this->_ConfigurationService = $ConfigurationService;
+		$this->_ServicesStore = $Services;
 	}
 
 	/**
-	 * retrieve users
+	 * retrieve all users
 	 * 
 	 * @since Release 1.0.0
 	 * 
@@ -74,16 +72,16 @@ class CoreService {
 		// construct response object
 		$types = [];
 		// evaluate, if contacts app is available
-		if ($this->ConfigurationService->isContactsAvailable($uid)) {
+		if ($this->_ConfigurationService->isContactsAvailable($uid)) {
 			$types[] = ['id' => 'CC', 'label' => 'Contacts'];
 		}
 		// evaluate, if calendar app is available
-		if ($this->ConfigurationService->isCalendarAvailable($uid)) {
+		if ($this->_ConfigurationService->isCalendarAvailable($uid)) {
 			// TODO: Enable after adding calendar support
 			// $types[] = ['id' => 'EC', 'label' => 'Calendars'];
 		}
 		// evaluate, if tasks app is available
-		if ($this->ConfigurationService->isTasksAvailable($uid)) {
+		if ($this->_ConfigurationService->isTasksAvailable($uid)) {
 			// TODO: Enable after adding tasks support
 			// $types[] = ['id' => 'TC', 'label' => 'Tasks'];
 		}
@@ -152,7 +150,7 @@ class CoreService {
 		// construct response object
 		$response = [];
 		// retrieve all services
-		$response = $this->Services->listByUserId($uid);
+		$response = $this->_ServicesStore->listByUserId($uid);
 		// return response
 		return $response;
 
@@ -179,7 +177,7 @@ class CoreService {
 		// set create by
 		$data['created_by'] = $uid;
 		// create service data in the data store
-		$rs = $this->Services->create($data);
+		$rs = $this->_ServicesStore->create($data);
 		// return response
 		return $rs;
 
@@ -203,7 +201,7 @@ class CoreService {
 		// force read only permissions until write is implemented
 		$data['permissions'] = 'R';
 		// modify service entry in the data store
-		$rs = $this->Services->modify($id, $data);
+		$rs = $this->_ServicesStore->modify($id, $data);
 		// return response
 		return $rs;
 
@@ -222,14 +220,14 @@ class CoreService {
 	public function deleteService(string $uid, string $id): bool {
 
 		// delete a service entry from the data store
-		$rs = $this->Services->delete($id);
+		$rs = $this->_ServicesStore->delete($id);
 		// return response
 		return $rs;
 
 	}
 
 	/**
-	 * probe is service id exists
+	 * probe if service id exists
 	 * 
 	 * @since Release 1.0.0
 	 * 
@@ -239,7 +237,7 @@ class CoreService {
 	 */
 	public function probeServiceId(string $id): bool {
 
-		$rs = $this->Services->fetchByServiceId($id);
+		$rs = $this->_ServicesStore->fetchByServiceId($id);
 
 		if ($rs === false) {
 			return true;
@@ -249,9 +247,19 @@ class CoreService {
 
 	}
 
+	/**
+	 * authorize transaction
+	 * 
+	 * @since Release 1.0.0
+	 * 
+	 * @param string $id		service id
+	 * @param string $meta		client meta data
+	 * 
+	 * @return array|bool		service data on success / false on failure
+	 */
 	public function authorize(string $id, array $meta): array|bool {
 
-		$service = $this->Services->fetchByServiceId($id);
+		$service = $this->_ServicesStore->fetchByServiceId($id);
 
 		// evaluate, if a service was found
 		if (!is_array($service)) {
@@ -261,33 +269,42 @@ class CoreService {
 		if ($service['service_token'] !== $meta['token']) {
 			return false;
 		}
-		// evaluate, if restrictions are set
-		if (!empty($service['restrictions'])) {
-			$restrictions = json_decode($service['restrictions']);
-			// evaluate, if id address restriction is set
-			if (isset($restrictions->ip) && count($restrictions->ip) > 0) {
-				$valid = false;
-				foreach ($restrictions->ip as $entry) {
-					// evaluate, if ip address matches
-					if (\OCA\Data\Utile\Validator::ipInCidr($meta['address'], $entry)) {
-						$valid = true;
-						break;
-					}
-				}
-				// evaluate, if no matching range was found
-				if ($valid === false) {
-					return false;
+
+		// evaluate, if id address restriction is set
+		if (!empty($service['restrict_ip'])) {
+			$addresses = explode(' ', $service['restrict_ip']);
+			$valid = false;
+			foreach ($addresses as $entry) {
+				// evaluate, if ip address matches
+				if (\OCA\Data\Utile\Validator::ipInCidr($meta['address'], $entry)) {
+					$valid = true;
+					break;
 				}
 			}
-
-			// evaluate, if mac address restriction is set
-			if (!empty($restrictions->mac)) {
-				// evaluate, if mac matches
-				if ($restrictions->mac != $meta['mac']) {
-					return false;
-				}
+			// evaluate, if no matching range was found
+			if ($valid === false) {
+				return false;
 			}
 		}
+
+		// evaluate, if mac address restriction is set
+		if (!empty($service['restrict_mac'])) {
+			// evaluate, if mac matches
+			if ($service['restrict_mac'] != $meta['mac']) {
+				return false;
+			}
+		}
+
+		// evaluate, if agent restriction is set
+		if (!empty($service['restrict_agent'])) {
+			// evaluate, if mac matches
+			if (!empty($meta['agent']) && !(preg_match('/' . $service['restrict_agent'] . '/', $meta['agent']) > 0)) {
+				return false;
+			}
+		}
+
+		// modify service entry accessed in the data store
+		$this->_ServicesStore->modifyAccessed((string) $service['id'], time(), $meta['address']);
 
 		return $service;
 	}

@@ -6,23 +6,29 @@ declare(strict_types=1);
 namespace OCA\Data\AppInfo;
 
 use OCP\AppFramework\App;
-use \OCA\Data\Middleware\AuthMiddleware;
+use OCP\AppFramework\Bootstrap\IBootContext;
+use OCP\AppFramework\Bootstrap\IBootstrap;
+use OCP\AppFramework\Bootstrap\IRegistrationContext;
 
-class Application extends App {
+class Application extends App implements IBootstrap {
 	public const APP_ID = 'data';
 
 	public function __construct() {
 		parent::__construct(self::APP_ID);
-
-		$container = $this->getContainer();
-		/**
-         * Middleware
-         */
-        $container->registerService('AuthMiddleware', function($c){
-            return new AuthMiddleware();
-        });
-
-        // executed in the order that it is registered
-        $container->registerMiddleware('AuthMiddleware');
 	}
+
+    public function register(IRegistrationContext $context): void {
+		/** @var IUserManager $userManager */
+		$userManager = $this->getContainer()->get(\OCP\IUserManager::class);
+
+		/* Register our own user backend */
+		$userBackend = $this->getContainer()->get(\OCA\Data\User\Backend::class);
+		$userManager->registerBackend($userBackend);
+		//OC_User::useBackend($backend);
+	}
+
+    public function boot(IBootContext $context): void {
+        
+	}
+
 }

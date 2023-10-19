@@ -167,7 +167,6 @@ class Validator {
         }
            
     }
-
     
      /**
      * validate host
@@ -236,4 +235,5 @@ class Validator {
         return false;
 
     }
+
 }

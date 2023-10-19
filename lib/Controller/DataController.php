@@ -5,8 +5,10 @@ declare(strict_types=1);
 
 namespace OCA\Data\Controller;
 
-use OCP\AppFramework\ApiController;
+use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\TextPlainResponse;
 use OCP\IRequest;
 use OCP\ISession;
 
@@ -14,27 +16,23 @@ use OCA\Data\AppInfo\Application;
 use OCA\Data\Service\CoreService;
 use OCA\Data\Service\DataService;
 use OCA\Data\Http\GeneratedResponse;
-use OCA\Data\Http\GeneratedStreamResponse;
 
-class DataController extends ApiController {
-	private $userSession;
-	private CoreService $CoreService;
-	private DataService $DataService;
+class DataController extends Controller {
+
+	private IRequest $_Request;
+	private ISession $_Session;
+	private CoreService $_CoreService;
+	private DataService $_DataService;
 
 	public function __construct(IRequest $request,
 								ISession $Session,
 								CoreService $CoreService,
 								DataService $DataService) {
-		parent::__construct(Application::APP_ID, 
-			$request,
-			'POST, GET',
-			'Authorization, Content-Type, Accept',
-			1728000
-		);
-		$this->request = $request;
-		$this->session = $Session;
-		$this->CoreService = $CoreService;
-		$this->DataService = $DataService;
+		parent::__construct(Application::APP_ID, $request);
+		$this->_Request = $request;
+		$this->_Session = $Session;
+		$this->_CoreService = $CoreService;
+		$this->_DataService = $DataService;
 	}
 
 	/**
@@ -47,20 +45,20 @@ class DataController extends ApiController {
 		// construct place holder
 		$meta = [];
 		// evaluate, if token exists
-		if (empty($this->request->getParam('token'))) {
+		if (empty($this->_Request->getParam('token'))) {
 			return null;
 		}
 		// collect meta data
-		$meta['token'] = $this->request->getParam('token');
-		$meta['address'] = $this->request->__get('server')['REMOTE_ADDR'];
-		$meta['agent'] = $this->request->__get('server')['HTTP_USER_AGENT'];
+		$meta['token'] = $this->_Request->getParam('token');
+		$meta['address'] = $this->_Request->__get('server')['REMOTE_ADDR'];
+		$meta['agent'] = $this->_Request->__get('server')['HTTP_USER_AGENT'];
 		// authorize request
-		$result = $this->CoreService->authorize($id, $meta);
+		$result = $this->_CoreService->authorize($id, $meta);
 		// evaluate, result
 		if ($result === false) {
-			return null;
+			return new TextPlainResponse('', Http::STATUS_UNAUTHORIZED);
 		} else {
-			return new GeneratedResponse($this->DataService->generateCSV($result), 'text/text; charset=UTF-8');
+			return new GeneratedResponse($this->_DataService->generateCSV($result), 'text/text; charset=UTF-8');
 		}
 
 	}
@@ -74,20 +72,20 @@ class DataController extends ApiController {
 		// construct place holder
 		$meta = [];
 		// evaluate, if token exists
-		if (empty($this->request->getParam('token'))) {
+		if (empty($this->_Request->getParam('token'))) {
 			return null;
 		}
 		// collect meta data
-		$meta['token'] = $this->request->getParam('token');
-		$meta['address'] = $this->request->__get('server')['REMOTE_ADDR'];
-		$meta['agent'] = $this->request->__get('server')['HTTP_USER_AGENT'];
+		$meta['token'] = $this->_Request->getParam('token');
+		$meta['address'] = $this->_Request->__get('server')['REMOTE_ADDR'];
+		$meta['agent'] = $this->_Request->__get('server')['HTTP_USER_AGENT'];
 		// authorize request
-		$result = $this->CoreService->authorize($id, $meta);
+		$result = $this->_CoreService->authorize($id, $meta);
 		// evaluate, result
 		if ($result === false) {
-			return null;
+			return new TextPlainResponse('', Http::STATUS_UNAUTHORIZED);
 		} else {
-			return new GeneratedResponse($this->DataService->generateJSON($result), 'application/json; charset=UTF-8');
+			return new GeneratedResponse($this->_DataService->generateJSON($result), 'application/json; charset=UTF-8');
 		}
 
 	}
@@ -101,20 +99,20 @@ class DataController extends ApiController {
 		// construct place holder
 		$meta = [];
 		// evaluate, if token exists
-		if (empty($this->request->getParam('token'))) {
+		if (empty($this->_Request->getParam('token'))) {
 			return null;
 		}
 		// collect meta data
-		$meta['token'] = $this->request->getParam('token');
-		$meta['address'] = $this->request->__get('server')['REMOTE_ADDR'];
-		$meta['agent'] = $this->request->__get('server')['HTTP_USER_AGENT'];
+		$meta['token'] = $this->_Request->getParam('token');
+		$meta['address'] = $this->_Request->__get('server')['REMOTE_ADDR'];
+		$meta['agent'] = $this->_Request->__get('server')['HTTP_USER_AGENT'];
 		// authorize request
-		$result = $this->CoreService->authorize($id, $meta);
+		$result = $this->_CoreService->authorize($id, $meta);
 		// evaluate, result
 		if ($result === false) {
-			return null;
+			return new TextPlainResponse('', Http::STATUS_UNAUTHORIZED);
 		} else {
-			return new GeneratedResponse($this->DataService->generateXML($result), 'text/xml; charset=UTF-8');
+			return new GeneratedResponse($this->_DataService->generateXML($result), 'text/xml; charset=UTF-8');
 		}
 	
 	}
@@ -130,12 +128,12 @@ class DataController extends ApiController {
 			return null;
 		}
 		// authorize request
-		$result = $this->CoreService->authorize($id, $meta);
+		$result = $this->_CoreService->authorize($id, $meta);
 		// evaluate, result
 		if ($result === false) {
-			return null;
+			return new TextPlainResponse('', Http::STATUS_UNAUTHORIZED);
 		} else {
-			return new GeneratedResponse($this->DataService->generateTemplate($result), $mime);
+			return new GeneratedResponse($this->_DataService->generateTemplate($result), $mime);
 		}
 
 	}
@@ -153,8 +151,8 @@ class DataController extends ApiController {
 		// collect meta data
 		$meta = [];
 		$meta['token'] = $token;
-		$meta['address'] = $this->request->__get('server')['REMOTE_ADDR'];
-		$meta['agent'] = $this->request->__get('server')['HTTP_USER_AGENT'];
+		$meta['address'] = $this->_Request->__get('server')['REMOTE_ADDR'];
+		$meta['agent'] = $this->_Request->__get('server')['HTTP_USER_AGENT'];
 		$meta['mac'] = \OCA\Data\Utile\Extractor::mac($meta['agent'], true);
 
 		return $this->device($id, $token, $meta, 'text/xml; charset=UTF-8');
@@ -164,23 +162,18 @@ class DataController extends ApiController {
 	 * @PublicPage
      * @NoCSRFRequired
      */
-	#[CORS]
-	public function grandstream(string $id) {
-		
-		if (empty($this->request->__get('server')['HTTP_AUTHORIZATION']) ||
-			str_starts_with($this->request->__get('server')['HTTP_AUTHORIZATION'], 'Basic ') === false) {
+	public function grandstream() {
+
+		if (!str_starts_with($this->_Session->get('user_id'), 'dio-')) {
 			return null;
 		}
 
-		// decode token
-		$token = substr($this->request->__get('server')['HTTP_AUTHORIZATION'], 6);
-		$token = explode(':', base64_decode($token), 2)[1];
-
+		[$id, $token] = explode('-', substr($this->_Session->get('user_id'), 4), 2);
 		// collect meta data
 		$meta = [];
 		$meta['token'] = $token;
-		$meta['address'] = $this->request->__get('server')['REMOTE_ADDR'];
-		$meta['agent'] = $this->request->__get('server')['HTTP_USER_AGENT'];
+		$meta['address'] = $this->_Request->__get('server')['REMOTE_ADDR'];
+		$meta['agent'] = $this->_Request->__get('server')['HTTP_USER_AGENT'];
 		$meta['mac'] = \OCA\Data\Utile\Extractor::mac($meta['agent'], true);
 
 		return $this->device($id, $token, $meta, 'text/xml; charset=UTF-8');

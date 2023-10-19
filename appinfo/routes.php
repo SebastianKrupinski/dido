@@ -41,7 +41,7 @@ return [
 		],
 		[
 			'name' => 'Data#grandstream',
-			'url' => '/grandstream/{id}/phonebook.xml',
+			'url' => '/grandstream/phonebook.xml',
 			'verb' => 'GET'
 		],
 		[
