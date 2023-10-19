@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Contacts>
 {{ section reiterate start }}
-{% if(isset($dido)): %}
+{% if(isset($data)): %}
 <Contact id="123">
     <Name>
-        <First>{{ $dido->Name->First }}</First>
-        <Middle>{{ $dido->Name->Other }}</Middle>
-        <Last>{{ $dido->Name->Last }}</Last>
-        <Display>{{ $dido->Name->Label }}</Display>
+        <First>{{ $data->Name->First }}</First>
+        <Middle>{{ $data->Name->Other }}</Middle>
+        <Last>{{ $data->Name->Last }}</Last>
+        <Display>{{ $data->Name->Label }}</Display>
     </Name>
     <Info>
-        <Company>{{ $dido->Occupation->Organization }}</Company>
+        <Company>{{ $data->Occupation->Organization }}</Company>
     </Info>
-    {% foreach ($dido->Phone as $entry): %}
+    {% foreach ($data->Phone as $entry): %}
     {% if(!empty($entry->Number)): %}
     <Phone>
         {% if($entry->Type == 'WORK' && $entry->SubType == 'VOICE'): %}

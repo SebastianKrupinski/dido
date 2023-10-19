@@ -2,12 +2,12 @@
 <directory>
 <item_list>
 {{ section reiterate start }}
-{% if(isset($dido)): %}
+{% if(isset($data)): %}
 <item>
-    <ln>{{ $dido->Name->First }}</ln>
-    <fn>{{ $dido->Name->Last }}</fn>
-    <ln>{{ $dido->Occupation->Organization }}</ln>
-    {% foreach ($dido->Phone as $entry): %}
+    <ln>{{ $data->Name->First }}</ln>
+    <fn>{{ $data->Name->Last }}</fn>
+    <ln>{{ $data->Occupation->Organization }}</ln>
+    {% foreach ($data->Phone as $entry): %}
     {% if($entry->Type == 'WORK' && $entry->SubType == 'VOICE' && !empty($entry->Number)): %}
     <ct>{{ $entry->Number }}</ct>
     {% elseif($entry->Type == 'CELL' && !empty($entry->Number)): %}
