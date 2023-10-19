@@ -23,7 +23,7 @@ declare(strict_types=1);
 *
 */
 
-namespace OCA\Data\Service;
+namespace OCA\Dido\Service;
 
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -33,7 +33,7 @@ use OCP\Security\ICrypto;
 use OCP\IUserManager;
 use OCP\App\IAppManager;
 
-use OCA\Data\AppInfo\Application;
+use OCA\Dido\AppInfo\Application;
 
 class ConfigurationService {
 

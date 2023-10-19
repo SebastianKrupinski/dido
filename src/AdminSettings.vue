@@ -22,37 +22,37 @@
 -->
 
 <template>
-	<div id="ds_settings" class="section">
-		<div class="data-settings-page-title">
-			<IconApp :size="32" /><h2> {{ t('data_service', 'Data Service') }}</h2>
+	<div id="dido_settings" class="section">
+		<div class="dido-settings-page-title">
+			<IconApp :size="32" /><h2> {{ t('dido', 'Data Service') }}</h2>
 		</div>
 		<br>
-		<div class="data-settings-content">
-			<div class="data-settings-section-system">
-				<div class="data-settings-hint">
-					{{ t('data_service', 'System Settings') }}
+		<div class="dido-settings-content">
+			<div class="dido-settings-section-system">
+				<div class="dido-settings-hint">
+					{{ t('dido', 'System Settings') }}
 				</div>
 				<div>
 					<NcCheckboxRadioSwitch type="switch" :checked.sync="permissionsUserCreate" @update:checked="depositSettings">
-						{{ t('data_service', 'Allow users to create services') }}
+						{{ t('dido', 'Allow users to create services') }}
 					</NcCheckboxRadioSwitch>
 				</div>
 				<div>
 					<NcCheckboxRadioSwitch type="switch" :checked.sync="permissionsUserModify" @update:checked="depositSettings">
-						{{ t('data_service', 'Allow users to modify services') }}
+						{{ t('dido', 'Allow users to modify services') }}
 					</NcCheckboxRadioSwitch>
 				</div>
 				<div>
 					<NcCheckboxRadioSwitch type="switch" :checked.sync="permissionsUserDelete" @update:checked="depositSettings">
-						{{ t('data_service', 'Allow users to delete services') }}
+						{{ t('dido', 'Allow users to delete services') }}
 					</NcCheckboxRadioSwitch>
 				</div>
 			</div>
-			<div class="data-settings-section-services">
-				<div class="data-settings-hint">
-					{{ t('data_service', 'List of provisioned services') }}
+			<div class="dido-settings-section-services">
+				<div class="dido-settings-hint">
+					{{ t('dido', 'List of provisioned services') }}
 				</div>
-				<div v-if="configuredServices.length > 0" class="data-settings-content-list">
+				<div v-if="configuredServices.length > 0" class="dido-settings-content-list">
 					<table>
 						<thead>
 							<tr>
@@ -102,11 +102,11 @@
 						</tbody>
 					</table>
 				</div>
-				<div v-else class="data-settings-content-empty">
-					<h3>{{ t('data_service', 'No data services have been created for this account') }}</h3>
+				<div v-else class="dido-settings-content-empty">
+					<h3>{{ t('dido', 'No data services have been created for this account') }}</h3>
 				</div>
 			</div>
-			<div class="data-settings-section-actions">
+			<div class="dido-settings-section-actions">
 				<NcButton class="app-settings-button" @click="onAddClick()">
 					<template #icon>
 						<IconAdd :size="24" />
@@ -117,106 +117,106 @@
 		</div>
 		<div>
 			<NcModal v-if="dialogServiceSettings" name="Data Service Settings" @close="onCancelClick()">
-				<div class="data-settings-modal-content">
+				<div class="dido-settings-modal-content">
 					<h2>Data Service Settings</h2>
 					<div>
 						<label for="data-service-user">
-							{{ t('data_service', 'User') }}
+							{{ t('dido', 'User') }}
 						</label>
 						<NcSelect id="data-service-user"
 							v-model="selectedUser"
-							:placeholder="t('data_service', 'User')"
+							:placeholder="t('dido', 'User')"
 							:reduce="item => item.id"
 							:options="userList"
 							@option:selected="onUserChanged()" />
 					</div>
-					<div class="data-settings-modal-group">
+					<div class="dido-settings-modal-group">
 						<label for="data-service-id">
-							{{ t('data_service', 'Id') }}
+							{{ t('dido', 'Id') }}
 						</label>
 						<input id="data-service-id"
 							v-model="selectedServiceId"
 							type="text"
-							:placeholder="t('data_service', 'Service Id')"
+							:placeholder="t('dido', 'Service Id')"
 							autocomplete="off"
 							autocorrect="off"
 							autocapitalize="none">
 					</div>
-					<div class="data-settings-modal-group">
+					<div class="dido-settings-modal-group">
 						<label for="data-service-token">
-							{{ t('data_service', 'Token') }}
+							{{ t('dido', 'Token') }}
 						</label>
 						<input id="data-service-token"
 							v-model="selectedServiceToken"
 							type="text"
-							:placeholder="t('data_service', 'Service Token')"
+							:placeholder="t('dido', 'Service Token')"
 							autocomplete="off"
 							autocorrect="off"
 							autocapitalize="none">
 					</div>
-					<div class="data-settings-modal-group">
+					<div class="dido-settings-modal-group">
 						<label for="data-service-name">
-							{{ t('data_service', 'Name') }}
+							{{ t('dido', 'Name') }}
 						</label>
 						<input id="data-service-name"
 							v-model="selectedServiceName"
 							type="text"
-							:placeholder="t('data_service', 'Service Name')"
+							:placeholder="t('dido', 'Service Name')"
 							autocomplete="off"
 							autocorrect="off"
 							autocapitalize="none">
 					</div>
 					<div>
 						<label for="data-service-data-type">
-							{{ t('data_service', 'Type') }}
+							{{ t('dido', 'Type') }}
 						</label>
 						<NcSelect id="data-service-data-type"
 							v-model="selectedDataType"
-							:placeholder="t('data_service', 'Data Type')"
+							:placeholder="t('dido', 'Data Type')"
 							:reduce="item => item.id"
 							:options="availableTypes"
 							@option:selected="onDataTypeChanged()" />
 					</div>
 					<div>
 						<label for="data-service-data-collection">
-							{{ t('data_service', 'Collection') }}
+							{{ t('dido', 'Collection') }}
 						</label>
 						<NcSelect id="data-service-data-collection"
 							v-model="selectedDataCollection"
-							:placeholder="t('data_service', 'Data Collection')"
+							:placeholder="t('dido', 'Data Collection')"
 							:reduce="item => item.id"
 							:options="availableCollections" />
 					</div>
 					<div>
 						<label for="data-service-format">
-							{{ t('data_service', 'Format') }}
+							{{ t('dido', 'Format') }}
 						</label>
 						<NcSelect id="data-service-format"
 							v-model="selectedFormat"
-							:placeholder="t('data_service', 'Output Format')"
+							:placeholder="t('dido', 'Output Format')"
 							:reduce="item => item.id"
 							:options="availableFormats" />
 					</div>
-					<div class="data-settings-modal-group">
+					<div class="dido-settings-modal-group">
 						<label for="data-service-restrict-ip">
-							{{ t('data_service', 'Restrict By IP') }}
+							{{ t('dido', 'Restrict By IP') }}
 						</label>
 						<input id="data-service-restrict-ip"
 							v-model="selectedServiceRestrictIP"
 							type="text"
-							:placeholder="t('data_service', 'e.g. 172.0.0.1 10.0.0.0/24')"
+							:placeholder="t('dido', 'e.g. 172.0.0.1 10.0.0.0/24')"
 							autocomplete="off"
 							autocorrect="off"
 							autocapitalize="none">
 					</div>
-					<div class="data-settings-modal-group">
+					<div class="dido-settings-modal-group">
 						<label for="data-service-restrict-mac">
-							{{ t('data_service', 'Restrict By MAC') }}
+							{{ t('dido', 'Restrict By MAC') }}
 						</label>
 						<input id="data-service-restrict-mac"
 							v-model="selectedServiceRestrictMAC"
 							type="text"
-							:placeholder="t('data_service', 'e.g. cd:39:53:de:a9:82')"
+							:placeholder="t('dido', 'e.g. cd:39:53:de:a9:82')"
 							autocomplete="off"
 							autocorrect="off"
 							autocapitalize="none">
@@ -226,13 +226,13 @@
 							<template #icon>
 								<IconSave />
 							</template>
-							{{ t('data_service', 'Save') }}
+							{{ t('dido', 'Save') }}
 						</NcButton>
 						<NcButton @click="onCancelClick()">
 							<template #icon>
 								<IconCancel />
 							</template>
-							{{ t('data_service', 'Cancel') }}
+							{{ t('dido', 'Cancel') }}
 						</NcButton>
 					</div>
 				</div>
@@ -449,7 +449,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to retrieve settings') + ': ' + error.response.request.responseText
+						t('dido', 'Failed to retrieve settings') + ': ' + error.response.request.responseText
 					)
 				})
 				.then(() => {
@@ -462,11 +462,11 @@ export default {
 			const uri = generateUrl('/apps/data/deposit-system-settings')
 			axios.put(uri, data)
 				.then((response) => {
-					showSuccess(t('data_service', 'Saved settings'))
+					showSuccess(t('dido', 'Saved settings'))
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to save settings') + ': ' + error.response.request.responseText
+						t('dido', 'Failed to save settings') + ': ' + error.response.request.responseText
 					)
 				})
 				.then(() => {
@@ -482,7 +482,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to retrieve types') + ': ' + error.response?.request?.responseText
+						t('dido', 'Failed to retrieve types') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -502,7 +502,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to retrieve types') + ': ' + error.response?.request?.responseText
+						t('dido', 'Failed to retrieve types') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -523,7 +523,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to retrieve collections') + ': ' + error.response?.request?.responseText
+						t('dido', 'Failed to retrieve collections') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -543,7 +543,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to retrieve formats') + ': ' + error.response?.request?.responseText
+						t('dido', 'Failed to retrieve formats') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -563,7 +563,7 @@ export default {
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to retrieve services') + ': ' + error.response?.request?.responseText
+						t('dido', 'Failed to retrieve services') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -573,13 +573,13 @@ export default {
 			axios.put(uri, { data })
 				.then((response) => {
 					// show message
-					showSuccess(t('data_service', 'Successfully created service'))
+					showSuccess(t('dido', 'Successfully created service'))
 					// refresh services list
 					this.listServices()
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to create service') + ': ' + error.response?.request?.responseText
+						t('dido', 'Failed to create service') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -589,13 +589,13 @@ export default {
 			axios.put(uri, { data })
 				.then((response) => {
 					// show message
-					showSuccess(t('data_service', 'Successfully modified service'))
+					showSuccess(t('dido', 'Successfully modified service'))
 					// refresh services list
 					this.listServices()
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to modify service') + ': ' + error.response?.request?.responseText
+						t('dido', 'Failed to modify service') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -605,13 +605,13 @@ export default {
 			axios.put(uri, { data })
 				.then((response) => {
 					// show message
-					showSuccess(t('data_service', 'Successfully deleted service'))
+					showSuccess(t('dido', 'Successfully deleted service'))
 					// refresh services list
 					this.listServices()
 				})
 				.catch((error) => {
 					showError(
-						t('data_service', 'Failed to delete service') + ': ' + error.response?.request?.responseText
+						t('dido', 'Failed to delete service') + ': ' + error.response?.request?.responseText
 					)
 				})
 				.then(() => {})
@@ -628,69 +628,69 @@ export default {
 </script>
 
 <style scoped>
-#ds_settings {
-	.data-settings-page-title {
+#dido_settings {
+	.dido-settings-page-title {
 		display: flex;
 		vertical-align: middle;
 	}
-	.data-settings-page-title h2 {
+	.dido-settings-page-title h2 {
 		padding-left: 1%;
 	}
-	.data-settings-section-services {
+	.dido-settings-section-services {
 		padding-top: 2%;
 	}
-	.data-settings-section-actions{
+	.dido-settings-section-actions{
 		padding-top: 2%;
 	}
-	.data-settings-content-empty {
+	.dido-settings-content-empty {
 		text-align: center;
 		vertical-align:middle;
 	}
-	.data-settings-content-empty h3 {
+	.dido-settings-content-empty h3 {
 		text-align: center;
 		vertical-align:middle;
 	}
-	.data-settings-content-list table{
+	.dido-settings-content-list table{
 		width: 100%;
 	}
-	.data-settings-content-list table thead {
+	.dido-settings-content-list table thead {
 		backdrop-filter: brightness(1.5);
 	}
-	.data-settings-content-list table thead tr th{
+	.dido-settings-content-list table thead tr th{
 		width: auto;
 		padding-left: 10px;
 		padding-right: 10px;
 		padding-top: 10px;
 		padding-bottom: 10px;
 	}
-	.data-settings-content-list table tbody tr td{
+	.dido-settings-content-list table tbody tr td{
 		width: auto;
 		padding-left: 10px;
 		padding-right: 10px;
 	}
-	.data-settings-button {
+	.dido-settings-button {
 		display:inline-flex;
 		vertical-align:middle;
 	}
-	.data-settings-hint {
+	.dido-settings-hint {
 		margin-top: -12px;
 		margin-bottom: 6px;
 		color: var(--color-text-maxcontrast);
 	}
-	.data-settings-modal-content {
+	.dido-settings-modal-content {
 		margin: 50px;
 		padding: 50px;
 	}
-	.data-settings-modal-content h2 {
+	.dido-settings-modal-content h2 {
 		text-align: center;
 	}
-	.data-settings-modal-group {
+	.dido-settings-modal-group {
 		margin: calc(var(--default-grid-baseline) * 4) 0;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 	}
-	.data-settings-modal-actions {
+	.dido-settings-modal-actions {
 		display: flex;
 		align-items: center;
 	}

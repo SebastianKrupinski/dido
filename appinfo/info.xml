@@ -5,22 +5,22 @@
     SPDX-FileCopyrightText: Sebastian Krupinski <krupinski01@gmail.com>
     SPDX-License-Identifier: CC0-1.0
     -->
-    <id>data</id>
+    <id>dido</id>
     <name>Data Service</name>
-    <summary>Data Service</summary>
+    <summary>Data In/Out Service</summary>
     <description><![CDATA[This app allows for the live retrieval of Contacts and Calendars, in specific formats. That can be used as a feed for devices and services.]]></description>
     <version>1.0.0-beta</version>
     <licence>agpl</licence>
     <author mail="krupinski01@gmail.com" homepage="https://github.com/ksainc/data">Sebastian Krupinski</author>
-    <namespace>Data</namespace>
+    <namespace>Dido</namespace>
     <documentation>
-        <developer>https://github.com/ksainc/data</developer>
+        <developer>https://github.com/ksainc/dido</developer>
     </documentation>
     <category>integration</category>
-    <website>https://github.com/ksainc/data</website>
-    <discussion>https://github.com/ksainc/data/issues</discussion>
-    <bugs>https://github.com/ksainc/data/issues</bugs>
-    <repository>https://github.com/ksainc/data</repository>
+    <website>https://github.com/ksainc/dido</website>
+    <discussion>https://github.com/ksainc/dido/issues</discussion>
+    <bugs>https://github.com/ksainc/dido/issues</bugs>
+    <repository>https://github.com/ksainc/dido</repository>
     <dependencies>
         <php min-version="8.0"  min-int-size="64" />
         <database>pgsql</database>
@@ -29,9 +29,9 @@
         <nextcloud min-version="26" max-version="28"/>
     </dependencies>
     <settings>
-        <admin>OCA\Data\Settings\AdminSettings</admin>
-        <admin-section>OCA\Data\Settings\AdminSection</admin-section>
-        <personal>OCA\Data\Settings\UserSettings</personal>
-        <personal-section>OCA\Data\Settings\UserSection</personal-section>
+        <admin>OCA\Dido\Settings\AdminSettings</admin>
+        <admin-section>OCA\Dido\Settings\AdminSection</admin-section>
+        <personal>OCA\Dido\Settings\UserSettings</personal>
+        <personal-section>OCA\Dido\Settings\UserSection</personal-section>
     </settings>
 </info>

@@ -23,17 +23,17 @@
 *
 */
 
-namespace OCA\Data\Service;
+namespace OCA\Dido\Service;
 
 use Datetime;
 use DateTimeZone;
 use Psr\Log\LoggerInterface;
 use OCA\DAV\CardDAV\CardDavBackend;
 
-use OCA\Data\AppInfo\Application;
-use OCA\Data\Db\ContactsUtile;
-use \OCA\Data\Objects\ContactCollectionObject;
-use \OCA\Data\Objects\ContactObject;
+use OCA\Dido\AppInfo\Application;
+use OCA\Dido\Db\ContactsUtile;
+use \OCA\Dido\Objects\ContactCollectionObject;
+use \OCA\Dido\Objects\ContactObject;
 
 use Sabre\VObject\Reader;
 use Sabre\VObject\Component\VCard;
@@ -263,7 +263,7 @@ class ContactsService {
         // convert contact object to vcard object
         $lo = $this->fromContactObject($data);
         // generate item id
-        $loid = \OCA\Data\Utile\UUID::v4() . '.vcf';
+        $loid = \OCA\Dido\Utile\UUID::v4() . '.vcf';
         // create item in data store
         $result = $this->DataStore->createCard($cid, $loid, $lo->serialize());
         // return status object or null
@@ -379,7 +379,7 @@ class ContactsService {
                     $co->Photo->Data = $vo->UID;
                     $co->addAttachment(
                         $vo->UID,
-                        $vo->UID . '.' . \OCA\Data\Utile\MIME::toExtension($p[0][1]),
+                        $vo->UID . '.' . \OCA\Dido\Utile\MIME::toExtension($p[0][1]),
                         $p[0][1],
                         'B64',
                         'CP',
@@ -534,7 +534,7 @@ class ContactsService {
         if (isset($co->UID)) {
             $vo->UID->setValue($co->UID);
         } else {
-            $vo->UID->setValue(\OCA\Data\Utile\UUID::v4());
+            $vo->UID->setValue(\OCA\Dido\Utile\UUID::v4());
         }
         // Label
         if (isset($co->Label)) {

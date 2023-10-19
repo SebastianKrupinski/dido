@@ -12,7 +12,7 @@ webpackConfig.stats = {
 	modules: false,
 }
 
-const appId = 'data'
+const appId = 'dido'
 webpackConfig.entry = {
 	AdminSettings: { import: path.join(__dirname, 'src', 'AdminSettings.js'), filename: appId + '-AdminSettings.js' },
 	UserSettings: { import: path.join(__dirname, 'src', 'UserSettings.js'), filename: appId + '-UserSettings.js' },

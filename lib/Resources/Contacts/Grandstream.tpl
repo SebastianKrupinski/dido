@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AddressBook>
 {{ section reiterate start }}
-{% if(isset($data)): %}
+{% if(isset($dido)): %}
 
 <Contact>
-    <LastName>{{ $data->Name->Last }}</LastName>
-    <FirstName>{{ $data->Name->First }}</FirstName>
+    <LastName>{{ $dido->Name->Last }}</LastName>
+    <FirstName>{{ $dido->Name->First }}</FirstName>
     <Primary>0</Primary>
-    {% foreach ($data->Phone as $entry): %}
+    {% foreach ($dido->Phone as $entry): %}
     {% if($entry->Type == 'WORK' && $entry->SubType == 'VOICE' && !empty($entry->Number)): %}
     <Phone type="Work">
         <phonenumber>{{ $entry->Number }}</phonenumber>

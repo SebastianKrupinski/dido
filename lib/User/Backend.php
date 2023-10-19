@@ -19,7 +19,7 @@
  *
  */
 
-namespace OCA\Data\User;
+namespace OCA\Dido\User;
 
 use Psr\Log\LoggerInterface;
 
@@ -60,8 +60,8 @@ class Backend extends ABackend implements ICheckPasswordBackend {
 	 */
 	public function checkPassword(string $login, string $secret) {
 		
-		if (str_starts_with($this->_Request->__get('server')['PATH_INFO'], '/apps/data')) {
-			return 'dio-' . $login . '-' . $secret;
+		if (str_starts_with($this->_Request->__get('server')['PATH_INFO'], '/apps/dido')) {
+			return 'dido-' . $login . '-' . $secret;
 		}
 		else {
 			return false;

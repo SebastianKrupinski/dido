@@ -23,7 +23,7 @@
 *
 */
 
-namespace OCA\Data\Db;
+namespace OCA\Dido\Db;
 
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\DB\QueryBuilder\IQueryBuilder;

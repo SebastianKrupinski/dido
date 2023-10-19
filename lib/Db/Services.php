@@ -23,7 +23,7 @@
 *
 */
 
-namespace OCA\Data\Db;
+namespace OCA\Dido\Db;
 
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -32,7 +32,7 @@ use OCP\IDBConnection;
 class Services {
 
 	private IDBConnection $DataStore;
-	private string $DataStoreTable = 'data_services';
+	private string $DataStoreTable = 'dido_services';
 
 	public function __construct(IDBConnection $db) {
 		$this->DataStore = $db;

@@ -23,7 +23,7 @@ declare(strict_types=1);
 *
 */
 
-namespace OCA\Data\Settings;
+namespace OCA\Dido\Settings;
 
 use OCP\IURLGenerator;
 use OCP\IL10N;
@@ -48,7 +48,7 @@ class UserSection implements IIconSection {
 	 * @returns string
 	 */
 	public function getID(): string {
-		return 'data-service-user'; //or a generic id if feasible
+		return 'dido-user'; //or a generic id if feasible
 	}
 
 	/**

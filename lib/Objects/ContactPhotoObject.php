@@ -23,19 +23,19 @@
 *
 */
 
-namespace OCA\Data\Objects;
+namespace OCA\Dido\Objects;
 
 class ContactPhotoObject {
 
 	public ?string $Type;
-    public ?string $Data;
+    public ?string $dido;
     
     public function __construct(
         string $type = null,
-        string $data = null
+        string $dido = null
     ) {
         $this->Type = $type;
-        $this->Data = $data;
+        $this->dido = $dido;
 	}
 
 }

@@ -1,6 +1,6 @@
 {
 	"name": "nextcloud/data",
-	"description": "Data Service",
+	"description": "Data In/Out Service",
 	"type": "project",
 	"license": "AGPL-3.0-or-later",
 	"authors": [

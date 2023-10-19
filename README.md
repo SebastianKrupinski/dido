@@ -1,4 +1,4 @@
-# Data Service for Nextcloud
+# Data In/Out Service for Nextcloud
 
 Data Service for Nextcloud, is an app that can be used to retrieve Contacts, Calendar and Tasks data in formats other then WedDAV or RestAPI.
 
@@ -8,7 +8,7 @@ The original purpose/idea behind the app was to supply contacts data to devices 
 
 The app supports simplified token authentication, IP, MAC and Agent restrictions
 
-![Alt text](documentation/images/ds-admin-ui.png)
+![Alt text](documentation/images/dido-admin-ui.png)
 
 ## How to use
 
@@ -18,7 +18,7 @@ Once the app is installed, navigate to "Data Services" under either the Admin or
 
 Click add, and fill in the required settings.
 
-![Alt text](documentation/images/ds-service-settings.png)
+![Alt text](documentation/images/dido-service-settings.png)
 
 Settings:
 * Service Id - Required - Must be unique for every service
@@ -43,19 +43,19 @@ The following examples use the following information, these would need to be rep
 
 This outputs data in fully structured JSON format. Including contact pictures and calendar attachments. 
 
-https://nextcloud-domain-or-ip/apps/data/json/a898/?token=e0e1dd54b9d2489097afb201d6457bee
+https://nextcloud-domain-or-ip/apps/dido/json/a898/?token=e0e1dd54b9d2489097afb201d6457bee
 
 #### XML - For General Use
 
 This outputs data in fully structured XML format. Including contact pictures and calendar attachments. 
 
-https://nextcloud-domain-or-ip/apps/data/xml/a898/?token=e0e1dd54b9d2489097afb201d6457bee
+https://nextcloud-domain-or-ip/apps/dido/xml/a898/?token=e0e1dd54b9d2489097afb201d6457bee
 
 #### CVS - For General Use
 
 This outputs data in structured CSV format. The CSV output does not include contact pictures or calendar attachments and uses custom formatting for array fields like phone numbers and addresses.
 
-https://nextcloud-domain-or-ip/apps/data/csv/a898/?token=e0e1dd54b9d2489097afb201d6457bee
+https://nextcloud-domain-or-ip/apps/dido/csv/a898/?token=e0e1dd54b9d2489097afb201d6457bee
 
 #### Grandstream - For use with Grandstream SIP Phones
 
@@ -63,7 +63,7 @@ Grandstream SIP phones require specific a URL and formating which is generated l
 
 Use the following URL in the "Phonebook Management" section of your Grandstream SIP phone.
 
-https://nextcloud-domain-or-ip/apps/data/grandstream/a898/e0e1dd54b9d2489097afb201d6457bee
+https://nextcloud-domain-or-ip/apps/dido/grandstream/a898/e0e1dd54b9d2489097afb201d6457bee
 
 #### Snom - For use with Snom SIP Phones
 
@@ -71,7 +71,7 @@ Snom SIP phones require specific formating which is generated live by the app.
 
 Use the following URL in the provisioning file of your SIP phone.
 
-https://nextcloud-domain-or-ip/apps/data/phone/a898/?token=e0e1dd54b9d2489097afb201d6457bee
+https://nextcloud-domain-or-ip/apps/dido/phone/a898/?token=e0e1dd54b9d2489097afb201d6457bee
 
 #### Yealink - For use with Yealink SIP Phones
 
@@ -79,7 +79,7 @@ Yealink SIP phones require specifi formating which is generated live by the app.
 
 Use the following URL in the "Remote Phone Book" section of your Yealink SIP phone.
 
-https://nextcloud-domain-or-ip/apps/data/phone/a898/?token=e0e1dd54b9d2489097afb201d6457bee
+https://nextcloud-domain-or-ip/apps/dido/phone/a898/?token=e0e1dd54b9d2489097afb201d6457bee
 
 
 ## Requirements

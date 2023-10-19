@@ -23,12 +23,12 @@ declare(strict_types=1);
 *
 */
 
-namespace OCA\Data\Settings;
+namespace OCA\Dido\Settings;
 
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\Settings\ISettings;
 
-use OCA\Data\AppInfo\Application;
+use OCA\Dido\AppInfo\Application;
 
 class UserSettings implements ISettings {
 
@@ -46,7 +46,7 @@ class UserSettings implements ISettings {
 	}
 
 	public function getSection(): string {
-		return 'data-service-user';
+		return 'dido-user';
 	}
 
 	public function getPriority(): int {

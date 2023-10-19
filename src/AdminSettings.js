@@ -28,6 +28,6 @@ import AdminSettings from './AdminSettings.vue'
 
 // eslint-disable-next-line
 new Vue({
-	el: '#ds_settings',
+	el: '#dido_settings',
 	render: h => h(AdminSettings),
 })

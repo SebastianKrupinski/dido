@@ -23,17 +23,17 @@ declare(strict_types=1);
 *
 */
 
-namespace OCA\Data\Controller;
+namespace OCA\Dido\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
 use OCP\IGroupManager;
 
-use OCA\Data\AppInfo\Application;
-use OCA\Data\Service\ConfigurationService;
-use OCA\Data\Service\CoreService;
-use OCA\Data\Service\DataService;
+use OCA\Dido\AppInfo\Application;
+use OCA\Dido\Service\ConfigurationService;
+use OCA\Dido\Service\CoreService;
+use OCA\Dido\Service\DataService;
 
 class SettingsController extends Controller {
 

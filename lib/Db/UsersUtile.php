@@ -23,7 +23,7 @@
 *
 */
 
-namespace OCA\Data\Db;
+namespace OCA\Dido\Db;
 
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -39,15 +39,15 @@ class UsersUtile {
 	}
 
 	/**
-	 * retrieve all users from data store
+	 * retrieve all users from dido store
 	 * 
 	 * @since Release 1.0.0
 	 * 
-	 * @return array 		of data fields
+	 * @return array 		of dido fields
 	 */
 	public function listUsers(): array {
 
-		// construct database command
+		// construct didobase command
 		$dc = $this->DataStore->getQueryBuilder();
 		$dc->select('uid AS id', 'displayname AS name')
 			->from($this->DataStoreTable);

@@ -22,8 +22,8 @@ declare(strict_types=1);
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$appId = OCA\Data\AppInfo\Application::APP_ID;
+$appId = OCA\Dido\AppInfo\Application::APP_ID;
 \OCP\Util::addScript($appId, $appId . '-AdminSettings');
 ?>
 
-<div id="ds_settings"></div>
+<div id="dido_settings"></div>

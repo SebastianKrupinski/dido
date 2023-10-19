@@ -23,14 +23,14 @@ declare(strict_types=1);
 *
 */
 
-namespace OCA\Data\Service;
+namespace OCA\Dido\Service;
 
 use Exception;
 
 use Sabre\VObject\Reader;
 
-use OCA\Data\Db\Services;
-use OCA\Data\Service\ContactsService;
+use OCA\Dido\Db\Services;
+use OCA\Dido\Service\ContactsService;
 
 class DataService {
 

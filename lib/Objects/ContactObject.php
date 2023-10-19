@@ -23,7 +23,7 @@
 *
 */
 
-namespace OCA\Data\Objects;
+namespace OCA\Dido\Objects;
 
 use DateTime;
 
@@ -89,8 +89,8 @@ class ContactObject {
         $this->Phone[] = new ContactRelationObject($type, $value);
     }
     
-    public function addAttachment(string $id, ?string $name = null, ?string $type = null, ?string $encoding = null, ?string $flag = null, ?string $size = null,  ?string $data = null) {
-        $this->Attachments[] = new ContactAttachmentObject($id, $name, $type, $encoding, $flag, $size, $data);
+    public function addAttachment(string $id, ?string $name = null, ?string $type = null, ?string $encoding = null, ?string $flag = null, ?string $size = null,  ?string $dido = null) {
+        $this->Attachments[] = new ContactAttachmentObject($id, $name, $type, $encoding, $flag, $size, $dido);
     }
 
 }

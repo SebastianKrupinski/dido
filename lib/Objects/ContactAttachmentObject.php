@@ -23,7 +23,7 @@
 *
 */
 
-namespace OCA\Data\Objects;
+namespace OCA\Dido\Objects;
 
 class ContactAttachmentObject {
 
@@ -33,7 +33,7 @@ class ContactAttachmentObject {
     public ?string $Encoding;
     public ?string $Flag;
     public ?string $Size;
-    public ?string $Data;
+    public ?string $dido;
     
     public function __construct(
         string $id = null,
@@ -42,7 +42,7 @@ class ContactAttachmentObject {
         string $encoding = null,
         string $flag = null,
         string $size = null,
-        string $data = null
+        string $dido = null
     ) {
         $this->Id = $id;
         $this->Name = $name;
@@ -50,7 +50,7 @@ class ContactAttachmentObject {
         $this->Encoding = $encoding;
         $this->Flag = $flag;
         $this->Size = $size;
-        $this->Data = $data;
+        $this->dido = $dido;
 	}
     
 }

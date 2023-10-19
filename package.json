@@ -1,6 +1,6 @@
 {
-  "name": "data",
-  "description": "Data Service",
+  "name": "dido",
+  "description": "Data In/Out Service",
   "version": "1.0.0-beta",
   "author": "Sebastian Krupinski <krupinski01@gmail.com>",
   "contributors": [],

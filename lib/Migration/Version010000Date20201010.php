@@ -3,7 +3,7 @@ declare(strict_types=1);
 // SPDX-FileCopyrightText: Sebastian Krupinski <krupinski01@gmail.com>
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-namespace OCA\Data\Migration;
+namespace OCA\Dido\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;
@@ -22,8 +22,8 @@ class Version010000Date20201010 extends SimpleMigrationStep {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
 
-		if (!$schema->hasTable('data_services')) {
-			$table = $schema->createTable('data_services');
+		if (!$schema->hasTable('dido_services')) {
+			$table = $schema->createTable('dido_services');
 			$table->addColumn('id', 'integer', [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -44,11 +44,11 @@ class Version010000Date20201010 extends SimpleMigrationStep {
 				'length' => 255,
 				'notnull' => false,
 			]);
-			$table->addColumn('data_type', 'string', [
+			$table->addColumn('dido_type', 'string', [
 				'length' => 4,
 				'notnull' => true,
 			]);
-			$table->addColumn('data_collection', 'string', [
+			$table->addColumn('dido_collection', 'string', [
 				'length' => 255,
 				'notnull' => true,
 			]);
@@ -85,8 +85,8 @@ class Version010000Date20201010 extends SimpleMigrationStep {
 			]);
 
 			$table->setPrimaryKey(['id']);
-			$table->addIndex(['uid'], 'data_service_uid');
-			$table->addIndex(['service_id'], 'data_service_sid');
+			$table->addIndex(['uid'], 'dido_service_uid');
+			$table->addIndex(['service_id'], 'dido_service_sid');
 		}
 		return $schema;
 	}

@@ -23,7 +23,7 @@ declare(strict_types=1);
 *
 */
 
-namespace OCA\Data\Utile;
+namespace OCA\Dido\Utile;
 
 class Extractor {
 

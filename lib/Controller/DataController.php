@@ -3,7 +3,7 @@ declare(strict_types=1);
 // SPDX-FileCopyrightText: Sebastian Krupinski <krupinski01@gmail.com>
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-namespace OCA\Data\Controller;
+namespace OCA\Dido\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -12,10 +12,10 @@ use OCP\AppFramework\Http\TextPlainResponse;
 use OCP\IRequest;
 use OCP\ISession;
 
-use OCA\Data\AppInfo\Application;
-use OCA\Data\Service\CoreService;
-use OCA\Data\Service\DataService;
-use OCA\Data\Http\GeneratedResponse;
+use OCA\Dido\AppInfo\Application;
+use OCA\Dido\Service\CoreService;
+use OCA\Dido\Service\DataService;
+use OCA\Dido\Http\GeneratedResponse;
 
 class DataController extends Controller {
 
@@ -153,7 +153,7 @@ class DataController extends Controller {
 		$meta['token'] = $token;
 		$meta['address'] = $this->_Request->__get('server')['REMOTE_ADDR'];
 		$meta['agent'] = $this->_Request->__get('server')['HTTP_USER_AGENT'];
-		$meta['mac'] = \OCA\Data\Utile\Extractor::mac($meta['agent'], true);
+		$meta['mac'] = \OCA\Dido\Utile\Extractor::mac($meta['agent'], true);
 
 		return $this->device($id, $token, $meta, 'text/xml; charset=UTF-8');
 
@@ -164,17 +164,17 @@ class DataController extends Controller {
      */
 	public function grandstream() {
 
-		if (!str_starts_with($this->_Session->get('user_id'), 'dio-')) {
+		if (!str_starts_with($this->_Session->get('user_id'), 'dido-')) {
 			return null;
 		}
 
-		[$id, $token] = explode('-', substr($this->_Session->get('user_id'), 4), 2);
+		[$id, $token] = explode('-', substr($this->_Session->get('user_id'), 5), 2);
 		// collect meta data
 		$meta = [];
 		$meta['token'] = $token;
 		$meta['address'] = $this->_Request->__get('server')['REMOTE_ADDR'];
 		$meta['agent'] = $this->_Request->__get('server')['HTTP_USER_AGENT'];
-		$meta['mac'] = \OCA\Data\Utile\Extractor::mac($meta['agent'], true);
+		$meta['mac'] = \OCA\Dido\Utile\Extractor::mac($meta['agent'], true);
 
 		return $this->device($id, $token, $meta, 'text/xml; charset=UTF-8');
 

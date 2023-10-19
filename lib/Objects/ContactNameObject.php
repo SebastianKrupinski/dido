@@ -23,7 +23,7 @@
 *
 */
 
-namespace OCA\Data\Objects;
+namespace OCA\Dido\Objects;
 
 class ContactNameObject {
 

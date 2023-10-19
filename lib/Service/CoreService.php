@@ -23,12 +23,12 @@ declare(strict_types=1);
 *
 */
 
-namespace OCA\Data\Service;
+namespace OCA\Dido\Service;
 
 use Exception;
 
-use OCA\Data\Db\Services;
-use OCA\Data\Service\ConfigurationService;
+use OCA\Dido\Db\Services;
+use OCA\Dido\Service\ConfigurationService;
 
 class CoreService {
 
@@ -50,7 +50,7 @@ class CoreService {
 	public function listUsers(): array {
 
 		// load helper 
-		$UserUtile = \OC::$server->get(\OCA\Data\Db\UsersUtile::class);
+		$UserUtile = \OC::$server->get(\OCA\Dido\Db\UsersUtile::class);
 		// retrieve users
 		$users = $UserUtile->listUsers();
 		// return data
@@ -276,7 +276,7 @@ class CoreService {
 			$valid = false;
 			foreach ($addresses as $entry) {
 				// evaluate, if ip address matches
-				if (\OCA\Data\Utile\Validator::ipInCidr($meta['address'], $entry)) {
+				if (\OCA\Dido\Utile\Validator::ipInCidr($meta['address'], $entry)) {
 					$valid = true;
 					break;
 				}
